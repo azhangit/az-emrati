@@ -1,0 +1,50 @@
+#work{
+    background-color: #EFEEF0;
+
+    .header{}
+
+
+
+
+.top-heading p,h1{
+    margin: 0;
+}
+
+.card{
+   width: 18rem; 
+   padding: 0; 
+   border-radius: 30px;
+   margin:0 10px 20px;
+}
+
+.card-body{
+    background: #1E1E1E;
+  border-radius: 0 0 30px 30px;
+text-align: center;
+margin:0px;
+}
+
+.card-text{
+    color: #ffffff;
+
+}
+
+.top-heading{
+        max-width: 80ch;
+    line-height: 2em;
+    margin-inline: auto;
+
+}
+
+.bottom-heading 
+{
+    color:#181818 ;
+}
+
+.btn{
+    margin-block-start: 6px;
+}
+
+
+
+}

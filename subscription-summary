@@ -1,0 +1,12 @@
+@extends('frontend.layouts.app')
+@section('content')
+<div class="container my-5">
+  <h2>Subscription Summary</h2>
+  <ul class="list-group">
+    <li class="list-group-item"><strong>Coffee Grind Type:</strong> {{ $data['grind'] ?? 'N/A' }}</li>
+    <li class="list-group-item"><strong>Product ID:</strong> {{ $data['product_id'] ?? 'N/A' }}</li>
+    <li class="list-group-item"><strong>Quantity:</strong> {{ $data['quantity'] ?? 'N/A' }}</li>
+    <li class="list-group-item"><strong>Subscription Duration:</strong> {{ $data['months'] ?? 'N/A' }} Month(s)</li>
+  </ul>
+</div>
+@endsection

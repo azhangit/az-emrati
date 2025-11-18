@@ -1,0 +1,32 @@
+.navbar .nav-link {
+        height: 62px;
+    line-height: 14px !important;
+    align-content: center;
+}
+
+
+.navbar .dropdown-menu {
+    top: 55px;
+    
+}
+
+.drip-box-details .text-reset{
+    line-height: 24px;
+}
+
+.drip-box-details .btn {
+    line-height: 16px;
+}
+
+
+.form-check-label{
+        font-size: 14px;
+    max-width: 13ch;
+    margin-inline-start: 5px;
+    line-height: 16px;
+}
+
+.points label{
+    font-size: 13px;
+    
+}

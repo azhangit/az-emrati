@@ -1,0 +1,546 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+/* Home page */
+
+/* Global Styles */
+body {
+    margin: 0;
+}
+
+
+
+/* Banners */
+.banner-1,
+.banner-2,
+.banner-3 {
+    text-align: center;
+    width: 100%;
+    height: auto;
+    margin-top: 0;
+
+    font-weight: 400;
+    font-size: 20px;
+}
+
+
+.grid-fluid p{
+        font-size: 20px !important;
+    line-height: 1.19048 !important;
+    font-weight: 400 !important;
+margin: 12px auto;
+    max-width: 36ch;
+}
+
+.subhead-left p{
+    max-width:315px;
+    margin: 12px auto;
+}
+
+.subhead-right p{
+    max-width:290px;
+    margin:12px auto;
+}
+
+
+.banner{
+margin-top:12px;
+    padding:0 10px 0 0 !important;
+    width:100%;
+}
+
+
+
+
+
+
+
+      .banner-1 {
+  background: 
+              url('/public/assets/img/home-page/m-EMIRATI-COFFEE-5.6.jpg');
+    /*Capsules-website.jpg'*/
+    background-repeat: no-repeat;
+    color: #212529;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0;
+    margin: 0;
+    height:580px;
+}
+
+
+
+
+
+
+  
+  .banner-2 {
+    background: url('/public/assets/img/home-page/m-Limited-Edition-COFFEE-silder-image.jpg');
+    background-repeat: no-repeat;
+    color: #212529 !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0;
+    margin: 0;
+    height:580px;
+    margin-bottom:12px !important;
+}
+
+
+
+  .banner-3 {
+    background: url('/public/assets/img/home-page/m-EMIRATI-COFFEE-4.6.jpg');
+    /*EMIRATI-COFFEE-4.png*/
+    background-repeat: no-repeat;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0;
+    margin: 0;
+    height:580px;
+}
+
+
+.item-1{
+background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-EMIRATI-COFFEE-8.jpg');
+}
+
+.item-2{
+background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-EMIRATI-COFFEE-6.jpg');
+}
+
+.item-3{
+background-image: url('https://emrati.acusync.net/public/assets/img/home-page/new-EMIRATI-COFFEE-9.jpg');
+         
+}
+.item-4{  
+background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-EMIRATI-COFFEE-11.jpg');
+}
+
+.item-5{ 
+background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-IMG_7813.jpg');
+}
+
+.item-6{ 
+
+background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-IMG_7814.jpg');
+}
+
+.item-7{ 
+
+background-image: url('https://emrati.acusync.net/public/assets/img/home-page/new-EMIRATI-COFFEE-12.jpg');
+}
+
+.item-8{ 
+
+background-image: url('https://emrati.acusync.net/public/assets/img/home-page/EMIRATI-COFFEE-4.jpg');
+}
+
+
+/*  @media (max-width: 992px) {*/
+      
+      
+/*      .banner-1 {*/
+    /*background: url('/public/assets/img/home-page/Capsules-tab.jpg');*/
+/*    background-repeat: no-repeat;*/
+/*    color: white;*/
+/*    background-position: center;*/
+/*    background-repeat: no-repeat;*/
+/*    background-size: cover;*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    height:580px;*/
+/*}*/
+      
+      
+/*  .banner-2 {*/
+    /*background: url('/public/assets/img/home-page/EMIRATI-COFFEE-13.png');*/
+/*    background-repeat: no-repeat;*/
+/*    color: white;*/
+/*    background-position: center;*/
+/*    background-repeat: no-repeat;*/
+/*    background-size: cover;*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    height:580px;*/
+/*    margin-bottom:12px !important;*/
+/*}*/
+
+
+
+/*    .item-1{*/
+         /*background-image: url('/public/assets/img/home-page/drip-bag-tab.jpg');*/
+
+        
+        
+/*    }*/
+    
+/*    .item-2{*/
+                 /*background-image: url('/public/assets/img/home-page/TEA-tab.jpg');*/
+
+/*    }*/
+    
+/*     .item-3{*/
+    /*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Subscriptions-TAB.jpg');*/
+         
+/*     }*/
+    
+/*            .item-4{  */
+     /*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Academy-tab.jpg');*/
+/*}*/
+
+/*        .item-5{ */
+/*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/IMG_7813.jpg');*/
+/*}*/
+
+/*        .item-6{ */
+
+/*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Capsules-tab-small.jpg');*/
+/*}*/
+
+
+
+
+/*}*/
+
+
+
+/*  @media (max-width: 567px) {*/
+/*    .banner-1 { background-image: url('/public/assets/img/home-page/Capsules-mobile-banner.jpg');*/
+    /*hero-ms_iphone16pro.png*/
+/*        background-position: top;*/
+            /*align-content: end;*/
+/*    }*/
+
+/*    .banner-2 { background-image: url('/public/assets/img/home-page/Limited-Edition-mobile-banner.jpg');*/
+/*hero-ms_iphone16_blue.png*/
+        
+/*    }*/
+
+/*    .banner-3 { background-image: url('/public/assets/img/home-page/EMIRATI-COFFEE-4.jpg');*/
+    /*hero-ms_apple_watch_series_10.png*/
+        
+/*    }*/
+    
+    
+    
+/*    .item-1{*/
+/*         background-image: url('/public/assets/img/home-page/drip-bag-mobile.jpg');*/
+
+        
+        
+/*    }*/
+    
+/*    .item-2{*/
+/*                 background-image: url('/public/assets/img/home-page/TEA-mobile.jpg');*/
+
+/*    }*/
+    
+/*     .item-3{*/
+/*    background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Subscriptions-mobile.jpg');*/
+         
+/*     }*/
+    
+/*            .item-4{  */
+/*     background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Academy-mobile.jpg');*/
+/*}*/
+
+/*        .item-5{ */
+/*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/IMG_7813.jpg');*/
+/*}*/
+
+/*        .item-6{ */
+
+/*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Capsules-mobile-small.jpg');*/
+/*}*/
+
+    
+/*    }  */
+  
+  
+  
+  
+  
+  
+  
+  
+
+.banner-1 span{
+    font-size:30px !important;
+}
+
+.banner-1 .container h3{
+       width: 35vw !important;
+    margin: 10px auto !important;
+}
+
+
+@media (max-width: 768px) {
+    
+    #side-by-side{
+        margin-top:12px ;
+    }
+    
+    
+    .banner-3 h1{
+            margin-top: 0 !important;
+    }
+    
+.hero-section h1, .banner-1 h1,  .banner-2 h1, .banner-3 h1 {
+  font-size:32px !important;
+    
+ }
+ .hero-section .btn,
+  .banner-1 .btn,
+  .banner-2 .btn,
+  .banner-3 .btn
+  {
+
+    font-size:14px !important;
+ padding:7px 15px !important;
+}
+}
+
+
+
+.banner-1 h3{
+    font-size:15px;
+}
+
+
+
+
+
+
+.banner-1, .banner-2, .banner-3 {
+
+  height:530px !important;
+ 
+}
+
+.banner img{
+
+  height:500px !important;
+ 
+}
+
+.lower-banner h1{
+    font-size:15px;
+}
+
+
+.banner-1 .container h3{
+       width: 60vw !important;
+    margin: 10px auto !important;
+}
+
+.banner-1 span{
+    font-size:15px !important;
+}
+
+
+
+
+
+
+
+
+.banner-1 button {
+    width: 180px;
+}
+
+.banner-3 img {
+    width: 500px;
+
+    height: auto;
+    object-fit: contain;
+}
+
+.banner-1 span,
+.banner-2 h4:last-child,
+.banner-3 h4:last-child {
+    color: #76529f;
+}
+
+.btn {
+    padding: 4px 12px;
+}
+
+.banner-2,
+.banner-3 {
+    background-color: #efeef0;
+    margin-top:12px;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+    height:580px;
+}
+
+.banner .col-md-6{
+    padding:0 0 0 10px;
+    
+    
+}
+
+
+@media (max-width: 768px) {
+.banner .col-md-6{
+    padding:0;
+    
+    
+}
+
+.grid-fluid p{
+    font-size:19px !important;
+}
+
+.banner h5{
+    font-size:15px !important;
+}
+
+
+.banner .btn{
+
+    font-size:15px;
+ padding:9px 16px !important;
+}
+
+}
+
+.banner-2 img {
+    width: 280px;
+    height: auto;
+}
+
+.banner-left {
+
+    background-color:#000000;
+    background-repeat:no-repeat;
+    background-position:center;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.drip-coffee img {
+    width: 320px;
+    height: auto;
+    object-fit: contain;
+}
+
+.banner-right {
+    color: black;
+    object-fit: cover;
+    width: 100%;
+    background:#F6F5F8;
+    height: auto;
+}
+
+/*.banner .row{*/
+/*    margin-bottom:12px !important;*/
+/*}*/
+
+.banner-right img {
+    width: 70%;
+    height: auto;
+    object-fit: contain;
+    display: flex;
+    justify-self: end;
+    margin-top: 20px;
+
+}
+
+.banner-4 .banner-right {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.img-1 {
+    background: url(public/assets/img/home-page/Frame-4.png) center / cover
+        no-repeat;
+}
+.img-2 {
+    background: url(public/assets/img/home-page/Group-209.png) center/cover
+        no-repeat;
+}
+.img-3 {
+    background: url(public/assets/img/home-page/Frame-4.png) center / cover
+        no-repeat;
+}
+
+.img-5 {
+    background: url(public/assets/img/home-page/image-2.png) bottom right /
+        cover no-repeat;
+}
+.img-6 {
+    background: url(public/assets/img/home-page/packed-coffee.png) center /
+        cover no-repeat;
+}
+
+.banner-right {
+    height: 580px;
+    color: white;
+    align-items: flex-end;
+    background-position: center;
+}
+.banner-left {
+    height: 580px;
+    color: white;
+    align-items: flex-end;
+    background-position: center;
+}
+
+@media (max-width: 768px) {
+    
+    .banner-left, .banner-right{
+        height:500px !important;
+    }
+}
+
+/* Slider */
+.slider {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+
+.carousel-item img {
+    max-width: 100%; /* Full width of the parent */
+    height: auto; /* Retains original proportions */
+    object-fit: contain; /* Ensures no cropping */
+    margin: 0% auto;
+}
+
+/* Lower Banner */
+.lower-banner {
+    justify-content: space-between;
+}
+
+.lower-banner img {
+    width: 320px;
+    height: 240px;
+}
+
+.lower-banner a {
+    text-decoration: none;
+    color: black;
+    margin: 5px 0;
+}
+
+.lower-banner button {
+    width: 140px;
+    height: 40px;
+
+    font-size: 19px;
+}
+
+/* footer exit */
+
+/* home page exit */
+
+/* about us */

@@ -1,0 +1,158 @@
+/* rtl-styles.css */
+
+html, body {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.rtl-text {
+text-align: start !important;
+}
+
+.box-body{
+    text-align: start !important;
+
+}
+
+.navbar #d-d {
+
+    flex-direction: column-reverse;
+    text-align:right;
+}
+
+
+#lang-switch-ul {
+left: 0 !important;
+right: auto !important;
+}
+
+/*.rtl h1,.rtl h2,.rtl h3,.rtl h4,.rtl h5,.rtl h6,.rtl p,*/
+ #add-cart {
+    position: absolute;
+    background: whitesmoke;
+    right: -170px;
+    top: 50px;
+     
+ }
+
+
+#lblCartCount {
+    font-size: 9px;
+    background: #007bff;
+    color: #E8E8ED;
+    padding: 1px 5px;
+    vertical-align: bottom;
+    margin-right: -27px;
+    position: absolute;
+}
+
+.badged {
+    margin-top: 12px !important;
+}
+
+@media (max-width: 991px){
+    #add-cart{
+    right: -105px !important;
+    }
+    
+ #lblCartCount {
+
+    margin-left: -20px;
+}
+}
+
+
+.stop-propagation .la-close{
+    color:#6c757d !important;
+}
+
+.box{
+    text-align:right;
+}
+
+.form-check-input {
+    margin-right: 0 !important;
+}
+
+
+
+.rtl .text  {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* Flip padding/margins */
+[class*="ml-"] {
+  margin-right: inherit !important;
+  margin-left: 0 !important;
+}
+
+[class*="mr-"] {
+  margin-left: inherit !important;
+  margin-right: 0 !important;
+}
+
+
+.dropdown-menu-right {
+    right: auto;
+    left: 0;
+}
+
+
+/* Flip float */
+.float-left {
+  float: right !important;
+}
+
+.float-right {
+  float: left !important;
+}
+
+/* Flip flexbox alignment */
+.flex-row {
+  flex-direction: row-reverse;
+}
+
+.text-left {
+  text-align: right !important;
+}
+
+.text-right {
+  text-align: left !important;
+}
+
+/* Forms and Inputs */
+input, textarea, select {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Navigation */
+.navbar {
+  flex-direction: row-reverse;
+}
+
+.navbar ul {
+  padding-right: 0;
+}
+
+/* Buttons */
+button {
+  text-align: right;
+}
+
+/* Utility: override LTR specific classes */
+.ltr {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+.banner-box .row,.banner-2 .row {
+    flex-direction: row-reverse !important;
+}

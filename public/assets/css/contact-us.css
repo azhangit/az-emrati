@@ -1,0 +1,52 @@
+
+input,
+textarea {
+  border: 1px solid #d1d1d1;
+  outline: 0;
+  border-radius: 8px;
+  padding: 10px 40px 10px 10px;
+  width: 100%;
+  /* max-width: 85%; */
+  margin: auto;
+}
+
+.img-left,
+.img-right {
+  position: absolute;
+  height: auto;
+  width: 100%;
+  max-width: 306px;
+  bottom: 0;
+}
+.img-left {
+  left: 0px;
+}
+.img-right {
+bottom:0;
+right:0;
+}
+
+/* Responsive kia hai yha prr */
+
+@media (min-width: 992px) {
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm {
+    max-width: 1150px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar li a {
+    font-size: 20px;
+  }
+  .img-left,
+  .img-right {
+    position: static;
+    width: 100%;
+  }
+  .image img {
+    max-width: 100%;
+  }
+}

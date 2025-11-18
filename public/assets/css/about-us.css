@@ -1,0 +1,250 @@
+
+
+body{
+    padding: 0;
+    margin: 0;
+ 
+}
+
+#about-us{
+    background:#EFEEF0;
+}
+
+
+.section-content{
+    max-width: 980px;
+    margin: 40px auto;
+}
+
+/* banner-1 exit */
+
+
+
+.banner-1 h2{
+font-size: 32px;
+    line-height: 1.125;
+    font-weight: 700;
+    letter-spacing: .004em;
+    margin-top: 52px !important;
+    margin-bottom: 24px;
+}
+
+.title-category{
+    font-size: 14px;
+    line-height: 1.2857742857;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #6e6e73;
+    margin-bottom: 12px;
+}
+
+.title-headline{
+        font-size: 32px;
+    line-height: 1.125;
+    font-weight: 700;
+    letter-spacing: .004em;
+    text-overflow: hidden;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+}
+
+
+.title-headline-2{
+font-size: 24px;
+    line-height: 1.1666666667;
+    font-weight: 700;
+    letter-spacing: .009em;
+
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+}
+
+/* banner-2 */
+
+.banner-top-para{
+    height: auto;
+    margin-top: 350px;
+    padding: 30px;
+}
+
+.banner-event-3{
+    border-radius:0 40px 40px 0;
+    padding: 24px;
+}
+
+
+
+
+ .banner-2 img{
+    /*background-image: url('{{ assets('/public/assets/img/home-page/IMG_4724.png')}}');*/
+
+    background-repeat: no-repeat; 
+  width:100%;
+ height:100%;
+    background-size: cover;
+    color: white;
+    margin-top: auto;
+justify-content: flex-end;
+display: flex; /* Enable Flexbox */
+     flex-direction: column; /* Stack children vertically */
+ background-position: center;
+ border-radius: 50px 0 0 50px;
+ }
+ 
+.banner-2{
+/*margin: 24px auto 50px;*/
+    /*height: auto;*/
+    max-width: 980px;
+ 
+} 
+
+.banner-2 p{
+
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 35.8px;
+}
+
+section{
+    background-color:#e0e0e0;
+}
+
+/* banner-2 exit */
+
+
+ .card-boxes{
+    height: auto;
+
+align-content: center;
+width: 100%;
+}
+.box-body h6{
+    font-weight: bold;
+    font-size: larger;
+   
+}
+
+.box-shadow .box-body{
+    padding: 20px;
+    
+}
+
+.box-body{
+    /*height:240px;*/
+    width: 100%;
+}
+
+.box-shadow{ 
+
+width:520px;
+border-radius: 50px;
+background: white;
+justify-content: center;
+margin-bottom:30px ;
+}
+.box-shadow, .box-text> p {
+    line-height: 17px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+
+.box-shadow img{
+    width:100%;
+    height:266px;
+    /*object-fit:cover;*/
+   
+    border-radius: 30px 30px 0 0;
+}
+
+.image img{
+    width: 365px;
+    height: 300px;
+    margin: 0% auto;
+    object-fit: fill;}
+
+    /*.slider{*/
+.slider-5 {
+    overflow: hidden; /* Hides anything outside the visible area */
+    width: 100%; /* Full width */
+  }
+
+  .reel-slider {
+    display: flex;
+    max-width: 65%;/* Extra width for smooth infinite scrolling */
+  min-height:200px;
+      
+      
+  }
+
+  .reel {
+    display: flex;
+    animation: reel-scroll 75s linear infinite; /* Continuous animation */
+    height: 380px;
+  }
+
+  .reel img {
+    width: 100%; /* Each image takes up full space */
+    flex-shrink: 0;
+        margin: 0 6px !important;
+
+  }
+  .slider-5:hover .reel-slider {
+    animation-play-state: paused;
+  }
+  @keyframes reel-scroll {
+    from {
+      transform: translateX(0); /* Start position */
+    }
+    to {
+      transform: translateX(-700%); /* Move by half the total width */
+    }
+  }
+  @media (max-width: 992px){
+       .title-headline {
+font-size: 21px;
+        line-height: 1.1904761905;
+        font-weight: 700;
+        letter-spacing: .011em;
+     height: 240px;
+    width: 100%;
+ }
+ 
+ .title-headline-2{
+     font-size: 21px;
+        line-height: 1.1904761905;
+        font-weight: 700;
+        letter-spacing: .011em;
+ }
+  }  
+  @media (max-width: 768px) {
+      
+        .reel img{
+            margin:0 3px !important;
+        }
+        
+        
+        
+ .banner-2 img{
+
+ border-radius: 40px 40px 0 0;
+ }
+ 
+ .banner-event-3 {
+    border-radius: 0 0 40px 40px;
+    padding: 20px;
+    
+}
+
+
+  }
+    
+
+.story-card{
+    height: 400px;
+}
+

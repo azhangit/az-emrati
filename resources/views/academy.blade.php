@@ -195,34 +195,60 @@
         
         /* --- Event Styling --- */
         .event {
-            padding: 0.4rem 0.6rem;
+            padding: 0.5rem 0.6rem;
             border-radius: 6px;
             color: var(--event-text);
             font-size: 0.75rem;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            white-space: normal;
             background: #9d4877;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            line-height: 1.3;
+        }
+        
+        .event:hover {
+            opacity: 0.9;
         }
 
         .event .event-name {
-            font-weight: 500;
+            font-weight: 600;
             display: block;
+            margin-bottom: 0.2rem;
         }
         
         .event .event-time {
-            font-size: 0.7rem;
-            opacity: 0.9;
+            font-size: 0.65rem;
+            opacity: 0.95;
+            display: block;
         }
         
-         .modal.show .modal-dialog{
+        .modal.show .modal-dialog{
             transform: translate(0%, 50%) !important;
         }
         
-        .event.sensory { background-color: var(--event-sensory); color: #333; }
-        .event.barista { background-color: var(--event-barista); }
-        .event.home-barista { background-color: var(--event-home-barista); }
-        .event.brewing { background-color: var(--event-brewing); }
+        /* Course type colors based on event type */
+        .event[data-type="Barista"] {
+            background: #a95596;
+            color: white;
+        }
+        
+        .event[data-type="Sensory"] {
+            background: #f7d154;
+            color: #333;
+        }
+        
+        .event[data-type="Brewing"] {
+            background: #00a2e8;
+            color: white;
+        }
+        
+        .event[data-type="Home Barista"] {
+            background: #8d4d4d;
+            color: white;
+        }
         
         /* --- Responsive Design --- */
         @media (max-width: 768px) {
@@ -285,7 +311,17 @@
         .radius{
         border-radius: 12px;
         }
+    
+    .institute-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    }
 
+    .institute-card-wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
     
 .owl-carousel {
@@ -418,36 +454,27 @@
     
     <!-- banner 1 -->
     
-    <div class="banner-1 text-center justify-content-center  my-3 py-3">
+    <div class="banner-1 text-center justify-content-center institute-section  my-3 py-3">
       <div class="row justify-content-center">
     
         <div class="banner-1-heading text-center py-3">
           <h3>{{ translate('Kindly Select your Academic Preference') }}</h3>
         <span>{{ translate('Coffee Academy is your Gateway to Coffee Education andCertification') }}</span>
         </div>
-    
-        <div class="card" style="width: 10rem; margin:10px 10px  ;">
-          <img src="{{asset('public/assets/img/home-page/logo _dark_blue.jpg')}}" style=" padding-top: 32px ; " class="card-img-top" alt="...">
+        <div class="institute-card-wrapper">
+
+        @foreach($institutes as $institute)
+        <a href="{{ route('courses.by-institute', $institute->id) }}" style="text-decoration: none; color: inherit;">
+        <div class="card institute-card" style="display: flex; justify-content: center; align-items: center; width: 10rem; margin:10px 10px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
+          <img src="{{ uploaded_asset($institute->image) }}"  class="card-img-top" alt="{{ $institute->name }}" onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
           <div class="card-body align-content-center">
-            <p class="card-text">{{ translate('CSP logo') }}</p>
+            <p class="card-text">{{ $institute->name }}</p>
           </div>
         </div>
-    
-        <div class="card" style="width: 10rem; margin:  10px 10px  ;">
-          <img src="{{asset('public/assets/img/home-page/f-logo-1.png')}}" class="card-img-top" alt="..." style="width: 80px; padding-top: 32px ; margin: 0 auto;">
-          <div class="card-body">
-            <p class="card-text mt-3">{{ translate('Emirati Coffee logo ') }}</p>
-          </div>
+        </a>
+        @endforeach
         </div>
-    
-    
-        <div class="card" style="width: 10rem; margin:10px 10px  ;">
-          <img src="{{asset('public/assets/img/home-page/gramophone.png')}}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <p class="card-text">{{ translate('Partners  Access') }}</p>
-          </div>
-        </div>
-    
+
       </div>
     </div>
     <!-- banner-1 exit -->
@@ -520,31 +547,51 @@
       </div>
       <div class="modal-body">
         <ul class="list-unstyled">
-          <li><strong>{{ translate('Name') }}:</strong> <span id="modalEventName"></span></li>
-          <li><strong>{{ translate('Event Type') }}:</strong> <span id="modalEventType"></span></li>
-          <li><strong>{{ translate('Trainer') }}:</strong> <span id="modalEventTrainer"></span></li>
+          <li><strong>{{ translate('Course') }}:</strong> <span id="modalEventName"></span></li>
+          <li><strong>{{ translate('Course Type') }}:</strong> <span id="modalEventType"></span></li>
+          <li><strong>{{ translate('Level') }}:</strong> <span id="modalEventLevel"></span></li>
           <li><strong>{{ translate('Location') }}:</strong> <span id="modalEventLocation"></span></li>
           <li><strong>{{ translate('Date') }}:</strong> <span id="modalEventDate"></span></li>
           <li><strong>{{ translate('Time') }}:</strong> <span id="modalEventTime"></span></li>
         </ul>
+        <div class="mt-3">
+          <a href="#" id="modalBookLink" class="btn btn-primary" style="display:none;">{{ translate('Book Now') }}</a>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 @php
-$calendarEvents = $events->map(function($e){
-    $start = \Carbon\Carbon::parse($e->start_time)->format('h:i A');
-    $end = \Carbon\Carbon::parse($e->end_time)->format('h:i A');
+// Map course schedules to calendar events
+$calendarEvents = $courseSchedules->map(function($schedule){
+    $start = \Carbon\Carbon::parse($schedule->start_time)->format('h:i A');
+    $end = \Carbon\Carbon::parse($schedule->end_time)->format('h:i A');
+    $course = $schedule->course;
+    
+    // Determine event type from course module
+    $eventType = 'Other';
+    if (stripos($course->course_module, 'Barista') !== false) {
+        $eventType = 'Barista';
+    } elseif (stripos($course->course_module, 'Sensory') !== false) {
+        $eventType = 'Sensory';
+    } elseif (stripos($course->course_module, 'Brewing') !== false) {
+        $eventType = 'Brewing';
+    } elseif (stripos($course->course_module, 'Home Barista') !== false) {
+        $eventType = 'Home Barista';
+    }
+    
     return [
-        'date'       => $e->date,
-        'name'       => $e->name,
-        'event_type' => $e->event_type,
-        'trainer'    => $e->trainer,
-        'location'   => $e->location ? $e->location->name : '-', // Yeh ab ID nahi, NAME show karega!
-        'time'       => $start . ' - ' . $end,
+        'date'       => $schedule->date->format('Y-m-d'),
+        'name'       => $course->course_module . ' (' . substr($schedule->course_level, 0, 4) . '...)',
+        'event_type' => $eventType,
+        'course_level' => $schedule->course_level,
+        'location'   => $course->institute ? $course->institute->name : '-',
+        'time'       => $start . ' - ' . $end . ' UTC+5',
+        'course_id'  => $course->id,
+        'schedule_id' => $schedule->id,
     ];
-});
+})->toArray();
 @endphp
 
 
@@ -655,22 +702,44 @@ $calendarEvents = $events->map(function($e){
 
             dayEvents.forEach(event => {
                 const eventEl = document.createElement('div');
-                eventEl.classList.add('event', 'p-2', 'mb-1', 'border', 'radius');
+                eventEl.classList.add('event');
+                eventEl.setAttribute('data-type', event.event_type || 'Other');
+                
+                // Format course name - show module and level
+                const courseName = limitChars(event.name, 20);
+                
                 eventEl.innerHTML = `
-                    <span class="event-name fw-bolder">${limitChars(event.name, 15)}</span>
-                    <span class="event-location fw-bold text-white small">${limitChars(event.location, 15)}</span><br>
+                    <span class="event-name">${courseName}</span>
+                    <span class="event-time">${event.time || ''}</span>
                 `;
-                // Modal logic
+                
+                // Click to redirect to booking page or show modal
                 eventEl.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    document.getElementById('modalEventName').innerText = event.name || '-';
-                    document.getElementById('modalEventType').innerText = event.event_type || '-';
-                    document.getElementById('modalEventTrainer').innerText = event.trainer || '-';
-                    document.getElementById('modalEventLocation').innerText = event.location || '-';
-                    document.getElementById('modalEventDate').innerText = event.date || '-';
-                    document.getElementById('modalEventTime').innerText = event.time || '-';
-                    var modal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
-                    modal.show();
+                    if (event.course_id) {
+                        // Redirect directly to booking page
+                        window.location.href = '/course/' + event.course_id + '/booking';
+                    } else {
+                        // Fallback to modal for old events
+                        document.getElementById('modalEventName').innerText = event.name || '-';
+                        document.getElementById('modalEventType').innerText = event.event_type || '-';
+                        const levelEl = document.getElementById('modalEventLevel');
+                        if (levelEl) {
+                            levelEl.innerText = event.course_level || event.trainer || '-';
+                        }
+                        document.getElementById('modalEventLocation').innerText = event.location || '-';
+                        document.getElementById('modalEventDate').innerText = event.date || '-';
+                        document.getElementById('modalEventTime').innerText = event.time || '-';
+                        const bookLink = document.getElementById('modalBookLink');
+                        if (bookLink && event.course_id) {
+                            bookLink.href = '/course/' + event.course_id + '/booking';
+                            bookLink.style.display = 'inline-block';
+                        } else {
+                            if (bookLink) bookLink.style.display = 'none';
+                        }
+                        var modal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
+                        modal.show();
+                    }
                 });
 
                 cell.appendChild(eventEl);

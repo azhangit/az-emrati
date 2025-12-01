@@ -288,6 +288,60 @@
                         </ul>
                     </li>
                
+                <!-- Institutes -->
+                <li class="aiz-side-nav-item">
+                    <a href="#" class="aiz-side-nav-link">
+                        <div class="aiz-side-nav-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <path d="M8 0L0 4v8l8 4 8-4V4L8 0zm0 2.18l6 3v5.64l-6 3-6-3V5.18l6-3z" fill="#575b6a"/>
+                                <path d="M8 8.5l-4-2v4l4 2 4-2v-4l-4 2z" fill="#575b6a"/>
+                            </svg>
+                        </div>
+                        <span class="aiz-side-nav-text">{{translate('Institutes')}}</span>
+                        <span class="aiz-side-nav-arrow"></span>
+                    </a>
+                    <!--Submenu-->
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a href="{{route('institutes.index')}}" class="aiz-side-nav-link {{ request()->routeIs('institutes.index') ? 'active' : '' }}">
+                                <span class="aiz-side-nav-text">{{translate('All Institutes')}}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{route('institutes.create')}}" class="aiz-side-nav-link {{ request()->routeIs('institutes.create') ? 'active' : '' }}">
+                                <span class="aiz-side-nav-text">{{translate('Create Institute')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+               
+                <!-- Courses -->
+                <li class="aiz-side-nav-item">
+                    <a href="#" class="aiz-side-nav-link">
+                        <div class="aiz-side-nav-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <path d="M8 0L0 4v8l8 4 8-4V4L8 0zm0 2.18l6 3v5.64l-6 3-6-3V5.18l6-3z" fill="#575b6a"/>
+                                <path d="M8 8.5l-4-2v4l4 2 4-2v-4l-4 2z" fill="#575b6a"/>
+                            </svg>
+                        </div>
+                        <span class="aiz-side-nav-text">{{translate('Courses')}}</span>
+                        <span class="aiz-side-nav-arrow"></span>
+                    </a>
+                    <!--Submenu-->
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a href="{{route('courses.index')}}" class="aiz-side-nav-link {{ request()->routeIs('courses.index') ? 'active' : '' }}">
+                                <span class="aiz-side-nav-text">{{translate('All Courses')}}</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{route('courses.create')}}" class="aiz-side-nav-link {{ request()->routeIs('courses.create') ? 'active' : '' }}">
+                                <span class="aiz-side-nav-text">{{translate('Create Course')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+               
 <!--  <li class="aiz-side-nav-item">-->
 <!--                        <a href="#" class="aiz-side-nav-link">-->
 <!--                            <div class="aiz-side-nav-icon">-->

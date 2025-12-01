@@ -20,8 +20,13 @@ class InstagramFeedController extends Controller
         $userId = config('services.instagram.user_id');
 
         if (empty($accessToken) || empty($userId)) {
+            \Log::warning('Instagram feed: Missing credentials', [
+                'has_access_token' => !empty($accessToken),
+                'has_user_id' => !empty($userId)
+            ]);
+            
             return response()->json([
-                'error' => 'Instagram credentials are missing.',
+                'error' => 'Instagram credentials are missing. Please configure INSTAGRAM_ACCESS_TOKEN and INSTAGRAM_USER_ID in your .env file.',
             ], 500);
         }
 
@@ -102,9 +107,15 @@ class InstagramFeedController extends Controller
         });
         } catch (Throwable $e) {
             Cache::forget($cacheKey);
+            
+            // Log the error for debugging
+            \Log::error('Instagram feed error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
+            ]);
 
             return response()->json([
-                'error' => $e->getMessage() ?: 'Instagram feed request failed.',
+                'error' => config('app.debug') ? $e->getMessage() : 'Instagram feed request failed.',
                 'data' => [],
             ], 502);
         }

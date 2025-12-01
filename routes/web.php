@@ -79,6 +79,99 @@ Route::get('/ajax/search-products', [\App\Http\Controllers\Frontend\AjaxSearchCo
      
 Route::get('/instagram/feed', InstagramFeedController::class)
     ->name('instagram.feed');
+    use Illuminate\Support\Facades\Http;
+
+
+    Route::get('/instagram/debug-once', function () {
+        // 🔴 STEP 1: yahan GRAPH API EXPLORER se direct token paste karo
+        $token = 'EAAJ9m4jXiJUBQOZA7wwWQxDxYd04WfXCS7GvpgoLrzE0BwSQEQR6cLZAegVssTUwDVk3NMghYLARNtEyEVt6M5t8CA14EUR2EbTzz43ZB7ZAghLQZBKHNHS8KTG3p2IMrZCCP3PTMZComytFVQRZCrGr5nNZCEwvqSKzbEF6gDqePpwLPyuX0lM2ncGsWEGzeMAk7g13KyK05v98gOiZCZBFjBNzP3vibHFczHzPZAKut63ZCKSOQancU1w5ZCNapdcnV3klMmyiKf26KW3ZBRjrfm9EdZAne2zZCSReZCoQDVLAZDZD'; // poora token, ek line me
+    
+        $info = [
+            'token_len'   => strlen($token),
+            'token_start' => substr($token, 0, 12),
+            'token_end'   => substr($token, -8),
+        ];
+    
+        $meAccounts = Http::get('https://graph.facebook.com/v24.0/me/accounts', [
+            'access_token' => $token,
+        ])->json();
+    
+        $info['me_accounts_raw'] = $meAccounts;
+    
+        return $info;
+    });
+    
+    
+// Route::get('/instagram/debug-once', function () {
+//     $token = env('INSTAGRAM_ACCESS_TOKEN');
+
+//     if (!$token) {
+//         return response()->json(['error' => 'INSTAGRAM_ACCESS_TOKEN missing in .env'], 500);
+//     }
+
+//     // 1) Get all pages for this user
+//     $pages = Http::get('https://graph.facebook.com/v24.0/me/accounts', [
+//         'access_token' => $token,
+//     ])->json();
+
+//     if (isset($pages['error'])) {
+//         return response()->json([
+//             'step'  => 'me/accounts',
+//             'error' => $pages['error'],
+//         ], 500);
+//     }
+
+//     if (empty($pages['data'])) {
+//         return response()->json(['error' => 'No pages found for this token'], 404);
+//     }
+
+//     // Try to pick a page that looks like Emirati
+//     $page = collect($pages['data'])
+//         ->first(fn ($p) => isset($p['name']) && stripos($p['name'], 'emirati') !== false)
+//         ?? $pages['data'][0];
+
+//     $pageId = $page['id'] ?? null;
+
+//     if (!$pageId) {
+//         return response()->json(['error' => 'Page id not found'], 500);
+//     }
+
+//     // 2) Get instagram_business_account from that page
+//     $ig = Http::get("https://graph.facebook.com/v24.0/{$pageId}", [
+//         'fields'       => 'instagram_business_account',
+//         'access_token' => $token,
+//     ])->json();
+
+//     if (isset($ig['error'])) {
+//         return response()->json([
+//             'step'  => 'page -> instagram_business_account',
+//             'error' => $ig['error'],
+//         ], 500);
+//     }
+
+//     $igUserId = $ig['instagram_business_account']['id'] ?? null;
+
+//     if (!$igUserId) {
+//         return response()->json([
+//             'error' => 'No instagram_business_account connected to this page',
+//             'page'  => $page,
+//         ], 404);
+//     }
+
+//     // 3) Test media
+//     $media = Http::get("https://graph.facebook.com/v24.0/{$igUserId}/media", [
+//         'fields'       => 'id,caption,media_type,media_url,permalink,timestamp',
+//         'access_token' => $token,
+//         'limit'        => 5,
+//     ])->json();
+
+//     return [
+//         'page'       => $page,
+//         'ig_user_id' => $igUserId,
+//         'media'      => $media,
+//     ];
+// });
+
   Route::get('/ajax/search-products', function (\Illuminate\Http\Request $r) {
     try {
         $q = trim((string)$r->query('q',''));
@@ -296,6 +389,8 @@ Route::get('/subscription/get-product-sizes/{id}', [SubscriptionController::clas
         });
 
        Route::get('/academy', [EventController::class, 'academy'])->name('academy');
+       Route::get('/institute/{id}/courses', [EventController::class, 'showCoursesByInstitute'])->name('courses.by-institute');
+       Route::get('/course/{id}/booking', [EventController::class, 'showBooking'])->name('course.booking');
         // Route::get('/subscription', function () {
         //     return view('subscription');
         // });

@@ -49,6 +49,8 @@ use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ZoneController;
+use App\Http\Controllers\InstituteController;
+use App\Http\Controllers\CourseController;
 
 /*
   |--------------------------------------------------------------------------
@@ -74,6 +76,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     //EVENTS
     Route::resource('events', \App\Http\Controllers\EventController::class);
     Route::resource('locations', LocationController::class);
+    //INSTITUTES
+    Route::resource('institutes', InstituteController::class);
+    Route::controller(InstituteController::class)->group(function () {
+        Route::get('/institutes/edit/{id}', 'edit')->name('institutes.edit');
+        Route::get('/institutes/destroy/{id}', 'destroy')->name('institutes.destroy');
+    });
+    //COURSES
+    Route::resource('courses', CourseController::class);
+    Route::controller(CourseController::class)->group(function () {
+        Route::get('/courses/edit/{id}', 'edit')->name('courses.edit');
+        Route::get('/courses/destroy/{id}', 'destroy')->name('courses.destroy');
+    });
     // category
     Route::resource('categories', CategoryController::class);
     Route::controller(CategoryController::class)->group(function () {

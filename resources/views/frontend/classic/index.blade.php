@@ -1394,62 +1394,117 @@ color: white;
     margin-top:0 !important;
 }
 
-.instagram-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+.instagram-carousel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 10px 0;
+}
+
+.instagram-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: instagram-scroll 60s linear infinite;
     gap: 16px;
+}
+
+.instagram-carousel:hover .instagram-marquee-track {
+    animation-play-state: paused;
 }
 
 .instagram-card {
     position: relative;
-    border-radius: 16px;
     overflow: hidden;
     background: #f7f7f7;
-    min-height: 220px;
+    height: 240px;
+    width: 420px;
+    flex-shrink: 0;
+    cursor: pointer;
 }
 
 .instagram-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s ease;
+    display: block;
 }
 
 .instagram-card:hover img {
-    transform: scale(1.05);
+    transform: scale(1.08);
+}
+
+.instagram-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.85) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.instagram-card:hover::before {
+    opacity: 1;
 }
 
 .instagram-card__meta {
     position: absolute;
-    inset: auto 0 0 0;
-    padding: 14px 16px;
-    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.35) 70%, rgba(0,0,0,0) 100%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 18px;
     color: #fff;
     opacity: 0;
-    transition: opacity 0.35s ease;
-    font-size: 0.85rem;
-    line-height: 1.4;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    z-index: 2;
+    pointer-events: none;
 }
 
 .instagram-card:hover .instagram-card__meta {
     opacity: 1;
+    transform: translateY(0);
+}
+
+.instagram-card__meta > div {
+    max-height: 3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-bottom: 8px;
+    font-weight: 500;
 }
 
 .instagram-card__icon {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 36px;
-    height: 36px;
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(0,0,0,0.55);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
     color: #fff;
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.05em;
+    z-index: 3;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.instagram-card:hover .instagram-card__icon {
+    background: rgba(0,0,0,0.85);
+    transform: scale(1.1);
 }
 
 .instagram-card__time {
@@ -1464,17 +1519,161 @@ color: white;
     border-radius: 12px;
 }
 
+/* Instagram Modal Styles */
+.instagram-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    backdrop-filter: blur(10px);
+    overflow: auto;
+    animation: fadeIn 0.3s ease;
+}
+
+.instagram-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.instagram-modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+    margin: auto;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.instagram-modal-content img,
+.instagram-modal-content video {
+    max-width: 100%;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.instagram-modal-content video {
+    display: block;
+}
+
+.instagram-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: #fff;
+    font-size: 40px;
+    font-weight: 300;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.2s ease;
+    z-index: 10000;
+}
+
+.instagram-modal-close:hover {
+    transform: scale(1.2);
+}
+
+.instagram-modal-info {
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    right: 0;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    background: rgba(0,0,0,0.7);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.instagram-modal-info .caption {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.instagram-modal-info .timestamp {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .instagram-modal-content {
+        max-width: 95%;
+    }
+    
+    .instagram-modal-close {
+        top: -35px;
+        font-size: 35px;
+    }
+    
+    .instagram-modal-info {
+        bottom: -50px;
+        padding: 12px;
+    }
+}
+
+@keyframes instagram-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
 @media only screen and (max-width: 767px){
    .owl-nav button {
       opacity:1;
       width:40px;
-   }     
+   }
+   
+   .instagram-marquee-track {
+       gap: 12px;
+   }
 }      
 
+@media only screen and (max-width: 768px){
+    .instagram-card {
+        height: 200px;
+        width: 320px;
+    }
+    
+    .instagram-card__meta {
+        padding: 16px 14px;
+        font-size: 0.85rem;
+    }
+}
+
 @media only screen and (max-width: 576px){
-    .instagram-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 12px;
+    .instagram-card {
+        height: 180px;
+        width: 280px;
+    }
+    
+    .instagram-marquee-track {
+        gap: 8px;
+    }
+    
+    .instagram-card__meta {
+        padding: 12px 12px;
+        font-size: 0.8rem;
     }
 }
 
@@ -1483,10 +1682,10 @@ color: white;
 
 
 
-    <div class="instagram-feed lower-banner pt-5 d-none">
+    <div class="instagram-feed lower-banner pt-5 ">
         <!-- Elfsight Instagram Feed | Untitled Instagram Feed -->
-<script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-c48d81a6-e9b1-428c-97c4-d546375074dd" data-elfsight-app-lazy></div>
+<!-- <script src="https://elfsightcdn.com/platform.js" async></script>
+<div class="elfsight-app-c48d81a6-e9b1-428c-97c4-d546375074dd" data-elfsight-app-lazy></div> -->
 
         <div class="container-fluid">
             <div class="row">
@@ -1500,8 +1699,25 @@ color: white;
                 </div>
                 <div class="col-12">
                     <div id="instagram-feed-status" class="instagram-status text-center text-muted small py-4 d-none"></div>
-                    <div id="instagram-feed-grid" class="instagram-grid"></div>
+                    <div id="instagram-feed-carousel" class="instagram-carousel">
+                        <div id="instagram-marquee-track" class="instagram-marquee-track"></div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Instagram Modal -->
+    <div id="instagram-modal" class="instagram-modal">
+        <span class="instagram-modal-close">&times;</span>
+        <div class="instagram-modal-content">
+            <!-- Content will be inserted here -->
+        </div>
+        <div class="instagram-modal-info">
+            <div class="caption"></div>
+            <div class="timestamp"></div>
+        </div>
+    </div>
             </div>
         </div>
     </div>
@@ -1631,10 +1847,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Global formatDate function
+function formatDate(isoString) {
+    try {
+        const date = new Date(isoString);
+        return date.toLocaleDateString(undefined, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        });
+    } catch (e) {
+        return '';
+    }
+}
+
 (function () {
-    const gridEl = document.getElementById('instagram-feed-grid');
+    const carouselEl = document.getElementById('instagram-feed-carousel');
     const statusEl = document.getElementById('instagram-feed-status');
-    if (!gridEl) {
+    if (!carouselEl) {
+        return;
+    }
+    
+    const trackEl = document.getElementById('instagram-marquee-track');
+    if (!trackEl) {
         return;
     }
 
@@ -1659,30 +1894,27 @@ document.addEventListener('DOMContentLoaded', function () {
         return 'PIC';
     };
 
-    const formatDate = (isoString) => {
-        try {
-            const date = new Date(isoString);
-            return date.toLocaleDateString(undefined, {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-            });
-        } catch (e) {
-            return '';
-        }
-    };
-
     setStatus('{{ translate('Loading Instagram feed...') }}');
 
     fetch(endpoint, {
         credentials: 'same-origin',
         headers: {
             'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
         },
     })
         .then(async (response) => {
-            const payload = await response.json().catch(() => ({}));
-            if (!response.ok || payload.error) {
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Instagram feed HTTP error:', response.status, errorText);
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
+            const payload = await response.json().catch((e) => {
+                console.error('Instagram feed JSON parse error:', e);
+                return { error: 'Invalid response from server' };
+            });
+            if (payload.error) {
+                console.error('Instagram feed API error:', payload.error);
                 throw new Error(payload.error || 'Failed to load Instagram feed');
             }
             return payload.data || [];
@@ -1695,17 +1927,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const fragment = document.createDocumentFragment();
-
+            // Create cards (no duplication - each item appears once)
             items.forEach((item) => {
-                const card = document.createElement('a');
-                card.href = item.permalink;
-                card.target = '_blank';
-                card.rel = 'noopener';
+                const card = document.createElement('div');
                 card.className = 'instagram-card d-block';
+                card.setAttribute('data-media-type', item.media_type);
+                card.setAttribute('data-media-url', item.media_url);
+                card.setAttribute('data-thumbnail-url', item.thumbnail_url || '');
+                card.setAttribute('data-caption', item.caption || '');
+                card.setAttribute('data-timestamp', item.timestamp || '');
+                card.setAttribute('data-permalink', item.permalink || '');
 
                 const img = document.createElement('img');
-                img.src = item.media_url;
+                // Use thumbnail_url for videos, media_url for images
+                img.src = (item.media_type === 'VIDEO' && item.thumbnail_url) ? item.thumbnail_url : item.media_url;
                 img.alt = item.caption || 'Instagram post';
                 img.loading = 'lazy';
                 card.appendChild(img);
@@ -1723,17 +1958,118 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
                 card.appendChild(meta);
 
-                fragment.appendChild(card);
-            });
+                // Store item data in card for later use
+                card._itemData = item;
 
-            gridEl.innerHTML = '';
-            gridEl.appendChild(fragment);
+                trackEl.appendChild(card);
+            });
+            
+            // Use event delegation for click handling (works with duplicated cards)
+            trackEl.addEventListener('click', function(e) {
+                const card = e.target.closest('.instagram-card');
+                if (card) {
+                    e.preventDefault();
+                    // Get item data from data attributes
+                    const itemData = {
+                        media_type: card.getAttribute('data-media-type'),
+                        media_url: card.getAttribute('data-media-url'),
+                        thumbnail_url: card.getAttribute('data-thumbnail-url'),
+                        caption: card.getAttribute('data-caption'),
+                        timestamp: card.getAttribute('data-timestamp'),
+                        permalink: card.getAttribute('data-permalink')
+                    };
+                    openInstagramModal(itemData);
+                }
+            });
+            
+            // Duplicate all cards for seamless marquee loop
+            const cards = Array.from(trackEl.children);
+            cards.forEach(card => {
+                const clonedCard = card.cloneNode(true);
+                trackEl.appendChild(clonedCard);
+            });
         })
         .catch((error) => {
             console.error('Instagram feed error:', error);
             setStatus('{{ translate('Unable to load Instagram feed right now. Please try again later.') }}', 'error');
         });
 })();
+
+// Instagram Modal Functions
+function openInstagramModal(item) {
+    const modal = document.getElementById('instagram-modal');
+    const modalContent = modal.querySelector('.instagram-modal-content');
+    const modalInfo = modal.querySelector('.instagram-modal-info');
+    const captionEl = modalInfo.querySelector('.caption');
+    const timestampEl = modalInfo.querySelector('.timestamp');
+    
+    // Clear previous content
+    modalContent.innerHTML = '';
+    
+    // Create media element
+    if (item.media_type === 'VIDEO' && item.media_url) {
+        const video = document.createElement('video');
+        video.src = item.media_url;
+        video.controls = true;
+        video.autoplay = true;
+        video.style.width = '100%';
+        video.style.height = 'auto';
+        modalContent.appendChild(video);
+    } else {
+        const img = document.createElement('img');
+        img.src = item.media_url;
+        img.alt = item.caption || 'Instagram post';
+        modalContent.appendChild(img);
+    }
+    
+    // Set caption and timestamp
+    captionEl.textContent = item.caption || '';
+    timestampEl.textContent = formatDate(item.timestamp);
+    
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeInstagramModal() {
+    const modal = document.getElementById('instagram-modal');
+    const modalContent = modal.querySelector('.instagram-modal-content');
+    
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    
+    // Stop video if playing
+    const video = modalContent.querySelector('video');
+    if (video) {
+        video.pause();
+        video.src = '';
+    }
+}
+
+// Close modal on close button click
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('instagram-modal');
+    if (modal) {
+        const closeBtn = modal.querySelector('.instagram-modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeInstagramModal);
+        }
+        
+        // Close modal on background click
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeInstagramModal();
+            }
+        });
+        
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeInstagramModal();
+            }
+        });
+    }
+});
 </script>
 
 

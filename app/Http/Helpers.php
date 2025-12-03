@@ -344,14 +344,24 @@ if (!function_exists('cart_product_price')) {
 if (!function_exists('cart_product_tax')) {
     function cart_product_tax($cart_product, $product, $formatted = true)
     {
-        $str = '';
+        // Return 0 if product is null
+        if (!$product) {
+            return $formatted ? format_price(0) : 0;
+        }
 
-        if ($cart_product['variation'] != null) {
-            $str = $cart_product['variation'];
+        $str = '';
+        
+        // Handle both array and object access
+        $variation = is_object($cart_product) ? ($cart_product->variation ?? null) : ($cart_product['variation'] ?? null);
+        if ($variation != null) {
+            $str = $variation;
         }
 
         // Try to fetch stock
-        $product_stock = $product->stocks->where('variant', $str)->first();
+        $product_stock = null;
+        if ($product->stocks) {
+            $product_stock = $product->stocks->where('variant', $str)->first();
+        }
 
         // ✅ Fallback agar stock null ho
         if ($product_stock) {
@@ -362,11 +372,13 @@ if (!function_exists('cart_product_tax')) {
 
         // Ab yahan tax calculate karo
         $tax = 0;
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } else {
-                $tax += $product_tax->tax;
+        if ($product->taxes) {
+            foreach ($product->taxes as $product_tax) {
+                if ($product_tax->tax_type == 'percent') {
+                    $tax += ($price * $product_tax->tax) / 100;
+                } else {
+                    $tax += $product_tax->tax;
+                }
             }
         }
 
@@ -864,21 +876,38 @@ function getShippingCost($carts, $index, $carrier = '')
     $seller_product_total_price = array();
 
     $cartItem = $carts[$index];
-    $product = Product::find($cartItem['product_id']);
+    $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+    if (!$productId) {
+        return 0;
+    }
+    $product = Product::find($productId);
+    if (!$product) {
+        return 0;
+    }
 
     if ($product->digital == 1) {
         return 0;
     }
 
     foreach ($carts as $key => $cart_item) {
-        $item_product = Product::find($cart_item['product_id']);
+        $itemProductId = is_object($cart_item) ? $cart_item->product_id : ($cart_item['product_id'] ?? null);
+        if (!$itemProductId) {
+            continue;
+        }
+        $item_product = Product::find($itemProductId);
+        if (!$item_product) {
+            continue;
+        }
+        
+        $itemQuantity = is_object($cart_item) ? $cart_item->quantity : ($cart_item['quantity'] ?? 1);
+        
         if ($item_product->added_by == 'admin') {
-            array_push($admin_products, $cart_item['product_id']);
+            array_push($admin_products, $itemProductId);
 
             // For carrier wise shipping
             if ($shipping_type == 'carrier_wise_shipping') {
-                $admin_product_total_weight += ($item_product->weight * $cart_item['quantity']);
-                $admin_product_total_price += (cart_product_price($cart_item, $item_product, false, false) * $cart_item['quantity']);
+                $admin_product_total_weight += ($item_product->weight * $itemQuantity);
+                $admin_product_total_price += (cart_product_price($cart_item, $item_product, false, false) * $itemQuantity);
             }
         } else {
             $product_ids = array();
@@ -894,38 +923,55 @@ function getShippingCost($carts, $index, $carrier = '')
                 }
             }
 
-            array_push($product_ids, $cart_item['product_id']);
+            array_push($product_ids, $itemProductId);
             $seller_products[$item_product->user_id] = $product_ids;
 
             // For carrier wise shipping
             if ($shipping_type == 'carrier_wise_shipping') {
-                $weight += ($item_product->weight * $cart_item['quantity']);
+                $weight += ($item_product->weight * $itemQuantity);
                 $seller_product_total_weight[$item_product->user_id] = $weight;
 
-                $price += (cart_product_price($cart_item, $item_product, false, false) * $cart_item['quantity']);
+                $price += (cart_product_price($cart_item, $item_product, false, false) * $itemQuantity);
                 $seller_product_total_price[$item_product->user_id] = $price;
             }
         }
     }
 
     if ($shipping_type == 'flat_rate') {
-        return get_setting('flat_rate_shipping_cost') / count($carts);
+        return get_setting('flat_rate_shipping_cost') / max(1, count($carts));
     } elseif ($shipping_type == 'seller_wise_shipping') {
+        if (!$product) {
+            return 0;
+        }
         if ($product->added_by == 'admin') {
-            return get_setting('shipping_cost_admin') / count($admin_products);
+            return get_setting('shipping_cost_admin') / max(1, count($admin_products));
         } else {
-            return Shop::where('user_id', $product->user_id)->first()->shipping_cost / count($seller_products[$product->user_id]);
+            $shop = Shop::where('user_id', $product->user_id)->first();
+            if (!$shop || !isset($seller_products[$product->user_id])) {
+                return 0;
+            }
+            return $shop->shipping_cost / max(1, count($seller_products[$product->user_id]));
         }
     } elseif ($shipping_type == 'area_wise_shipping') {
+        if (!$product) {
+            return 0;
+        }
+        
+        $firstCart = $carts[0] ?? null;
+        if (!$firstCart) {
+            return 0;
+        }
 
     if (Auth::check()) {
         // 🟢 Logged-in user ka flow
-        $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
+        $addressId = is_object($firstCart) ? $firstCart->address_id : ($firstCart['address_id'] ?? null);
+        $shipping_info = $addressId ? Address::where('id', $addressId)->first() : null;
         $city_id = $shipping_info ? $shipping_info->city_id : null;
     } else {
         // 🔵 Guest user ka flow (shipping_address JSON se city_id uthana)
-        $guest_shipping = json_decode($carts[0]['shipping_address'] ?? '{}');
-        $city_id = $guest_shipping->city_id ?? null;
+        $shippingAddress = is_object($firstCart) ? $firstCart->shipping_address : ($firstCart['shipping_address'] ?? null);
+        $guest_shipping = $shippingAddress ? json_decode($shippingAddress, true) : [];
+        $city_id = $guest_shipping['city_id'] ?? null;
     }
 
     $city = $city_id ? City::where('id', $city_id)->first() : null;
@@ -934,32 +980,70 @@ function getShippingCost($carts, $index, $carrier = '')
         if ($product->added_by == 'admin') {
             return $city->cost / max(1, count($admin_products)); // divide by 0 se bachne ke liye max(1,…)
         } else {
+            if (!isset($seller_products[$product->user_id])) {
+                return 0;
+            }
             return $city->cost / max(1, count($seller_products[$product->user_id]));
         }
     }
 
     return 0; // fallback agar city na mile
 }
- elseif ($shipping_type == 'carrier_wise_shipping') { // carrier wise shipping
-        $user_zone = Address::where('id', $carts[0]['address_id'])->first()->country->zone_id;
+elseif ($shipping_type == 'carrier_wise_shipping') { // carrier wise shipping
+        if (!$product) {
+            return 0;
+        }
+        
+        $firstCart = $carts[0] ?? null;
+        if (!$firstCart) {
+            return 0;
+        }
+        
+        $addressId = is_object($firstCart) ? $firstCart->address_id : ($firstCart['address_id'] ?? null);
+        if (!$addressId) {
+            return 0;
+        }
+        
+        $address = Address::where('id', $addressId)->first();
+        if (!$address || !$address->country) {
+            return 0;
+        }
+        
+        $user_zone = $address->country->zone_id;
         if ($carrier == null || $user_zone == 0) {
             return 0;
         }
 
         $carrier = Carrier::find($carrier);
-        if ($carrier->carrier_ranges->first()) {
-            $carrier_billing_type   = $carrier->carrier_ranges->first()->billing_type;
-            if ($product->added_by == 'admin') {
-                $itemsWeightOrPrice = $carrier_billing_type == 'weight_based' ? $admin_product_total_weight : $admin_product_total_price;
-            } else {
-                $itemsWeightOrPrice = $carrier_billing_type == 'weight_based' ? $seller_product_total_weight[$product->user_id] : $seller_product_total_price[$product->user_id];
+        if (!$carrier || !$carrier->carrier_ranges->first()) {
+            return 0;
+        }
+        
+        $carrier_billing_type = $carrier->carrier_ranges->first()->billing_type;
+        if ($product->added_by == 'admin') {
+            $itemsWeightOrPrice = $carrier_billing_type == 'weight_based' ? $admin_product_total_weight : $admin_product_total_price;
+        } else {
+            if (!isset($seller_product_total_weight[$product->user_id]) && !isset($seller_product_total_price[$product->user_id])) {
+                return 0;
             }
+            $itemsWeightOrPrice = $carrier_billing_type == 'weight_based' ? ($seller_product_total_weight[$product->user_id] ?? 0) : ($seller_product_total_price[$product->user_id] ?? 0);
         }
 
         foreach ($carrier->carrier_ranges as $carrier_range) {
             if ($itemsWeightOrPrice >= $carrier_range->delimiter1 && $itemsWeightOrPrice < $carrier_range->delimiter2) {
-                $carrier_price = $carrier_range->carrier_range_prices->where('zone_id', $user_zone)->first()->price;
-                return $product->added_by == 'admin' ? ($carrier_price / count($admin_products)) : ($carrier_price / count($seller_products[$product->user_id]));
+                $carrier_range_price = $carrier_range->carrier_range_prices->where('zone_id', $user_zone)->first();
+                if (!$carrier_range_price) {
+                    continue;
+                }
+                $carrier_price = $carrier_range_price->price;
+                if ($product->added_by == 'admin') {
+                    return $carrier_price / max(1, count($admin_products));
+                } else {
+                    if (!isset($seller_products[$product->user_id])) {
+                        return 0;
+                    }
+                    return $carrier_price / max(1, count($seller_products[$product->user_id]));
+                }
             }
         }
         return 0;
@@ -1964,11 +2048,15 @@ if (!function_exists('get_user_cart')) {
     {
         $cart = [];
         if (auth()->user() != null) {
-            $cart = Cart::where('user_id', Auth::user()->id)->get();
+            $cart = Cart::where('user_id', Auth::user()->id)
+                ->with(['product', 'course', 'courseSchedule', 'course.institute'])
+                ->get();
         } else {
             $temp_user_id = Session()->get('temp_user_id');
             if ($temp_user_id) {
-                $cart = Cart::where('temp_user_id', $temp_user_id)->get();
+                $cart = Cart::where('temp_user_id', $temp_user_id)
+                    ->with(['product', 'course', 'courseSchedule', 'course.institute'])
+                    ->get();
             }
         }
         return $cart;

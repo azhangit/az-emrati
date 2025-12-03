@@ -47,6 +47,9 @@ class PaypalController extends Controller
             } elseif (Session::get('payment_type') == 'seller_package_payment') {
                 $seller_package = SellerPackage::findOrFail(Session::get('payment_data')['seller_package_id']);
                 $amount = $seller_package->amount;
+            } elseif (Session::get('payment_type') == 'course_payment') {
+                $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
+                $amount = $combined_order->grand_total;
             }
         }
 
@@ -120,6 +123,8 @@ class PaypalController extends Controller
                     return (new CustomerPackageController)->purchase_payment_done($request->session()->get('payment_data'), json_encode($response));
                 } elseif ($request->session()->get('payment_type') == 'seller_package_payment') {
                     return (new SellerPackageController)->purchase_payment_done($request->session()->get('payment_data'), json_encode($response));
+                } elseif ($request->session()->get('payment_type') == 'course_payment') {
+                    return (new CheckoutController)->course_purchase_done($request->session()->get('combined_order_id'), json_encode($response));
                 }
             }
         } catch (\Exception $ex) {

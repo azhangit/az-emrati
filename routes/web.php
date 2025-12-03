@@ -555,6 +555,7 @@ Route::controller(CartController::class)->group(function () {
     Route::get('/cart', 'index')->name('cart');
     Route::post('/cart/show-cart-modal', 'showCartModal')->name('cart.showCartModal');
     Route::post('/cart/addtocart', 'addToCart')->name('cart.addToCart');
+    Route::post('/cart/add-course-to-cart', 'addCourseToCart')->name('cart.addCourseToCart');
     Route::post('/cart/removeFromCart', 'removeFromCart')->name('cart.removeFromCart');
     Route::post('/cart/updateQuantity', 'updateQuantity')->name('cart.updateQuantity');
 });

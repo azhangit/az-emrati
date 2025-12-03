@@ -1683,9 +1683,7 @@ color: white;
 
 
     <div class="instagram-feed lower-banner pt-5 ">
-        <!-- Elfsight Instagram Feed | Untitled Instagram Feed -->
-<!-- <script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-c48d81a6-e9b1-428c-97c4-d546375074dd" data-elfsight-app-lazy></div> -->
+
 
         <div class="container-fluid">
             <div class="row">
@@ -1694,8 +1692,7 @@ color: white;
                         <h3 class="mb-1">Instagram</h3>
                         <a class="text-muted" target="_blank" rel="noopener" href="https://instagram.com/emiraticoffee.ae">@emiraticoffee.ae</a>
                     </div>
-                    <a class="btn btn-primary rounded-pill mt-3 mt-md-0" target="_blank" rel="noopener"
-                       href="{{ url('https://www.instagram.com/emiraticoffee.ae/') }}">{{ translate('FOLLOW US') }}</a>
+
                 </div>
                 <div class="col-12">
                     <div id="instagram-feed-status" class="instagram-status text-center text-muted small py-4 d-none"></div>
@@ -1706,7 +1703,10 @@ color: white;
             </div>
         </div>
     </div>
-    
+    <div class="text-center py-3">
+    <a class="btn btn-primary rounded-pill mt-3 mt-md-0" target="_blank" rel="noopener"
+    href="{{ url('https://www.instagram.com/emiraticoffee.ae/') }}">{{ translate('FOLLOW US') }}</a>
+    </div>
     <!-- Instagram Modal -->
     <div id="instagram-modal" class="instagram-modal">
         <span class="instagram-modal-close">&times;</span>

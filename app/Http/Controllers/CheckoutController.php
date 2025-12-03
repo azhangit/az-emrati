@@ -83,7 +83,10 @@ class CheckoutController extends Controller
     }
 }
 
-        $request->session()->put('payment_type', 'cart_payment');
+        // Determine payment type based on cart contents
+        $hasCourses = $carts->where('item_type', 'course')->count() > 0;
+        $paymentType = $hasCourses ? 'course_payment' : 'cart_payment';
+        $request->session()->put('payment_type', $paymentType);
         
         $data['combined_order_id'] = $request->session()->get('combined_order_id');
         $request->session()->put('payment_data', $data);
@@ -110,6 +113,44 @@ class CheckoutController extends Controller
                 return redirect()->route('order_confirmed');
             }
         }
+    }
+
+    // Course purchase completion handler
+    public function course_purchase_done($combined_order_id, $payment)
+    {
+        $combined_order = CombinedOrder::findOrFail($combined_order_id);
+        $payment_data = json_decode($payment, true);
+        
+        // Update course purchases with payment info
+        foreach ($combined_order->orders as $order) {
+            foreach ($order->orderDetails as $orderDetail) {
+                if ($orderDetail->item_type === 'course' && $orderDetail->coursePurchase) {
+                    $coursePurchase = $orderDetail->coursePurchase;
+                    $coursePurchase->payment_status = 'completed';
+                    $coursePurchase->payment_method = $order->payment_type;
+                    $coursePurchase->payment_details = $payment;
+                    $coursePurchase->transaction_id = $combined_order_id;
+                    $coursePurchase->save();
+                }
+            }
+            
+            // Update order payment status
+            $order->payment_status = 'paid';
+            $order->payment_details = $payment;
+            $order->save();
+        }
+        
+        // Update combined order
+        $combined_order->save();
+        
+        // Clear cart
+        if (Auth::check()) {
+            Cart::where('user_id', Auth::id())->delete();
+        }
+        
+        Session::put('combined_order_id', $combined_order_id);
+        flash(translate('Your course purchase has been completed successfully'))->success();
+        return redirect()->route('order_confirmed');
     }
 
     //redirects to this method after a successfull checkout
@@ -148,6 +189,37 @@ class CheckoutController extends Controller
 
         }
 
+        // Check if cart contains courses - require login and skip shipping
+        $hasCourses = $carts->where('item_type', 'course')->count() > 0;
+        if ($hasCourses) {
+            // Require login for courses
+            if (!Auth::check()) {
+                session(['link' => url()->current()]);
+                flash(translate('Please login to purchase courses'))->warning();
+                return redirect()->route('user.login');
+            }
+            
+            // Skip shipping for courses, go directly to payment
+            $subtotal = 0;
+            $tax = 0;
+            foreach ($carts as $cart) {
+                $subtotal += $cart->price * $cart->quantity;
+                $tax += $cart->tax * $cart->quantity;
+            }
+            $total = $subtotal + $tax;
+            
+            // Set dummy shipping info for courses (digital products)
+            $shipping_info = (object)[
+                'name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+                'phone' => Auth::user()->phone ?? '',
+                'address' => 'Course Purchase - No Shipping Required',
+                'mode' => 'digital'
+            ];
+            
+            return view('frontend.payment_select', compact('carts', 'shipping_info', 'total'));
+        }
+
         //        if (Session::has('cart') && count(Session::get('cart')) > 0) {
         if ($carts && count($carts) > 0) {
             $categories = Category::all();
@@ -159,6 +231,45 @@ class CheckoutController extends Controller
 
  public function store_shipping_info(Request $request)
 {
+    // Get carts first to check for courses
+    if (Auth::check()) {
+        $carts = Cart::where('user_id', Auth::user()->id)->get();
+    } else {
+        $tempUserId = $request->session()->get('temp_user_id');
+        $carts = Cart::where('temp_user_id', $tempUserId)->get();
+    }
+    
+    // Check if cart contains courses - require login and skip shipping
+    $hasCourses = $carts->where('item_type', 'course')->count() > 0;
+    if ($hasCourses) {
+        // Require login for courses
+        if (!Auth::check()) {
+            session(['link' => url()->current()]);
+            flash(translate('Please login to purchase courses'))->warning();
+            return redirect()->route('user.login');
+        }
+        
+        // Skip shipping for courses, go directly to payment
+        $subtotal = 0;
+        $tax = 0;
+        foreach ($carts as $cart) {
+            $subtotal += $cart->price * $cart->quantity;
+            $tax += $cart->tax * $cart->quantity;
+        }
+        $total = $subtotal + $tax;
+        
+        // Set dummy shipping info for courses (digital products)
+        $shipping_info = (object)[
+            'name' => Auth::user()->name,
+            'email' => Auth::user()->email,
+            'phone' => Auth::user()->phone ?? '',
+            'address' => 'Course Purchase - No Shipping Required',
+            'mode' => 'digital'
+        ];
+        
+        return view('frontend.payment_select', compact('carts', 'shipping_info', 'total'));
+    }
+    
     // Guest Checkout
     if (!Auth::check() && get_setting('guest_checkout') == 1) {
         $mode = $request->input('mode', 'shipping');
@@ -166,8 +277,6 @@ class CheckoutController extends Controller
             $mode = 'pickup';
         }
         $tempUserId = $request->session()->get('temp_user_id');
-
-        $carts = Cart::where('temp_user_id', $tempUserId)->get();
 
         if ($carts->isEmpty()) {
             flash(translate('Your cart is empty'))->warning();
@@ -313,7 +422,9 @@ class CheckoutController extends Controller
     // Agar login user hai
     if (Auth::check()) {
         $carts = Cart::where('user_id', Auth::user()->id)->get();
-        $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
+        $shipping_info = $carts->isNotEmpty() && $carts[0]->address_id 
+            ? Address::where('id', $carts[0]->address_id)->first() 
+            : null;
         // Check if logged-in user selected pickup mode
         $loggedPickupInfo = session()->get('logged_pickup_info');
         $pickupMode = $loggedPickupInfo && (($loggedPickupInfo['mode'] ?? null) === 'pickup');
@@ -327,6 +438,37 @@ class CheckoutController extends Controller
     if ($carts->isEmpty()) {
         flash(translate('Your cart is empty'))->warning();
         return redirect()->route('home');
+    }
+    
+    // Check if cart contains courses - require login and skip delivery
+    $hasCourses = $carts->where('item_type', 'course')->count() > 0;
+    if ($hasCourses) {
+        // Require login for courses
+        if (!Auth::check()) {
+            session(['link' => url()->current()]);
+            flash(translate('Please login to purchase courses'))->warning();
+            return redirect()->route('user.login');
+        }
+        
+        // Skip delivery for courses, go directly to payment
+        $subtotal = 0;
+        $tax = 0;
+        foreach ($carts as $cart) {
+            $subtotal += $cart->price * $cart->quantity;
+            $tax += $cart->tax * $cart->quantity;
+        }
+        $total = $subtotal + $tax;
+        
+        // Set dummy shipping info for courses (digital products)
+        $shipping_info = (object)[
+            'name' => Auth::user()->name,
+            'email' => Auth::user()->email,
+            'phone' => Auth::user()->phone ?? '',
+            'address' => 'Course Purchase - No Shipping Required',
+            'mode' => 'digital'
+        ];
+        
+        return view('frontend.payment_select', compact('carts', 'shipping_info', 'total'));
     }
 
     if ($pickupMode) {
@@ -349,9 +491,18 @@ class CheckoutController extends Controller
         $tax = 0;
         $subtotal = 0;
         foreach ($carts as $key => $cartItem) {
-            $product = Product::find($cartItem['product_id']);
-            $tax += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
-            $subtotal += $cartItem['price'] * $cartItem['quantity'];
+            $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+            if (!$productId) {
+                continue;
+            }
+            $product = Product::find($productId);
+            if (!$product) {
+                continue;
+            }
+            $quantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+            $price = is_object($cartItem) ? $cartItem->price : ($cartItem['price'] ?? 0);
+            $tax += cart_product_tax($cartItem, $product, false) * $quantity;
+            $subtotal += $price * $quantity;
         }
 
         $total = $subtotal + $tax;
@@ -371,16 +522,34 @@ class CheckoutController extends Controller
 
     if ($carts && count($carts) > 0) {
         foreach ($carts as $key => $cartItem) {
-            $product = Product::find($cartItem['product_id']);
-            $tax += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
-            $subtotal += $cartItem['price'] * $cartItem['quantity'];
+            $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+            if (!$productId) {
+                continue;
+            }
+            $product = Product::find($productId);
+            if (!$product) {
+                continue;
+            }
+            $quantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+            $price = is_object($cartItem) ? $cartItem->price : ($cartItem['price'] ?? 0);
+            $tax += cart_product_tax($cartItem, $product, false) * $quantity;
+            $subtotal += $price * $quantity;
 
             if (get_setting('shipping_type') != 'carrier_wise_shipping' || $request['shipping_type_' . $product->user_id] == 'pickup_point') {
                 if ($request['shipping_type_' . $product->user_id] == 'pickup_point') {
-                    $cartItem['shipping_type'] = 'pickup_point';
-                    $cartItem['pickup_point'] = $request['pickup_point_id_' . $product->user_id];
+                    if (is_object($cartItem)) {
+                        $cartItem->shipping_type = 'pickup_point';
+                        $cartItem->pickup_point = $request['pickup_point_id_' . $product->user_id];
+                    } else {
+                        $cartItem['shipping_type'] = 'pickup_point';
+                        $cartItem['pickup_point'] = $request['pickup_point_id_' . $product->user_id];
+                    }
                 } else {
-                    $cartItem['shipping_type'] = 'home_delivery';
+                    if (is_object($cartItem)) {
+                        $cartItem->shipping_type = 'home_delivery';
+                    } else {
+                        $cartItem['shipping_type'] = 'home_delivery';
+                    }
                 }
                 $cartItem['shipping_cost'] = 0;
                 if ($cartItem['shipping_type'] == 'home_delivery') {
@@ -447,10 +616,20 @@ class CheckoutController extends Controller
                         $tax = 0;
                         $shipping = 0;
                         foreach ($carts as $key => $cartItem) {
-                            $product = Product::find($cartItem['product_id']);
-                           $subtotal += $cartItem['price'] * $cartItem['quantity'];
-                            $tax += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
-                            $shipping += $cartItem['shipping_cost'];
+                            $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+                            if (!$productId) {
+                                continue;
+                            }
+                            $product = Product::find($productId);
+                            if (!$product) {
+                                continue;
+                            }
+                            $quantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+                            $price = is_object($cartItem) ? $cartItem->price : ($cartItem['price'] ?? 0);
+                            $shippingCost = is_object($cartItem) ? $cartItem->shipping_cost : ($cartItem['shipping_cost'] ?? 0);
+                            $subtotal += $price * $quantity;
+                            $tax += cart_product_tax($cartItem, $product, false) * $quantity;
+                            $shipping += $shippingCost;
                         }
                         $sum = $subtotal + $tax + $shipping;
                         if ($coupon->type == 'cart_base' && $sum >= $coupon_details->min_buy) {

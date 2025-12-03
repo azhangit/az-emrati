@@ -115,7 +115,7 @@ class CartUtility
     public static function check_auction_in_cart($carts)
     {
         foreach ($carts as $cart) {
-            if ($cart->product->auction_product == 1) {
+            if ($cart->product && $cart->product->auction_product == 1) {
                 return true;
             }
         }

@@ -662,11 +662,134 @@ private function normalizeVariantKey($variation): string
 
     $pickupMode = ($shippingAddress['mode'] ?? null) === 'pickup';
 
+    // Separate course items from product items
+    $courseItems = [];
+    $productItems = [];
+    
+    foreach ($carts as $cartItem) {
+        $itemType = is_object($cartItem) ? ($cartItem->item_type ?? 'product') : ($cartItem['item_type'] ?? 'product');
+        
+        if ($itemType === 'course') {
+            $courseItems[] = $cartItem;
+        } else {
+            $productItems[] = $cartItem;
+        }
+    }
+    
+    // Process course items first (require login)
+    if (!empty($courseItems) && !Auth::check()) {
+        flash(translate('Please login to purchase courses'))->warning();
+        return redirect()->route('user.login');
+    }
+    
+    if (!empty($courseItems) && Auth::check()) {
+        // Get admin user for course orders
+        $adminUser = \App\Models\User::where('user_type', 'admin')->first();
+        if (!$adminUser) {
+            // Fallback to first user if no admin found
+            $adminUser = \App\Models\User::first();
+        }
+        
+        // Create order for courses
+        $courseOrder = new Order;
+        $courseOrder->combined_order_id = $combined_order->id;
+        $courseOrder->user_id = Auth::id();
+        $courseOrder->seller_id = $adminUser ? $adminUser->id : 1;
+        $courseOrder->shipping_address = $combined_order->shipping_address;
+        $courseOrder->payment_type = $request->payment_option;
+        $courseOrder->delivery_viewed = '0';
+        $courseOrder->payment_status_viewed = '0';
+        $courseOrder->code = date('Ymd-His') . rand(10, 99);
+        $courseOrder->date = strtotime('now');
+        $courseOrder->shipping_type = 'digital'; // Courses are digital
+        $courseOrder->save();
+        
+        $courseSubtotal = 0;
+        $courseTax = 0;
+        
+        foreach ($courseItems as $cartItem) {
+            $cartItemArray = is_object($cartItem) ? $cartItem->toArray() : $cartItem;
+            
+            $courseId = $cartItemArray['course_id'] ?? null;
+            if (!$courseId) {
+                continue;
+            }
+            
+            $course = \App\Models\Course::find($courseId);
+            if (!$course) {
+                continue;
+            }
+            
+            $price = $cartItemArray['price'] ?? 0;
+            $quantity = $cartItemArray['quantity'] ?? 1;
+            $tax = $cartItemArray['tax'] ?? 0;
+            
+            $courseSubtotal += $price * $quantity;
+            $courseTax += $tax * $quantity;
+            
+            // Create order detail for course
+            $order_detail = new OrderDetail;
+            $order_detail->order_id = $courseOrder->id;
+            $order_detail->seller_id = $adminUser ? $adminUser->id : 1;
+            $order_detail->product_id = null; // Courses don't have product_id
+            $order_detail->course_id = $courseId;
+            $order_detail->course_schedule_id = $cartItemArray['course_schedule_id'] ?? null;
+            $order_detail->item_type = 'course';
+            $order_detail->variation = $cartItemArray['variation'] ?? null;
+            $order_detail->price = $price;
+            $order_detail->tax = $tax;
+            $order_detail->shipping_type = 'digital';
+            $order_detail->shipping_cost = 0;
+            $order_detail->quantity = $quantity;
+            
+            // Store course metadata
+            $variationData = $cartItemArray['variation'] ? json_decode($cartItemArray['variation'], true) : [];
+            $order_detail->course_metadata = json_encode([
+                'selected_date' => $variationData['selected_date'] ?? null,
+                'selected_time' => $variationData['selected_time'] ?? null,
+                'selected_level' => $variationData['selected_level'] ?? null,
+            ]);
+            $order_detail->save();
+            
+            // Create CoursePurchase record after order_detail is saved
+            $coursePurchase = \App\Models\CoursePurchase::create([
+                'user_id' => Auth::id(),
+                'course_id' => $courseId,
+                'course_schedule_id' => $cartItemArray['course_schedule_id'] ?? null,
+                'order_id' => $courseOrder->id,
+                'order_detail_id' => $order_detail->id,
+                'amount' => $price,
+                'selected_date' => $variationData['selected_date'] ?? null,
+                'selected_time' => $variationData['selected_time'] ?? null,
+                'selected_level' => $variationData['selected_level'] ?? null,
+                'payment_status' => 'pending',
+                'code' => 'CP-' . date('Ymd') . '-' . strtoupper(uniqid()),
+            ]);
+        }
+        
+        $courseOrder->grand_total = $courseSubtotal + $courseTax;
+        $courseOrder->save();
+        
+        // Update combined order total
+        $combined_order->grand_total += $courseOrder->grand_total;
+        $combined_order->save();
+    }
 
+        // Process product items (existing logic)
         $seller_products = array();
-        foreach ($carts as $cartItem) {
+        foreach ($productItems as $cartItem) {
+            // Handle both object and array access
+            $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+            if (!$productId) {
+                continue; // Skip if no product_id
+            }
+            
+            $product = Product::find($productId);
+            if (!$product) {
+                continue; // Skip if product not found
+            }
+            
             $product_ids = array();
-            $product = Product::find($cartItem['product_id']);
             if (isset($seller_products[$product->user_id])) {
                 $product_ids = $seller_products[$product->user_id];
             }
@@ -720,7 +843,13 @@ if (Auth::check()) {
             foreach ($seller_product as $cartItem) {
    // --- inside "foreach ($seller_product as $cartItem) { ... }" --- //
 
-$product = Product::find($cartItem['product_id']);
+                // Handle both object and array access
+                $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+                if (!$productId) {
+                    continue; // Skip if no product_id
+                }
+                
+$product = Product::find($productId);
 if (!$product) {
     // Product hi nahi mila -> cart se hatao aur continue/abort
     flash(translate('Product not found'))->warning();
@@ -728,11 +857,17 @@ if (!$product) {
     return redirect()->route('cart')->send();
 }
 
-$subtotal       += $cartItem['price'] * $cartItem['quantity'];
-$tax            += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
-$coupon_discount += $cartItem['discount'];
+                // Handle both object and array access for cart item properties
+                $itemPrice = is_object($cartItem) ? $cartItem->price : ($cartItem['price'] ?? 0);
+                $itemQuantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+                $itemDiscount = is_object($cartItem) ? ($cartItem->discount ?? 0) : ($cartItem['discount'] ?? 0);
+                $itemVariation = is_object($cartItem) ? ($cartItem->variation ?? '') : ($cartItem['variation'] ?? '');
+                
+$subtotal       += $itemPrice * $itemQuantity;
+$tax            += cart_product_tax($cartItem, $product, false) * $itemQuantity;
+$coupon_discount += $itemDiscount;
 
-$rawVariation   = (string) ($cartItem['variation'] ?? '');
+$rawVariation   = (string) $itemVariation;
 $variant        = trim($rawVariation);
 
 // --- STOCK FETCH (robust) ---
@@ -771,14 +906,14 @@ if ($product->digital != 1 && (!$product_stock || $product_stock->qty === null))
 // 4) Quantity check for physical items
 if ($product->digital != 1) {
     $availableQty = (int) $product_stock->qty;
-    if ($cartItem['quantity'] > $availableQty) {
+    if ($itemQuantity > $availableQty) {
         flash(translate('The requested quantity is not available for ') . $product->getTranslation('name'))->warning();
         $order->delete();
         return redirect()->route('cart')->send();
     }
 
     // Reduce stock
-    $product_stock->qty = max(0, $availableQty - (int)$cartItem['quantity']);
+    $product_stock->qty = max(0, $availableQty - (int)$itemQuantity);
     $product_stock->save();
 }
 
@@ -788,13 +923,17 @@ $order_detail->order_id   = $order->id;
 $order_detail->seller_id  = $product->user_id;
 $order_detail->product_id = $product->id;
 $order_detail->variation  = $variant;
-$order_detail->price      = $cartItem['price'] * $cartItem['quantity'];
-$order_detail->tax        = cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
-$order_detail->shipping_type = $pickupMode ? 'pickup_point' : ($cartItem['shipping_type'] ?? null);
-$order_detail->product_referral_code = $cartItem['product_referral_code'] ?? null;
-$order_detail->shipping_cost = $pickupMode ? 0 : ($cartItem['shipping_cost'] ?? 0);
+                $itemShippingType = is_object($cartItem) ? ($cartItem->shipping_type ?? null) : ($cartItem['shipping_type'] ?? null);
+                $itemProductReferralCode = is_object($cartItem) ? ($cartItem->product_referral_code ?? null) : ($cartItem['product_referral_code'] ?? null);
+                $itemShippingCost = is_object($cartItem) ? ($cartItem->shipping_cost ?? 0) : ($cartItem['shipping_cost'] ?? 0);
+                
+$order_detail->price      = $itemPrice * $itemQuantity;
+$order_detail->tax        = cart_product_tax($cartItem, $product, false) * $itemQuantity;
+$order_detail->shipping_type = $pickupMode ? 'pickup_point' : $itemShippingType;
+$order_detail->product_referral_code = $itemProductReferralCode;
+$order_detail->shipping_cost = $pickupMode ? 0 : $itemShippingCost;
 $shipping += (float)$order_detail->shipping_cost;
-$order_detail->quantity   = $cartItem['quantity'];
+$order_detail->quantity   = $itemQuantity;
 
 if (addon_is_activated('club_point')) {
     $order_detail->earn_point = $product->earn_point;
@@ -802,23 +941,23 @@ if (addon_is_activated('club_point')) {
 
 $order_detail->save();
 
-$product->num_of_sale += $cartItem['quantity'];
+$product->num_of_sale += $itemQuantity;
 $product->save();
 
 
                 $order->seller_id = $product->user_id;
-                $order->shipping_type = $cartItem['shipping_type'];
+                $order->shipping_type = $itemShippingType;
                 
-                if ($pickupMode || $cartItem['shipping_type'] == 'pickup_point') {
-                    $order->pickup_point_id = $cartItem['pickup_point'];
+                if ($pickupMode || $itemShippingType == 'pickup_point') {
+                    $order->pickup_point_id = is_object($cartItem) ? ($cartItem->pickup_point ?? null) : ($cartItem['pickup_point'] ?? null);
                 }
-                if (!$pickupMode && $cartItem['shipping_type'] == 'carrier') {
-                    $order->carrier_id = $cartItem['carrier_id'];
+                if (!$pickupMode && $itemShippingType == 'carrier') {
+                    $order->carrier_id = is_object($cartItem) ? ($cartItem->carrier_id ?? null) : ($cartItem['carrier_id'] ?? null);
                 }
 
                 if ($product->added_by == 'seller' && $product->user->seller != null) {
                     $seller = $product->user->seller;
-                    $seller->num_of_sale += $cartItem['quantity'];
+                    $seller->num_of_sale += $itemQuantity;
                     $seller->save();
                 }
 

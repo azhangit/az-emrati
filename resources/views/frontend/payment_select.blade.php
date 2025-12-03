@@ -475,12 +475,36 @@
                                         @php
                                             $digital = 0;
                                             $cod_on = 1;
+                                            $hasCourses = false;
                                             foreach ($carts as $cartItem) {
-                                                $product = get_single_product($cartItem['product_id']);
-                                                if ($product['digital'] == 1) {
+                                                // Check if this is a course item
+                                                $itemType = is_object($cartItem) ? ($cartItem->item_type ?? 'product') : ($cartItem['item_type'] ?? 'product');
+                                                
+                                                if ($itemType === 'course') {
+                                                    $hasCourses = true;
+                                                    $digital = 1; // Courses are digital, no COD
+                                                    $cod_on = 0; // No COD for courses
+                                                    continue;
+                                                }
+                                                
+                                                // Handle product items
+                                                $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+                                                if (!$productId) {
+                                                    continue;
+                                                }
+                                                $product = get_single_product($productId);
+                                                if (!$product) {
+                                                    continue;
+                                                }
+                                                
+                                                // Handle both object and array access for product
+                                                $productDigital = is_object($product) ? ($product->digital ?? 0) : ($product['digital'] ?? 0);
+                                                $productCod = is_object($product) ? ($product->cash_on_delivery ?? 1) : ($product['cash_on_delivery'] ?? 1);
+                                                
+                                                if ($productDigital == 1) {
                                                     $digital = 1;
                                                 }
-                                                if ($product['cash_on_delivery'] == 0) {
+                                                if ($productCod == 0) {
                                                     $cod_on = 0;
                                                 }
                                             }

@@ -3,7 +3,9 @@ $total = 0;
 $carts = get_user_cart();
 if (count($carts) > 0) {
     foreach ($carts as $cartItem) {
-        $total += $cartItem['price'] * $cartItem['quantity'];
+        $price = is_object($cartItem) ? $cartItem->price : ($cartItem['price'] ?? 0);
+        $quantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+        $total += $price * $quantity;
     }
 }
 
@@ -16,7 +18,10 @@ if (count($carts) > 0) {
 @if(count($carts) > 0)
     @php $qty = 0; @endphp
     @foreach($carts as $cartItem)
-       @php $qty += $cartItem->quantity; @endphp
+       @php 
+           $itemQty = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+           $qty += $itemQty; 
+       @endphp
     @endforeach
     <span class="cart-count badged badged-warning" id="lblCartCount">{{ $qty }}</span>
 @endif
@@ -33,33 +38,80 @@ if (count($carts) > 0) {
         <ul class="h-360px overflow-auto c-scrollbar-light list-group list-group-flush mx-1">
             @foreach ($carts as $key => $cartItem)
                 @php
-                    $product = get_single_product($cartItem['product_id']);
+                    // Handle both object and array access
+                    $itemType = is_object($cartItem) ? ($cartItem->item_type ?? 'product') : ($cartItem['item_type'] ?? 'product');
+                    $cartItemQuantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+                    $cartItemPrice = is_object($cartItem) ? $cartItem->price : ($cartItem['price'] ?? 0);
+                    $cartItemId = is_object($cartItem) ? $cartItem->id : ($cartItem['id'] ?? null);
+                    
+                    // Initialize variables
+                    $itemName = '';
+                    $itemImage = static_asset('assets/img/placeholder.jpg');
+                    $itemSlug = '#';
+                    
+                    if ($itemType === 'course') {
+                        // Handle course items
+                        $course = $cartItem->course ?? null;
+                        $courseSchedule = $cartItem->courseSchedule ?? null;
+                        $variationData = $cartItem->variation ? json_decode($cartItem->variation, true) : [];
+                        
+                        if ($course) {
+                            $itemName = $course->course_module ?? 'Course';
+                            if ($courseSchedule) {
+                                $itemName .= ' - ' . ($courseSchedule->course_level ?? '');
+                            }
+                            $itemImage = $course->image ? uploaded_asset($course->image) : static_asset('assets/img/placeholder.jpg');
+                            // Use course booking page
+                            $itemSlug = route('course.booking', $course->id);
+                        } else {
+                            $itemName = 'Course';
+                        }
+                    } else {
+                        // Handle product items
+                        $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+                        if (!$productId) {
+                            continue;
+                        }
+                        $product = get_single_product($productId);
+                        if (!$product) {
+                            continue;
+                        }
+                        $itemName = $product->getTranslation('name');
+                        $itemImage = uploaded_asset($product->thumbnail_img);
+                        $itemSlug = $product->slug ?? '#';
+                    }
                 @endphp
-                @if ($product != null)
+                @if ($itemName)
                     <li class="list-group-item border-0 hov-scale-img">
                         <span class="d-flex align-items-center">
-                            <!--<a class="btn btn-top rounded-pill openPopup" href="#" data-slug="{{ $product->slug }}">{{ translate('Buy Now') }}</a>-->
-
-                            <a href="#" data-slug="{{ $product->slug }}"
-                                class="text-reset d-flex align-items-center flex-grow-1 openPopup">
+                            @if ($itemType === 'course')
+                                <a href="{{ $itemSlug }}"
+                                    class="text-reset d-flex align-items-center flex-grow-1">
+                            @else
+                                <a href="#" data-slug="{{ $itemSlug }}"
+                                    class="text-reset d-flex align-items-center flex-grow-1 openPopup">
+                            @endif
                                 <img src="{{ static_asset('assets/img/placeholder.jpg') }}"
-                                    data-src="{{ uploaded_asset($product->thumbnail_img) }}"
+                                    data-src="{{ $itemImage }}"
                                     class="img-fit lazyload size-60px has-transition "
                                     id="cart-image"
-                                    alt="{{ $product->getTranslation('name') }}"
+                                    alt="{{ $itemName }}"
                                     onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
                                 <span class="minw-0 pl-2 flex-grow-1">
-                                    <span class="fw-700 fs-13 text-dark mb-2 text-truncate-2" title="{{ $product->getTranslation('name') }}">
-                                        {{ $product->getTranslation('name') }}
+                                    <span class="fw-700 fs-13 text-dark mb-2 text-truncate-2" title="{{ $itemName }}">
+                                        {{ $itemName }}
                                     </span>
-                                    <span class="fs-14 fw-400 text-secondary">{{ $cartItem['quantity'] }}x</span>
+                                    @if ($itemType === 'course' && isset($variationData['selected_date']))
+                                        <br><small class="text-secondary fs-11">{{ translate('Date') }}: {{ $variationData['selected_date'] }}</small>
+                                    @endif
+                                    <span class="fs-14 fw-400 text-secondary">{{ $cartItemQuantity }}x</span>
                                    <span class="fs-14 fw-400 text-secondary">
-    {{ single_price($cartItem['price']) }}
+    {{ single_price($cartItemPrice) }}
 </span>
                                 </span>
                             </a>
                             <span class="">
-                                <button onclick="removeFromCart({{ $cartItem['id'] }})"
+                                <button onclick="removeFromCart({{ $cartItemId }})"
                                     class="btn btn-sm btn-icon stop-propagation">
                                     <i class="la la-close fs-18 fw-600 text-secondary"></i>
                                 </button>

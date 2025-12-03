@@ -62,7 +62,17 @@
                                 $admin_product_variation = array();
                                 $seller_product_variation = array();
                                 foreach ($carts as $key => $cartItem){
+                                    // Skip if product_id is missing or null
+                                    if(empty($cartItem['product_id'])){
+                                        continue;
+                                    }
+                                    
                                     $product = get_single_product($cartItem['product_id']);
+                                    
+                                    // Skip if product not found
+                                    if(!$product || !isset($product->added_by)){
+                                        continue;
+                                    }
 
                                     if($product->added_by == 'admin'){
                                         array_push($admin_products, $cartItem['product_id']);
@@ -106,6 +116,9 @@
                                         @foreach ($admin_products as $key => $cartItem)
                                             @php
                                                 $product = get_single_product($cartItem);
+                                                if (!$product) {
+                                                    continue;
+                                                }
                                                 if ($product->digital == 0) {
                                                     $physical = true;
                                                 }
@@ -113,13 +126,13 @@
                                             <li class="list-group-item">
                                                 <div class="d-flex align-items-center">
                                                     <span class="mr-2 mr-md-3">
-                                                        <img src="{{ get_image($product->thumbnail) }}"
+                                                        <img src="{{ get_image($product->thumbnail ?? '') }}"
                                                             class="img-fit size-60px"
-                                                            alt="{{  $product->getTranslation('name')  }}"
+                                                            alt="{{ $product ? $product->getTranslation('name') : '' }}"
                                                             onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
                                                     </span>
                                                     <span class="fs-14 fw-400 text-dark">
-                                                        {{ $product->getTranslation('name') }}
+                                                        {{ $product ? $product->getTranslation('name') : '' }}
                                                         <br>
                                                         @if ($admin_product_variation[$key] != '')
                                                             <span class="fs-12 text-secondary">{{ translate('Variation') }}: {{ $admin_product_variation[$key] }}</span>
@@ -265,6 +278,9 @@
                                                 @foreach ($seller_product as $key2 => $cartItem)
                                                     @php
                                                         $product = get_single_product($cartItem);
+                                                        if (!$product) {
+                                                            continue;
+                                                        }
                                                         if ($product->digital == 0) {
                                                             $physical = true;
                                                         }
@@ -272,13 +288,13 @@
                                                     <li class="list-group-item">
                                                         <div class="d-flex align-items-center">
                                                             <span class="mr-2 mr-md-3">
-                                                                <img src="{{ get_image($product->thumbnail) }}"
+                                                                <img src="{{ get_image($product->thumbnail ?? '') }}"
                                                                     class="img-fit size-60px"
-                                                                    alt="{{  $product->getTranslation('name')  }}"
+                                                                    alt="{{ $product ? $product->getTranslation('name') : '' }}"
                                                                     onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
                                                             </span>
                                                             <span class="fs-14 fw-400 text-dark">
-                                                                {{ $product->getTranslation('name') }}
+                                                                {{ $product ? $product->getTranslation('name') : '' }}
                                                                 <br>
                                                                 @if ($seller_product_variation[$key2] != '')
                                                                     <span class="fs-12 text-secondary">{{ translate('Variation') }}: {{ $seller_product_variation[$key2] }}</span>

@@ -50,8 +50,15 @@
             <div class="row">
                 <div class="col-xl-8 mx-auto">
                     @php
-                        $first_order = $combined_order->orders->first();
-                        $shipping = json_decode($first_order->shipping_address, true); // force array
+                        $first_order = null;
+                        $shipping = [];
+                        
+                        if ($combined_order && $combined_order->orders) {
+                            $first_order = $combined_order->orders->first();
+                            if ($first_order && $first_order->shipping_address) {
+                                $shipping = json_decode($first_order->shipping_address, true) ?? [];
+                            }
+                        }
                     @endphp
 
                     <!-- Order Confirmation Text-->
@@ -71,7 +78,7 @@
                                 <table class="table fs-14">
                                     <tr>
                                         <td class="w-50 fw-600 border-top-0 pl-0 py-2">{{ translate('Order date')}}:</td>
-                                        <td class="border-top-0 py-2">{{ date('d-m-Y H:i A', $first_order->date) }}</td>
+                                        <td class="border-top-0 py-2">{{ $first_order ? date('d-m-Y H:i A', $first_order->date) : '' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-600 border-top-0 pl-0 py-2">{{ translate('Name')}}:</td>
@@ -95,11 +102,11 @@
                                 <table class="table">
                                     <tr>
                                         <td class="fw-600 border-top-0 py-2">{{ translate('Order status')}}:</td>
-                                        <td class="border-top-0 py-2">{{ translate(ucfirst(str_replace('_', ' ', $first_order->delivery_status))) }}</td>
+                                        <td class="border-top-0 py-2">{{ $first_order ? translate(ucfirst(str_replace('_', ' ', $first_order->delivery_status))) : '' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-600 border-top-0 py-2">{{ translate('Total order amount')}}:</td>
-                                        <td class="border-top-0 py-2">{{ single_price($combined_order->grand_total) }}</td>
+                                        <td class="border-top-0 py-2">{{ $combined_order ? single_price($combined_order->grand_total) : '' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-600 border-top-0 py-2">{{ translate('Shipping')}}:</td>
@@ -107,7 +114,7 @@
                                     </tr>
                                     <tr>
                                         <td class="fw-600 border-top-0 py-2">{{ translate('Payment method')}}:</td>
-                                        <td class="border-top-0 py-2">{{ translate(ucfirst(str_replace('_', ' ', $first_order->payment_type))) }}</td>
+                                        <td class="border-top-0 py-2">{{ $first_order ? translate(ucfirst(str_replace('_', ' ', $first_order->payment_type))) : '' }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -115,7 +122,8 @@
                     </div>
 
                     <!-- Orders Info -->
-                    @foreach ($combined_order->orders as $order)
+                    @if ($combined_order && $combined_order->orders)
+                        @foreach ($combined_order->orders as $order)
                         <div class="card shadow-none border rounded-0 mb-3">
                             <div class="card-body">
                                 <!-- Order Code -->
@@ -200,7 +208,8 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                        @endforeach
+                    @endif
 
                 </div>
             </div>

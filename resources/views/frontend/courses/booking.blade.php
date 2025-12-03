@@ -515,6 +515,7 @@
                 
                 <!-- Select Date Button -->
                 <button class="btn-select-date btn-primary" id="selectDateBtn" disabled>
+                    {{ translate('Add to Cart') }}
                     {{ translate('Select date') }}
                 </button>
                 
@@ -768,8 +769,48 @@ document.getElementById('nextMonth').addEventListener('click', () => {
 
 document.getElementById('selectDateBtn').addEventListener('click', () => {
     if (selectedDate && selectedLevel && selectedTime) {
-        // Proceed to payment/checkout
-        window.location.href = '/checkout/course/{{ $course->id }}?schedule_id=' + selectedTime + '&date=' + selectedDate + '&level=' + encodeURIComponent(selectedLevel);
+        // Add course to cart via AJAX
+        const btn = document.getElementById('selectDateBtn');
+        btn.disabled = true;
+        btn.textContent = '{{ translate("Adding to cart...") }}';
+        
+        $.ajax({
+            url: '{{ route("cart.addCourseToCart") }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                course_id: {{ $course->id }},
+                course_schedule_id: selectedTime,
+                selected_date: selectedDate,
+                selected_time: document.getElementById('timeSelect').selectedOptions[0].textContent,
+                selected_level: selectedLevel
+            },
+            success: function(response) {
+                if (response.status == 1) {
+                    // Show success message and redirect to cart
+                    alert(response.message || '{{ translate("Course added to cart successfully") }}');
+                    window.location.href = '{{ route("cart") }}';
+                } else {
+                    if (response.redirect) {
+                        // Redirect to login
+                        window.location.href = response.redirect;
+                    } else {
+                        alert(response.message || '{{ translate("Failed to add course to cart") }}');
+                        btn.disabled = false;
+                        btn.textContent = '{{ translate("Add to Cart") }}';
+                    }
+                }
+            },
+            error: function(xhr) {
+                let message = '{{ translate("Failed to add course to cart") }}';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                alert(message);
+                btn.disabled = false;
+                btn.textContent = '{{ translate("Add to Cart") }}';
+            }
+        });
     } else {
         alert('{{ translate("Please select date, level, and time") }}');
     }

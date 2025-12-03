@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\Course;
+use App\Models\CourseSchedule;
 use Auth;
 use App\Utility\CartUtility;
 use Session;
@@ -17,14 +19,18 @@ class CartController extends Controller
 {
     if (auth()->check()) {
         $user_id = auth()->user()->id;
-        $carts = Cart::where('user_id', $user_id)->get();
+        $carts = Cart::where('user_id', $user_id)
+            ->with(['product', 'course', 'courseSchedule', 'course.institute'])
+            ->get();
     } else {
         // Ensure guest session has a temp_user_id
         if (!$request->session()->has('temp_user_id')) {
          //   $request->session()->put('temp_user_id', uniqid('guest_', true));
         }
         $user_id = $request->session()->get('temp_user_id');
-        $carts = Cart::where('temp_user_id', $user_id)->get();
+        $carts = Cart::where('temp_user_id', $user_id)
+            ->with(['product', 'course', 'courseSchedule', 'course.institute'])
+            ->get();
     }
     //
     // Fetch cart items for authenticated users or guests
@@ -71,6 +77,17 @@ class CartController extends Controller
             $query->where('temp_user_id', $temp_user_id);
         }
     })->get();
+
+    // Check if cart contains courses - prevent mixing products and courses
+    $hasCourses = $carts->where('item_type', 'course')->count() > 0;
+    if ($hasCourses) {
+        return [
+            'status' => 0,
+            'cart_count' => count($carts),
+            'modal_view' => view('frontend.'.get_setting('homepage_select').'.partials.removeCourseFromCart')->render(),
+            'nav_cart_view' => view('frontend.'.get_setting('homepage_select').'.partials.cart')->render(),
+        ];
+    }
 
     // Debugging session to check temp_user_id
   //  \Log::info('Session Data:', session()->all());
@@ -292,5 +309,110 @@ public function updateQuantity(Request $request)
         'nav_cart_view' => view('frontend.'.get_setting('homepage_select').'.partials.cart')->render(),
     ];
 }
+
+    /**
+     * Add course to cart
+     * Requires user to be logged in
+     */
+    public function addCourseToCart(Request $request)
+    {
+        // Require login for course purchases
+        if (!auth()->check()) {
+            return [
+                'status' => 0,
+                'message' => translate('Please login to purchase courses'),
+                'redirect' => route('user.login'),
+            ];
+        }
+
+        $user_id = auth()->user()->id;
+        
+        // Fetch existing cart items
+        $carts = Cart::where('user_id', $user_id)->get();
+        
+        // Check if cart contains products - prevent mixing products and courses
+        $hasProducts = $carts->where('item_type', 'product')->count() > 0;
+        if ($hasProducts) {
+            return [
+                'status' => 0,
+                'message' => translate('Cannot add courses to cart with physical products. Please complete your product purchase first.'),
+            ];
+        }
+
+        // Validate request
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'course_schedule_id' => 'nullable|exists:course_schedules,id',
+            'selected_date' => 'nullable|date',
+            'selected_time' => 'nullable',
+            'selected_level' => 'nullable|string',
+        ]);
+
+        $course = \App\Models\Course::findOrFail($request->course_id);
+        $courseSchedule = $request->course_schedule_id 
+            ? \App\Models\CourseSchedule::findOrFail($request->course_schedule_id)
+            : null;
+
+        // Determine price (use schedule price if available, otherwise course price)
+        $price = $courseSchedule ? ($courseSchedule->price ?? $course->price) : $course->price;
+        
+        // Store course metadata in variation field as JSON
+        $variation = json_encode([
+            'selected_date' => $request->selected_date,
+            'selected_time' => $request->selected_time,
+            'selected_level' => $request->selected_level,
+        ]);
+
+        // Check if course already in cart
+        $existingCart = Cart::where('user_id', $user_id)
+            ->where('course_id', $request->course_id)
+            ->where('course_schedule_id', $request->course_schedule_id)
+            ->where('item_type', 'course')
+            ->first();
+
+        if ($existingCart) {
+            return [
+                'status' => 0,
+                'message' => translate('Course already in cart'),
+            ];
+        }
+
+        // Create cart item
+        $cart = new Cart();
+        $cart->user_id = $user_id;
+        $cart->course_id = $request->course_id;
+        $cart->course_schedule_id = $request->course_schedule_id;
+        $cart->item_type = 'course';
+        $cart->variation = $variation;
+        $cart->price = $price;
+        $cart->tax = 0; // Courses typically don't have tax, adjust if needed
+        $cart->shipping_cost = 0; // No shipping for courses
+        $cart->quantity = 1; // Courses are typically quantity 1
+        $cart->owner_id = null; // Courses don't have owners like products
+        $cart->save();
+
+        // Fetch updated cart
+        $carts = Cart::where('user_id', $user_id)
+            ->with(['course', 'courseSchedule', 'course.institute'])
+            ->get();
+        
+        $qty = $carts->sum('quantity');
+        
+        // Load course relationship for the cart item
+        $cart->load('course', 'courseSchedule', 'course.institute');
+
+        return [
+            'status' => 1,
+            'message' => translate('Course added to cart successfully'),
+            'cart_count' => $qty,
+            'modal_view' => view('frontend.'.get_setting('homepage_select').'.partials.addedToCart', [
+                'cart' => $cart,
+                'product' => null, // No product for courses
+                'course' => $cart->course,
+                'item_type' => 'course'
+            ])->render(),
+            'nav_cart_view' => view('frontend.'.get_setting('homepage_select').'.partials.cart')->render(),
+        ];
+    }
 
 }

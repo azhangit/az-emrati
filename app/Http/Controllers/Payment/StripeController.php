@@ -46,6 +46,10 @@ class StripeController extends Controller
                 $seller_package = SellerPackage::findOrFail(Session::get('payment_data')['seller_package_id']);
                 $amount = round($seller_package->amount * 100);
                 $client_reference_id = auth()->id();
+            } elseif ($request->session()->get('payment_type') == 'course_payment') {
+                $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
+                $client_reference_id = $combined_order->id;
+                $amount = round($combined_order->grand_total * 100);
             }
         }
 
@@ -127,6 +131,9 @@ class StripeController extends Controller
                 }
                 else if ($payment_type == 'seller_package_payment') {
                     return (new SellerPackageController)->purchase_payment_done(session()->get('payment_data'), json_encode($payment));
+                }
+                else if ($payment_type == 'course_payment') {
+                    return (new CheckoutController)->course_purchase_done(session()->get('combined_order_id'), json_encode($payment));
                 }
             } else {
                 flash(translate('Payment failed'))->error();

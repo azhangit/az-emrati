@@ -34,7 +34,11 @@
 
             @php $subtotal_for_min_order_amount = 0; @endphp
             @foreach ($carts as $key => $cartItem)
-                @php$subtotal_for_min_order_amount += $cartItem['price'] * $cartItem['quantity'];@endphp
+                @php
+                    $itemPrice = is_object($cartItem) ? $cartItem->price : ($cartItem['price'] ?? 0);
+                    $itemQuantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+                    $subtotal_for_min_order_amount += $itemPrice * $itemQuantity;
+                @endphp
             @endforeach
             @if (get_setting('minimum_order_amount_check') == 1 && $subtotal_for_min_order_amount < get_setting('minimum_order_amount'))
                 <span class="badge badge-inline badge-primary fs-12 rounded-0 px-2">
@@ -56,8 +60,16 @@
                 @endphp
                 @foreach ($carts as $key => $cartItem)
                     @php
-                        $product = get_single_product($cartItem['product_id']);
-                        $total_point += $product->earn_point * $cartItem['quantity'];
+                        $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+                        if (!$productId) {
+                            continue;
+                        }
+                        $product = get_single_product($productId);
+                        if (!$product) {
+                            continue;
+                        }
+                        $itemQuantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+                        $total_point += ($product->earn_point ?? 0) * $itemQuantity;
                     @endphp
                 @endforeach
 
@@ -92,33 +104,71 @@
                     $tax = 0;
                     $shipping = 0;
                     $product_shipping_cost = 0;
-                    $shipping_region = $shipping_info['city'] ?? ($shipping_info['mode'] ?? null) === 'pickup'
-                        ? translate('Pickup')
-                        : '';
+                    // Handle both object and array access for shipping_info
+                    $shippingCity = is_object($shipping_info) ? ($shipping_info->city ?? null) : ($shipping_info['city'] ?? null);
+                    $shippingMode = is_object($shipping_info) ? ($shipping_info->mode ?? null) : ($shipping_info['mode'] ?? null);
+                    $shipping_region = $shippingCity ?? ($shippingMode === 'pickup' ? translate('Pickup') : '');
                 @endphp
                 @foreach ($carts as $key => $cartItem)
                     @php
-                        $product = get_single_product($cartItem['product_id']);
-                         $subtotal += $cartItem['price'] * $cartItem['quantity'];
-                        $tax += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
-                        $product_shipping_cost = $cartItem['shipping_cost'];
+                        // Handle both object and array access
+                        $itemType = is_object($cartItem) ? ($cartItem->item_type ?? 'product') : ($cartItem['item_type'] ?? 'product');
+                        $price = is_object($cartItem) ? $cartItem->price : ($cartItem['price'] ?? 0);
+                        $quantity = is_object($cartItem) ? $cartItem->quantity : ($cartItem['quantity'] ?? 1);
+                        $product_shipping_cost = is_object($cartItem) ? $cartItem->shipping_cost : ($cartItem['shipping_cost'] ?? 0);
                         
-                        $shipping += $product_shipping_cost;
-                        
-                        $product_name_with_choice = $product->getTranslation('name');
-                        if ($cartItem['variant'] != null) {
-                            $product_name_with_choice = $product->getTranslation('name') . ' - ' . $cartItem['variant'];
+                        // Handle course items
+                        if ($itemType === 'course') {
+                            $course = $cartItem->course ?? null;
+                            $courseSchedule = $cartItem->courseSchedule ?? null;
+                            $variationData = $cartItem->variation ? json_decode($cartItem->variation, true) : [];
+                            $itemName = $course ? $course->course_module : 'Course';
+                            if ($courseSchedule) {
+                                $itemName .= ' - ' . ($courseSchedule->course_level ?? '');
+                            }
+                            
+                            $subtotal += $price * $quantity;
+                            $tax += ($cartItem->tax ?? 0) * $quantity; // Use cart tax for courses
+                            $shipping += 0; // No shipping for courses
+                        } else {
+                            // Handle product items
+                            $productId = is_object($cartItem) ? $cartItem->product_id : ($cartItem['product_id'] ?? null);
+                            if (!$productId) {
+                                continue; // Skip if no product_id
+                            }
+                            
+                            $product = get_single_product($productId);
+                            if (!$product) {
+                                continue; // Skip if product not found
+                            }
+                            
+                            $variant = is_object($cartItem) ? ($cartItem->variant ?? $cartItem->variation ?? null) : ($cartItem['variant'] ?? $cartItem['variation'] ?? null);
+                            
+                            $subtotal += $price * $quantity;
+                            $tax += cart_product_tax($cartItem, $product, false) * $quantity;
+                            $shipping += $product_shipping_cost;
+                            
+                            $itemName = $product ? $product->getTranslation('name') : 'Product';
+                            if ($variant != null) {
+                                $itemName = ($product ? $product->getTranslation('name') : 'Product') . ' - ' . $variant;
+                            }
                         }
                     @endphp
                     <tr class="cart_item">
                         <td class="product-name pl-0 fs-14 text-dark fw-400 border-top-0 border-bottom">
-                            {{ $product_name_with_choice }}
+                            {{ $itemName }}
+                            @if ($itemType === 'course' && isset($variationData['selected_date']))
+                                <br><small class="text-secondary">{{ translate('Date') }}: {{ $variationData['selected_date'] }}</small>
+                            @endif
+                            @if ($itemType === 'course' && isset($variationData['selected_time']))
+                                <br><small class="text-secondary">{{ translate('Time') }}: {{ $variationData['selected_time'] }}</small>
+                            @endif
                             <strong class="product-quantity">
-                                × {{ $cartItem['quantity'] }}
+                                × {{ $quantity }}
                             </strong>
                         </td>
                         <td class="product-total text-right pr-0 fs-14 text-primary fw-600 border-top-0 border-bottom">
-                           <span class="pl-4 pr-0">{{ single_price($cartItem['price'] * $cartItem['quantity']) }}</span>
+                           <span class="pl-4 pr-0">{{ single_price($price * $quantity) }}</span>
                         </td>
                     </tr>
                 @endforeach

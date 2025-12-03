@@ -13,25 +13,25 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        // yahan custom command classes ho to add karte hain (ham closure use kar rahe hain)
     ];
 
     /**
      * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
      */
-    protected function schedule(\Illuminate\Console\Scheduling\Schedule $schedule)
-{
-    $schedule->command('send:scheduled-subscription-emails')->everyMinute();
-}
+    protected function schedule(Schedule $schedule)
+    {
+        // pehle se existing job
+        $schedule->command('send:scheduled-subscription-emails')->everyMinute();
 
+        // NEW: instagram feed ko warm-up / refresh karne ka cron
+        $schedule->command('refresh:instagram')->hourly();
+        // agar chaho to everyFifteenMinutes() bhi kar sakte ho
+        // $schedule->command('refresh:instagram')->everyFifteenMinutes();
+    }
 
     /**
      * Register the commands for the application.
-     *
-     * @return void
      */
     protected function commands()
     {

@@ -57,7 +57,7 @@
 			<table>
 				<tr>
 					<td>
-						<img loading="lazy"  src="{{ asset('public/assets/img/home-page/f-logo-1.png')}}" height="40" style="display:inline-block;">
+						<img loading="lazy"  src="{{ asset('/assets/img/home-page/f-logo-1.png')}}" height="40" style="display:inline-block;">
 					</td>
 					<td style="font-size: 1.5rem;" class="text-right strong">{{  translate('INVOICE') }}</td>
 				</tr>

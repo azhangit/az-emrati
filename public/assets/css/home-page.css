@@ -461,24 +461,24 @@ background-image: url('https://emrati.acusync.net/assets/img/home-page/EMIRATI-C
 }
 
 .img-1 {
-    background: url(public/assets/img/home-page/Frame-4.png) center / cover
+    background: url(/assets/img/home-page/Frame-4.png) center / cover
         no-repeat;
 }
 .img-2 {
-    background: url(public/assets/img/home-page/Group-209.png) center/cover
+    background: url(/assets/img/home-page/Group-209.png) center/cover
         no-repeat;
 }
 .img-3 {
-    background: url(public/assets/img/home-page/Frame-4.png) center / cover
+    background: url(/assets/img/home-page/Frame-4.png) center / cover
         no-repeat;
 }
 
 .img-5 {
-    background: url(public/assets/img/home-page/image-2.png) bottom right /
+    background: url(/assets/img/home-page/image-2.png) bottom right /
         cover no-repeat;
 }
 .img-6 {
-    background: url(public/assets/img/home-page/packed-coffee.png) center /
+    background: url(/assets/img/home-page/packed-coffee.png) center /
         cover no-repeat;
 }
 

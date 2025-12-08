@@ -987,7 +987,7 @@ li{
               <div class="icon d-block d-lg-none">
                   
               <a class="navbar-brand " href="{{ url($navBaseUrl . '/')}}">
-                <img src="{{asset('public/assets/img/home-page/logo-head.png')}}" alt="" class="" />
+                <img src="{{asset('/assets/img/home-page/logo-head.png')}}" alt="" class="" />
               </a>
               </div>
                   
@@ -1094,7 +1094,7 @@ li{
                   <ul class="navbar-nav mb-md-0 align-items-lg-center">
     <!-- Logo, mobile Coffee link, etc... -->
    <a class="navbar-brand p-0 d-none d-lg-block " href="{{ url($navBaseUrl . '/')}}">
-                <img src="{{asset('public/assets/img/home-page/logo-head.png')}}" alt="" class="" />
+                <img src="{{asset('/assets/img/home-page/logo-head.png')}}" alt="" class="" />
               </a>         
  {{-- Coffee Dropdown --}}
  <div class="dropdown d-lg-none d-block">

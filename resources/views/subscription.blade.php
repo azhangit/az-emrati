@@ -554,9 +554,9 @@ color: #fff;
           <p class="text-muted">{{ translate('Get A new Coffee Each Month With A Plan Personailzed To Your Prefrences') }}</p>
         </div>
     <div class="video-section">
-          <!--<img src="{{ asset ('public/assets/img/home-page/Group 173.png')}}" alt="">-->
+          <!--<img src="{{ asset ('/assets/img/home-page/Group 173.png')}}" alt="">-->
                   <video autoplay loop muted playsinline>
-            <source src="{{ asset('public/assets/img/home-page/exclusive.mp4') }}" type="video/mp4">
+            <source src="{{ asset('/assets/img/home-page/exclusive.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         </div>

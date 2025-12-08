@@ -3,7 +3,7 @@
         <div class="aiz-side-nav-logo-wrap">
             <a href="{{ route('admin.dashboard') }}" class="d-block text-left">
               
-                    <img class="mw-100" src="{{asset('public/assets/img/home-page/logo-head.png')}}" class="brand-icon" alt="">
+                    <img class="mw-100" src="{{asset('/assets/img/home-page/logo-head.png')}}" class="brand-icon" alt="">
                
             </a>
         </div>

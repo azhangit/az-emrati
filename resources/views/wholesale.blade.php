@@ -26,7 +26,7 @@
      <div class="row justify-content-center m-5">
     
     <div class="card">
-        <img src="{{asset('public/assets/img/home-page/image-7.png')}}" class="card-img-top" alt="...">
+        <img src="{{asset('/assets/img/home-page/image-7.png')}}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-text m-0">{{ translate('Your Café') }}</h5><h5 class="card-text mb-2"> {{ translate('superPowered') }} </h5>
               
@@ -36,7 +36,7 @@
     
     
       <div class="card">
-        <img src="{{ asset('public/assets/img/home-page/image-8.png')}}" class=" card-img-top" alt="...">
+        <img src="{{ asset('/assets/img/home-page/image-8.png')}}" class=" card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-text mb-2">{{ translate('Coffee at your office like never before') }}
             </h5>

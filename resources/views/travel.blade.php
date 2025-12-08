@@ -339,16 +339,16 @@ body {
     <div class="image-gallery-grid">
         <!-- The grid items -->
         <div class="image-card">
-            <img src="{{asset('public/assets/img/home-page/108_MSF_IMG_6692.png')}}" alt="Man harvesting coffee beans from a lush green bush">
+            <img src="{{asset('/assets/img/home-page/108_MSF_IMG_6692.png')}}" alt="Man harvesting coffee beans from a lush green bush">
         </div>
         <div class="image-card">
-            <img src="{{asset('public/assets/img/home-page/AquiaresEstate_Diego&Pickers.png')}}" alt="Three coffee farmers sitting with a large pile of red coffee cherries">
+            <img src="{{asset('/assets/img/home-page/AquiaresEstate_Diego&Pickers.png')}}" alt="Three coffee farmers sitting with a large pile of red coffee cherries">
         </div>
         <div class="image-card">
-            <img src="{{asset('public/assets/img/home-page/IMG_6520-min-scaled.png')}}" alt="Woman standing in a coffee plantation with green mountains in the background">
+            <img src="{{asset('/assets/img/home-page/IMG_6520-min-scaled.png')}}" alt="Woman standing in a coffee plantation with green mountains in the background">
         </div>
         <div class="image-card">
-            <img src="{{asset('public/assets/img/home-page/Cofinet-3.png')}}" alt="Man in a white t-shirt smiling next to a coffee plant">
+            <img src="{{asset('/assets/img/home-page/Cofinet-3.png')}}" alt="Man in a white t-shirt smiling next to a coffee plant">
         </div>
     </div>
 
@@ -408,7 +408,7 @@ body {
             <!-- Story Card 1 -->
             <div class="story-card">
                 <a href="#" class="story-image-link">
-                    <img src="{{asset('public/assets/img/home-page/lady.png')}}" alt="A woman smiling in a greenhouse on a farm.">
+                    <img src="{{asset('/assets/img/home-page/lady.png')}}" alt="A woman smiling in a greenhouse on a farm.">
                 </a>
                 <div class="story-caption">
                     <p>{{ translate('The Éco Ferme Fructueux wants to say a HUGE THANK YOU for her incredible time with us! You were much more than a guest... a true farm superhero! 💚') }}</p>
@@ -418,7 +418,7 @@ body {
             <!-- Story Card 2 -->
             <div class="story-card">
                 <a href="#" class="story-image-link">
-                    <img src="{{asset('public/assets/img/home-page/image-2222.png')}}" alt="Two women embracing in front of a wall with 'Eco Ferme' graffiti.">
+                    <img src="{{asset('/assets/img/home-page/image-2222.png')}}" alt="Two women embracing in front of a wall with 'Eco Ferme' graffiti.">
                 </a>
                 <div class="story-caption">
                     <p>{{ translate('The Éco Ferme Fructueux wants to say a HUGE THANK YOU for her incredible time with us! You were much more than a guest... a true farm superhero! 💚') }}</p>
@@ -428,7 +428,7 @@ body {
             <!-- Story Card 3 -->
             <div class="story-card">
                  <a href="#" class="story-image-link">
-                    <img src="{{asset('public/assets/img/home-page/fermentaiton.png')}}" alt="Farmers sorting freshly harvested red coffee cherries.">
+                    <img src="{{asset('/assets/img/home-page/fermentaiton.png')}}" alt="Farmers sorting freshly harvested red coffee cherries.">
                 </a>
                 <div class="story-caption">
                     <p>{{ translate('The Éco Ferme Fructueux wants to say a HUGE THANK YOU for her incredible time with us! You were much more than a guest... a true farm superhero! 💚') }}</p>
@@ -438,7 +438,7 @@ body {
             <!-- Story Card 4 -->
             <div class="story-card">
                  <a href="#" class="story-image-link">
-                    <img src="{{asset('public/assets/img/home-page/Renovated-Farmhouse.png')}}" alt="A farmhouse with a red roof on a lush green hillside coffee plantation.">
+                    <img src="{{asset('/assets/img/home-page/Renovated-Farmhouse.png')}}" alt="A farmhouse with a red roof on a lush green hillside coffee plantation.">
                 </a>
                 <div class="story-caption">
                     <p>{{ translate('The Éco Ferme Fructueux wants to say a HUGE THANK YOU for her incredible time with us! You were much more than a guest... a true farm superhero! 💚') }}</p>

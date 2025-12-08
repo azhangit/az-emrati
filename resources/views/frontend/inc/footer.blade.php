@@ -586,7 +586,7 @@
     </div>
     <div class="row ">
      <div class="col-lg-3 mb-2 align-content-center">
-      <img src="{{ asset('public/assets/img/home-page/f-logo-1.png')}}" style="height: 41px; margin:10px 0;">
+      <img src="{{ asset('/assets/img/home-page/f-logo-1.png')}}" style="height: 41px; margin:10px 0;">
     </div>
     <div class="col-lg-6 mb-2  align-content-center">
         <ul class="d-flex list-unstyled policies m-0">

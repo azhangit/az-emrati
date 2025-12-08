@@ -124,9 +124,9 @@
     </div>
     
     <div class="col-md-8 order-md-1 text-md-start col-12 order-1 text-center p-0 m-0"  >
-<!--style="background-image: url('{{ asset('public/assets/img/home-page/apple-logo_black.jpg.landing-regular_2x.png') }}')  ; border-radius:40px 0 0 40px; height: 360px; width: 100%;     background-size: cover; "-->
+<!--style="background-image: url('{{ asset('/assets/img/home-page/apple-logo_black.jpg.landing-regular_2x.png') }}')  ; border-radius:40px 0 0 40px; height: 360px; width: 100%;     background-size: cover; "-->
                                    <div class="main-card-image">
-                                    <img src="{{asset('public/assets/img/home-page/IMG_4724.jpg')}}" class="img-fluid" alt="...">
+                                    <img src="{{asset('/assets/img/home-page/IMG_4724.jpg')}}" class="img-fluid" alt="...">
                                     </div>
 
     </div>
@@ -148,7 +148,7 @@
     <div class="col-md-6 d-flex justify-content-end">
       <div class="box-shadow">
           
-                    <img src="{{asset('public/assets/img/home-page/news-room-4.png')}}" class="img-fluid" alt="...">
+                    <img src="{{asset('/assets/img/home-page/news-room-4.png')}}" class="img-fluid" alt="...">
            
         <div class="box-body">
          <div class="title-category">{{ translate('OUR HISTORY') }}</div>
@@ -163,7 +163,7 @@
     
     <div class="col-md-6 d-flex  ">
         <div class="box-shadow">
-                      <img src="{{ asset('public/assets/img/home-page/news-room-3.png')}}" class="img-fluid" alt="...">
+                      <img src="{{ asset('/assets/img/home-page/news-room-3.png')}}" class="img-fluid" alt="...">
 
           <div class="box-body">
         <div class="title-category">{{ translate('OUR COFFEE') }}</div>
@@ -180,7 +180,7 @@
     
       <div class="col-md-6 d-flex justify-content-end ">
         <div class="box-shadow">
-        <img src="{{ asset('public/assets/img/home-page/news-room-1.png')}}" class="img-fluid" alt="...">
+        <img src="{{ asset('/assets/img/home-page/news-room-1.png')}}" class="img-fluid" alt="...">
           <div class="box-body">
         <div class="title-category">   {{ translate('OUR MISSION') }}</div>
           <div class="title-headline-2">
@@ -195,7 +195,7 @@
       <div class="col-md-6 d-flex ">  
       
         <div class="box-shadow">
-          <img src="{{ asset('public/assets/img/home-page/news-room-2.png')}}  " class="img-fluid" alt="...">
+          <img src="{{ asset('/assets/img/home-page/news-room-2.png')}}  " class="img-fluid" alt="...">
           <div class="box-body">
             <div class="title-category">{{ translate('OUR VISION') }}</div>
              <div class="title-headline-2">
@@ -220,22 +220,22 @@
     
     <div class="owl-carousel owl-theme">
     <div class="item">
-        <img src="public/assets/img/home-page/Colombia2016_5.jpg" 
+        <img src="/assets/img/home-page/Colombia2016_5.jpg" 
 
              alt="Slide 1">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/image006.jpg" 
+        <img src="/assets/img/home-page/image006.jpg" 
 
              alt="Slide 2">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/IMG_0794.jpg" 
+        <img src="/assets/img/home-page/IMG_0794.jpg" 
 
              alt="Slide 3">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/IMG_1362.jpg" 
+        <img src="/assets/img/home-page/IMG_1362.jpg" 
 
              alt="Slide 4">
     </div>

@@ -755,9 +755,9 @@
             </div>
             <!--<img src="{{ asset('public/assets/img/hero-16e.png') }}"  alt="Responsive Image" class="img-fluid mt-3">-->
             <picture>
-    <source media="(max-width: 567px)" srcset="{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-10-10.png') }}" class="img-fluid">
+    <source media="(max-width: 567px)" srcset="{{ asset('/assets/img/home-page/EMIRATI-COFFEE-10-10.png') }}" class="img-fluid">
 <!--hero-16e-mob.png-->
-    <img src="{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-10-10.png') }}" alt="Responsive Image" class="img-fluid animated-img scroll-animate">
+    <img src="{{ asset('/assets/img/home-page/EMIRATI-COFFEE-10-10.png') }}" alt="Responsive Image" class="img-fluid animated-img scroll-animate">
     <!--/hero-16e.png-->
 </picture>
         </div>
@@ -768,7 +768,7 @@
 
       <!-- banner 2 -->
     <div class="banner-2" >
-<!--style="background-image: url('{{ asset('public/assets/img/home-page/hero_iphone16_blue.png') }}" class="img-fluid"-->
+<!--style="background-image: url('{{ asset('/assets/img/home-page/hero_iphone16_blue.png') }}" class="img-fluid"-->
         <div class="col-12 "> 
 
             <div class="row justify-content-center text-center py-5">
@@ -794,7 +794,7 @@
     <!-- bannner 2 exit -->
 
     <div class="banner-1 " >
-        <!--style="background-image: url('{{ asset('public/assets/img/home-page/hero_iphone16pro.png') }}" class="img-fluid"-->
+        <!--style="background-image: url('{{ asset('/assets/img/home-page/hero_iphone16pro.png') }}" class="img-fluid"-->
             <div class="container">
 
       <div class="row justify-content-center py-5">
@@ -819,7 +819,7 @@
   
       <!-- banner 3 -->
     <div class="banner-3" >
-        <!--style="background-image: url('{{ asset('public/assets/img/home-page/hero_apple_watch_series_10.png') }}" class="img-fluid">-->
+        <!--style="background-image: url('{{ asset('/assets/img/home-page/hero_apple_watch_series_10.png') }}" class="img-fluid">-->
     <div class="col-12">
     <div class="row justify-content-center text-center py-5">
     <div>
@@ -1053,7 +1053,7 @@ font-size: 32px !important;
          <div class="row ">
 
                       <div class="col-md-6 mb-md-2">
-            <div class="banner-right banner-ip text-dark " style="background-image: url('{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-7.jpg')}}">
+            <div class="banner-right banner-ip text-dark " style="background-image: url('{{ asset('/assets/img/home-page/EMIRATI-COFFEE-7.jpg')}}">
              <!--promo_ipadair_ai.png'-->
              <div class=" pt-5 ">
               <h3> Drip Bags</h3>
@@ -1074,7 +1074,7 @@ font-size: 32px !important;
 
             
                       <div class="col-md-6 mb-md-2 " id="side-by-side">
-            <div class="banner-right text-dark  img-2" style="background-image: url('{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-6.jpg')}}"> <div class=" pt-5 ">
+            <div class="banner-right text-dark  img-2" style="background-image: url('{{ asset('/assets/img/home-page/EMIRATI-COFFEE-6.jpg')}}"> <div class=" pt-5 ">
              <!--promo_apple_fitness.png-->
               <h3 class="">Tea</h3>
             </div>
@@ -1101,7 +1101,7 @@ font-size: 32px !important;
         <div class="row">
 
                     <div class="col-md-6 mb-md-2" id="side-by-side" >
-            <div class="banner-left  pb-5" style="background-image: url('{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-9.jpg')}}">
+            <div class="banner-left  pb-5" style="background-image: url('{{ asset('/assets/img/home-page/EMIRATI-COFFEE-9.jpg')}}">
                 <!--promo_apple_watch.png-->
               <div class="py-5">
                   
@@ -1122,7 +1122,7 @@ font-size: 32px !important;
             
             
                     <div class="col-md-6 mb-md-2 " id="side-by-side">
-            <div class="banner-right subhead-right text-center img-6  text-dark text-left p-3"  style="background-image: url('{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-1.jpg')}}">
+            <div class="banner-right subhead-right text-center img-6  text-dark text-left p-3"  style="background-image: url('{{ asset('/assets/img/home-page/EMIRATI-COFFEE-1.jpg')}}">
                 <!--promo_apple_card.png'-->
               <h5>Latest News </h5>
               <h3>Academy</h3>
@@ -1145,7 +1145,7 @@ font-size: 32px !important;
 
 
           <div class="col-md-6 mb-md-2" id="side-by-side">
-            <div class="banner-left subhead-left text-center img-5 text-left p-3 text-dark "  style="background-image: url('{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-8.jpg')}}">
+            <div class="banner-left subhead-left text-center img-5 text-left p-3 text-dark "  style="background-image: url('{{ asset('/assets/img/home-page/EMIRATI-COFFEE-8.jpg')}}">
                 <!--promo_iphone_tradein.png-->
               <h6>Event</h6>
               <h3>Wholesale</h3>
@@ -1159,7 +1159,7 @@ font-size: 32px !important;
           </div>
             
                       <div class="col-md-6 mb-md-2" id="side-by-side">
-            <div class="banner-left  align-items-center  img-3  text-center "  style="background-image: url('{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-5.jpg')}}">
+            <div class="banner-left  align-items-center  img-3  text-center "  style="background-image: url('{{ asset('/assets/img/home-page/EMIRATI-COFFEE-5.jpg')}}">
                 promo_macbookpro.png
                            <div class="py-5">
               <h3>Coffee Hits</h3>
@@ -1214,36 +1214,36 @@ font-size: 32px !important;
 
 
 
-             <!--srcset="public/assets/img/home-page/slide-apple-3-small.png 600w,-->
-             <!--        public/assets/img/home-page/slide-apple-3-medium.png 1000w,-->
-             <!--        public/assets/img/home-page/slide-apple-3.png 1600w"-->
+             <!--srcset="/assets/img/home-page/slide-apple-3-small.png 600w,-->
+             <!--        /assets/img/home-page/slide-apple-3-medium.png 1000w,-->
+             <!--        /assets/img/home-page/slide-apple-3.png 1600w"-->
              <!--sizes="(max-width: 600px) 600px, -->
              <!--       (max-width: 1000px) 1000px, -->
              <!--       1600px" -->
 
 <div class="owl-carousel owl-theme">
     <div class="item">
-        <img src="public/assets/img/home-page/Colombia2016_5.jpg" 
+        <img src="/assets/img/home-page/Colombia2016_5.jpg" 
 
              alt="Slide 1">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/image006.jpg" 
+        <img src="/assets/img/home-page/image006.jpg" 
 
              alt="Slide 2">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/IMG_0794.jpg" 
+        <img src="/assets/img/home-page/IMG_0794.jpg" 
 
              alt="Slide 3">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/IMG_1362.jpg" 
+        <img src="/assets/img/home-page/IMG_1362.jpg" 
 
              alt="Slide 4">
     </div>
     <!--<div class="item">-->
-    <!--    <img src="public/assets/img/home-page/slide-apple-5.png" -->
+    <!--    <img src="/assets/img/home-page/slide-apple-5.png" -->
 
     <!--         alt="Slide 5">-->
     <!--</div>-->
@@ -1344,21 +1344,21 @@ font-size: 32px !important;
     <a href="https://instagram.com/emiraticoffee.ae">@emiraticoffee.ae</a>
 <div class="slider-444">
   <div class="slider-track-2">
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>
     
-        <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>
+        <div class="slide-2"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>
     
      <!--Duplicate slides for smooth looping -->
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>
-        <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>
-    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>
+        <div class="slide-2"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>
+    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>
   </div>
 </div>
 

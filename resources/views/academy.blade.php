@@ -418,22 +418,22 @@
         </div>
             <div class="owl-carousel owl-theme">
     <div class="item">
-        <img src="public/assets/img/home-page/Colombia2016_5.jpg" 
+        <img src="/assets/img/home-page/Colombia2016_5.jpg" 
 
              alt="Slide 1">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/image006.jpg" 
+        <img src="/assets/img/home-page/image006.jpg" 
 
              alt="Slide 2">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/IMG_0794.jpg" 
+        <img src="/assets/img/home-page/IMG_0794.jpg" 
 
              alt="Slide 3">
     </div>
     <div class="item">
-        <img src="public/assets/img/home-page/IMG_1362.jpg" 
+        <img src="/assets/img/home-page/IMG_1362.jpg" 
 
              alt="Slide 4">
     </div>
@@ -441,7 +441,7 @@
 </div>
     <!--<div class="video-section">-->
     <!--              <video autoplay loop muted playsinline>-->
-    <!--        <source src="{{ asset('public/assets/img/home-page/race.mp4') }}" type="video/mp4">-->
+    <!--        <source src="{{ asset('/assets/img/home-page/race.mp4') }}" type="video/mp4">-->
     <!--        Your browser does not support the video tag.-->
     <!--    </video>        </div>-->
     

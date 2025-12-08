@@ -9,7 +9,7 @@
 
 <section>
 
-    <div class="banner-1 text-center"style="background-image: url('{{ asset('public/assets/img/home-page/events-background.png') }}')";>
+    <div class="banner-1 text-center"style="background-image: url('{{ asset('/assets/img/home-page/events-background.png') }}')";>
        
             <h1>{{ translate('Emirati Coffee') }}</h1>
       <h1>{{ translate('Events is here') }}</h1>

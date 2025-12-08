@@ -66,7 +66,7 @@
 				<tr>
 					<td>
 					
-							<img loading="lazy"  src="{{ asset('public/assets/img/home-page/f-logo-1.png')}}" height="40" style="display:inline-block;">
+							<img loading="lazy"  src="{{ asset('/assets/img/home-page/f-logo-1.png')}}" height="40" style="display:inline-block;">
 					
 					</td>
 				</tr>

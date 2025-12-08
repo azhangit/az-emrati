@@ -755,9 +755,9 @@
             </div>
             <!--<img src="{{ asset('public/assets/img/hero-16e.png') }}"  alt="Responsive Image" class="img-fluid mt-3">-->
             <picture>
-    <source media="(max-width: 567px)" srcset="{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-10-10.png') }}" class="img-fluid">
+    <source media="(max-width: 567px)" srcset="{{ asset('/assets/img/home-page/EMIRATI-COFFEE-10-10.png') }}" class="img-fluid">
 <!--hero-16e-mob.png-->
-    <img src="{{ asset('public/assets/img/home-page/EMIRATI-COFFEE-10-10.png') }}" alt="Responsive Image" class="img-fluid animated-img scroll-animate">
+    <img src="{{ asset('/assets/img/home-page/EMIRATI-COFFEE-10-10.png') }}" alt="Responsive Image" class="img-fluid animated-img scroll-animate">
     <!--/hero-16e.png-->
 </picture>
         </div>
@@ -768,7 +768,7 @@
 
       <!-- banner 2 -->
     <div class="banner-2" >
-<!--style="background-image: url('{{ asset('public/assets/img/home-page/hero_iphone16_blue.png') }}" class="img-fluid"-->
+<!--style="background-image: url('{{ asset('/assets/img/home-page/hero_iphone16_blue.png') }}" class="img-fluid"-->
         <div class="col-12 "> 
 
             <div class="row justify-content-center text-center py-4">
@@ -794,7 +794,7 @@
     <!-- bannner 2 exit -->
 
     <div class="banner-1" >
-        <!--style="background-image: url('{{ asset('public/assets/img/home-page/hero_iphone16pro.png') }}" class="img-fluid"-->
+        <!--style="background-image: url('{{ asset('/assets/img/home-page/hero_iphone16pro.png') }}" class="img-fluid"-->
             <div class="container">
 
       <div class="row justify-content-center py-4">
@@ -819,7 +819,7 @@
   
       <!-- banner 3 -->
     <div class="banner-3" >
-        <!--style="background-image: url('{{ asset('public/assets/img/home-page/hero_apple_watch_series_10.png') }}" class="img-fluid">-->
+        <!--style="background-image: url('{{ asset('/assets/img/home-page/hero_apple_watch_series_10.png') }}" class="img-fluid">-->
     <div class="col-12">
     <div class="row justify-content-center text-center py-4">
     <div>
@@ -1296,19 +1296,19 @@ color: white;
 
 
 
-             <!--srcset="public/assets/img/home-page/slide-apple-3-small.png 600w,-->
-             <!--        public/assets/img/home-page/slide-apple-3-medium.png 1000w,-->
-             <!--        public/assets/img/home-page/slide-apple-3.png 1600w"-->
+             <!--srcset="/assets/img/home-page/slide-apple-3-small.png 600w,-->
+             <!--        /assets/img/home-page/slide-apple-3-medium.png 1000w,-->
+             <!--        /assets/img/home-page/slide-apple-3.png 1600w"-->
              <!--sizes="(max-width: 600px) 600px, -->
              <!--       (max-width: 1000px) 1000px, -->
              <!--       1600px" -->
 
 <!-- First Owl Carousel -->
 <div class="owl-carousel owl-theme carousel-one">
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="Slide 1"></div>
-  <div class="item"><img src="public/assets/img/home-page/image006.jpg" alt="Slide 2"></div>
-  <div class="item"><img src="public/assets/img/home-page/IMG_0794.jpg" alt="Slide 3"></div>
-  <div class="item"><img src="public/assets/img/home-page/IMG_1362.jpg" alt="Slide 4"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="Slide 1"></div>
+  <div class="item"><img src="/assets/img/home-page/image006.jpg" alt="Slide 2"></div>
+  <div class="item"><img src="/assets/img/home-page/IMG_0794.jpg" alt="Slide 3"></div>
+  <div class="item"><img src="/assets/img/home-page/IMG_1362.jpg" alt="Slide 4"></div>
 </div>
 
 
@@ -1404,60 +1404,60 @@ color: white;
     <a href="https://instagram.com/emiraticoffee.ae">@emiraticoffee.ae</a>
 <!--<div class="slider-444">-->
 <!--  <div class="slider-track-2">-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>-->
     
-<!--        <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>-->
+<!--        <div class="slide-2"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>-->
     
 <!--     Duplicate slides for smooth looping -->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>-->
-<!--        <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>-->
-<!--    <div class="slide-2"><img src="public/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>-->
+<!--        <div class="slide-2"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-2.jpg" alt="Slide 2"></div>-->
+<!--    <div class="slide-2"><img src="/assets/img/home-page/lower-slider-3.png" alt="Slide 3"></div>-->
 <!--  </div>-->
 <!--</div>-->
 <!-- Second Owl Carousel (static, 3 items shown) -->
 <div class="owl-carousel owl-theme carousel-two mt-5 d-none">
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="A"></div>
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="B"></div>
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="C"></div>
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="D"></div>
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="A"></div>
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="B"></div>
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="C"></div>
-  <div class="item"><img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="D"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="A"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="B"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="C"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="D"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="A"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="B"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="C"></div>
+  <div class="item"><img src="/assets/img/home-page/Colombia2016_5.jpg" alt="D"></div>
 
 </div>
 
 <!--<div class="owl-carousel owl-theme">-->
-<!--    <div class="item"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="item"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="item"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="item"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--        <div class="item"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="item"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--        <div class="item"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
-<!--    <div class="item"><img src="public/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="item"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="item"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="item"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="item"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--        <div class="item"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="item"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--        <div class="item"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
+<!--    <div class="item"><img src="/assets/img/home-page/lower-slider-1.png" alt="Slide 1"></div>-->
 <!--</div>-->
     
   
   <div class="reel-wrapper">
   <div class="reel-track">
-    <img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="">
-    <img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="">
-    <img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="">
-    <img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="">
+    <img src="/assets/img/home-page/Colombia2016_5.jpg" alt="">
+    <img src="/assets/img/home-page/Colombia2016_5.jpg" alt="">
+    <img src="/assets/img/home-page/Colombia2016_5.jpg" alt="">
+    <img src="/assets/img/home-page/Colombia2016_5.jpg" alt="">
 
     <!-- Duplicates for seamless loop -->
-    <img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="">
-    <img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="">
-    <img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="">
-    <img src="public/assets/img/home-page/Colombia2016_5.jpg" alt="">
+    <img src="/assets/img/home-page/Colombia2016_5.jpg" alt="">
+    <img src="/assets/img/home-page/Colombia2016_5.jpg" alt="">
+    <img src="/assets/img/home-page/Colombia2016_5.jpg" alt="">
+    <img src="/assets/img/home-page/Colombia2016_5.jpg" alt="">
   </div>
 </div>
 

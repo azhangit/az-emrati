@@ -56,7 +56,7 @@ margin-top:12px;
 
       .banner-1 {
   background: 
-              url('/public/assets/img/home-page/m-EMIRATI-COFFEE-5.6.jpg');
+              url('/assets/img/home-page/m-EMIRATI-COFFEE-5.6.jpg');
     /*Capsules-website.jpg'*/
     background-repeat: no-repeat;
     color: #212529;
@@ -75,7 +75,7 @@ margin-top:12px;
 
   
   .banner-2 {
-    background: url('/public/assets/img/home-page/m-Limited-Edition-COFFEE-silder-image.jpg');
+    background: url('/assets/img/home-page/m-Limited-Edition-COFFEE-silder-image.jpg');
     background-repeat: no-repeat;
     color: #212529 !important;
     background-position: center;
@@ -90,7 +90,7 @@ margin-top:12px;
 
 
   .banner-3 {
-    background: url('/public/assets/img/home-page/m-EMIRATI-COFFEE-4.6.jpg');
+    background: url('/assets/img/home-page/m-EMIRATI-COFFEE-4.6.jpg');
     /*EMIRATI-COFFEE-4.png*/
     background-repeat: no-repeat;
     background-position: center;
@@ -103,38 +103,38 @@ margin-top:12px;
 
 
 .item-1{
-background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-EMIRATI-COFFEE-8.jpg');
+background-image: url('https://emrati.acusync.net/assets/img/home-page/m-EMIRATI-COFFEE-8.jpg');
 }
 
 .item-2{
-background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-EMIRATI-COFFEE-6.jpg');
+background-image: url('https://emrati.acusync.net/assets/img/home-page/m-EMIRATI-COFFEE-6.jpg');
 }
 
 .item-3{
-background-image: url('https://emrati.acusync.net/public/assets/img/home-page/new-EMIRATI-COFFEE-9.jpg');
+background-image: url('https://emrati.acusync.net/assets/img/home-page/new-EMIRATI-COFFEE-9.jpg');
          
 }
 .item-4{  
-background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-EMIRATI-COFFEE-11.jpg');
+background-image: url('https://emrati.acusync.net/assets/img/home-page/m-EMIRATI-COFFEE-11.jpg');
 }
 
 .item-5{ 
-background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-IMG_7813.jpg');
+background-image: url('https://emrati.acusync.net/assets/img/home-page/m-IMG_7813.jpg');
 }
 
 .item-6{ 
 
-background-image: url('https://emrati.acusync.net/public/assets/img/home-page/m-IMG_7814.jpg');
+background-image: url('https://emrati.acusync.net/assets/img/home-page/m-IMG_7814.jpg');
 }
 
 .item-7{ 
 
-background-image: url('https://emrati.acusync.net/public/assets/img/home-page/new-EMIRATI-COFFEE-12.jpg');
+background-image: url('https://emrati.acusync.net/assets/img/home-page/new-EMIRATI-COFFEE-12.jpg');
 }
 
 .item-8{ 
 
-background-image: url('https://emrati.acusync.net/public/assets/img/home-page/EMIRATI-COFFEE-4.jpg');
+background-image: url('https://emrati.acusync.net/assets/img/home-page/EMIRATI-COFFEE-4.jpg');
 }
 
 
@@ -142,7 +142,7 @@ background-image: url('https://emrati.acusync.net/public/assets/img/home-page/EM
       
       
 /*      .banner-1 {*/
-    /*background: url('/public/assets/img/home-page/Capsules-tab.jpg');*/
+    /*background: url('/assets/img/home-page/Capsules-tab.jpg');*/
 /*    background-repeat: no-repeat;*/
 /*    color: white;*/
 /*    background-position: center;*/
@@ -155,7 +155,7 @@ background-image: url('https://emrati.acusync.net/public/assets/img/home-page/EM
       
       
 /*  .banner-2 {*/
-    /*background: url('/public/assets/img/home-page/EMIRATI-COFFEE-13.png');*/
+    /*background: url('/assets/img/home-page/EMIRATI-COFFEE-13.png');*/
 /*    background-repeat: no-repeat;*/
 /*    color: white;*/
 /*    background-position: center;*/
@@ -170,33 +170,33 @@ background-image: url('https://emrati.acusync.net/public/assets/img/home-page/EM
 
 
 /*    .item-1{*/
-         /*background-image: url('/public/assets/img/home-page/drip-bag-tab.jpg');*/
+         /*background-image: url('/assets/img/home-page/drip-bag-tab.jpg');*/
 
         
         
 /*    }*/
     
 /*    .item-2{*/
-                 /*background-image: url('/public/assets/img/home-page/TEA-tab.jpg');*/
+                 /*background-image: url('/assets/img/home-page/TEA-tab.jpg');*/
 
 /*    }*/
     
 /*     .item-3{*/
-    /*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Subscriptions-TAB.jpg');*/
+    /*background-image: url('https://emrati.acusync.net/assets/img/home-page/Subscriptions-TAB.jpg');*/
          
 /*     }*/
     
 /*            .item-4{  */
-     /*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Academy-tab.jpg');*/
+     /*background-image: url('https://emrati.acusync.net/assets/img/home-page/Academy-tab.jpg');*/
 /*}*/
 
 /*        .item-5{ */
-/*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/IMG_7813.jpg');*/
+/*background-image: url('https://emrati.acusync.net/assets/img/home-page/IMG_7813.jpg');*/
 /*}*/
 
 /*        .item-6{ */
 
-/*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Capsules-tab-small.jpg');*/
+/*background-image: url('https://emrati.acusync.net/assets/img/home-page/Capsules-tab-small.jpg');*/
 /*}*/
 
 
@@ -207,18 +207,18 @@ background-image: url('https://emrati.acusync.net/public/assets/img/home-page/EM
 
 
 /*  @media (max-width: 567px) {*/
-/*    .banner-1 { background-image: url('/public/assets/img/home-page/Capsules-mobile-banner.jpg');*/
+/*    .banner-1 { background-image: url('/assets/img/home-page/Capsules-mobile-banner.jpg');*/
     /*hero-ms_iphone16pro.png*/
 /*        background-position: top;*/
             /*align-content: end;*/
 /*    }*/
 
-/*    .banner-2 { background-image: url('/public/assets/img/home-page/Limited-Edition-mobile-banner.jpg');*/
+/*    .banner-2 { background-image: url('/assets/img/home-page/Limited-Edition-mobile-banner.jpg');*/
 /*hero-ms_iphone16_blue.png*/
         
 /*    }*/
 
-/*    .banner-3 { background-image: url('/public/assets/img/home-page/EMIRATI-COFFEE-4.jpg');*/
+/*    .banner-3 { background-image: url('/assets/img/home-page/EMIRATI-COFFEE-4.jpg');*/
     /*hero-ms_apple_watch_series_10.png*/
         
 /*    }*/
@@ -226,33 +226,33 @@ background-image: url('https://emrati.acusync.net/public/assets/img/home-page/EM
     
     
 /*    .item-1{*/
-/*         background-image: url('/public/assets/img/home-page/drip-bag-mobile.jpg');*/
+/*         background-image: url('/assets/img/home-page/drip-bag-mobile.jpg');*/
 
         
         
 /*    }*/
     
 /*    .item-2{*/
-/*                 background-image: url('/public/assets/img/home-page/TEA-mobile.jpg');*/
+/*                 background-image: url('/assets/img/home-page/TEA-mobile.jpg');*/
 
 /*    }*/
     
 /*     .item-3{*/
-/*    background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Subscriptions-mobile.jpg');*/
+/*    background-image: url('https://emrati.acusync.net/assets/img/home-page/Subscriptions-mobile.jpg');*/
          
 /*     }*/
     
 /*            .item-4{  */
-/*     background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Academy-mobile.jpg');*/
+/*     background-image: url('https://emrati.acusync.net/assets/img/home-page/Academy-mobile.jpg');*/
 /*}*/
 
 /*        .item-5{ */
-/*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/IMG_7813.jpg');*/
+/*background-image: url('https://emrati.acusync.net/assets/img/home-page/IMG_7813.jpg');*/
 /*}*/
 
 /*        .item-6{ */
 
-/*background-image: url('https://emrati.acusync.net/public/assets/img/home-page/Capsules-mobile-small.jpg');*/
+/*background-image: url('https://emrati.acusync.net/assets/img/home-page/Capsules-mobile-small.jpg');*/
 /*}*/
 
     

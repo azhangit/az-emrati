@@ -2,7 +2,7 @@
 
 @section ('content')
 
- <link rel="stylesheet" href="https://emrati.acusync.net/public/assets/css/aiz-core.css">
+ <link rel="stylesheet" href="https://emiraticoffee.ae/public/assets/css/aiz-core.css">
 
 
 <main class="main-content w-50 my-5 mx-auto js-focus-hidden" id="MainContent" role="main" tabindex="-1">

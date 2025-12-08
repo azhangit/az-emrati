@@ -4,7 +4,7 @@
 
 
 
-<div class="h-100 bg-cover bg-center pb-5 " style="background-image: url('https://emrati.acusync.net/assets/img/home-page/register-bg.png');"> 
+<div class="h-100 bg-cover bg-center pb-5 " style="background-image: url('https://emiraticoffee.ae/assets/img/home-page/register-bg.png');"> 
 
 <div class="register-logo d-flex w-100 justify-content-center align-content-center">    <img src="{{asset('public/assets/img/logo-head.png')}}" alt="" class="img-fluid" style="width: 88px;
     height: 88px;

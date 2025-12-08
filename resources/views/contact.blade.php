@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-  <link rel="stylesheet" href="https://emrati.acusync.net/public/assets/css/contact-us.css">
+  <link rel="stylesheet" href="https://emiraticoffee.ae/public/assets/css/contact-us.css">
   <style>/* Wrap everything in a .contact-section if you want to scope styles */
 
 

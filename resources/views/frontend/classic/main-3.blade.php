@@ -18,7 +18,7 @@
     @php $lang = get_system_language()->code;  @endphp
     <!-- Sliders -->
     
-        <link rel="stylesheet" href="https://emrati.acusync.net/public/assets/css/custom-style.css">
+        <link rel="stylesheet" href="https://emiraticoffee.ae/public/assets/css/custom-style.css">
 
     
     <div class="home-banner-area mb-3" style="">
@@ -749,7 +749,7 @@
             <h1 class="text-dark">Coffee</h1>
              <p class="text-dark">Explore the Wonders of Geisha</p>
             <div>
-    <a class="btn btn-primary rounded-pill " href="{{ url('https://emrati.acusync.net/category/coffee')}}">Shop Now</a>
+    <a class="btn btn-primary rounded-pill " href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Shop Now</a>
         <a class="btn bg-none btn-top rounded-pill my-3 py-2 px-5 openPopup" href="#" data-slug="geisha-carloman-carranza">Buy Now</a>
             </div>
             </div>
@@ -779,9 +779,9 @@
               </div>
                 <div>
 
-                <a href="{{ url('https://emrati.acusync.net/category/coffee')}}" class=" btn btn-primary rounded-pill   ">Learn More</a>
+                <a href="{{ url('https://emiraticoffee.ae/category/coffee')}}" class=" btn btn-primary rounded-pill   ">Learn More</a>
 
-                <a href="{{ url('https://emrati.acusync.net/category/coffee')}}" class=" btn btn-top rounded-pill   ">Buy</a>
+                <a href="{{ url('https://emiraticoffee.ae/category/coffee')}}" class=" btn btn-top rounded-pill   ">Buy</a>
                 
               </div>
 
@@ -805,8 +805,8 @@
 <!--<div class="d-flex justify-self-end flex-column">-->
     <p>Hello, Apple Intelligence</p>
     <div>
-    <a class="btn btn-primary rounded-pill my-3 py-2 px-5 " href="{{ url('https://emrati.acusync.net/category/coffee')}}">Learn More</a>
-        <a class="btn bg-none btn-top rounded-pill my-3 py-2 px-5 " href="{{ url('https://emrati.acusync.net/category/coffee')}}">Buy</a>
+    <a class="btn btn-primary rounded-pill my-3 py-2 px-5 " href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Learn More</a>
+        <a class="btn bg-none btn-top rounded-pill my-3 py-2 px-5 " href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Buy</a>
 </div>
 </div>
     </div>
@@ -832,10 +832,10 @@ Instant Coffee
 
     <div class="mb-3">
 
-      <a class=" btn btn-primary  rounded-pill"  href="{{ url('https://emrati.acusync.net/category/coffee')}}">Learn More</a>
+      <a class=" btn btn-primary  rounded-pill"  href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Learn More</a>
 
 
-      <a class=" btn btn-top  rounded-pill"  href="{{ url('https://emrati.acusync.net/category/coffee')}}">Buy</a>
+      <a class=" btn btn-top  rounded-pill"  href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Buy</a>
     </div>
 
     <!--<div class="py-4">-->
@@ -1063,10 +1063,10 @@ font-size: 32px !important;
 
 
 
-                <a class=" btn btn-primary  rounded-pill" href="{{ url('https://emrati.acusync.net/category/coffee')}}">Learn More</a>
+                <a class=" btn btn-primary  rounded-pill" href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Learn More</a>
 
 
-                <a class=" btn btn-top  rounded-pill" href="{{ url('https://emrati.acusync.net/category/coffee')}}">Buy</a>
+                <a class=" btn btn-top  rounded-pill" href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Buy</a>
 
 
           </div>
@@ -1083,9 +1083,9 @@ font-size: 32px !important;
                  </p>
            <div class="py-3">
 
-            <a class="btn btn-primary rounded-pill    " href="{{ url('https://emrati.acusync.net/category/coffee')}}">Learn More</a>
+            <a class="btn btn-primary rounded-pill    " href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Learn More</a>
 
-            <a class="btn btn-top rounded-pill    " href="{{ url('https://emrati.acusync.net/category/coffee')}}">Buy</a>
+            <a class="btn btn-top rounded-pill    " href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Buy</a>
 
           </div></div>
           </div>
@@ -1110,9 +1110,9 @@ font-size: 32px !important;
                  </p>
 
 <div class="pt-2">
-                <a href="{{ url('https://emrati.acusync.net/category/coffee')}}" class="btn  btn-primary rounded-pill mb-3">Learn More</a>
+                <a href="{{ url('https://emiraticoffee.ae/category/coffee')}}" class="btn  btn-primary rounded-pill mb-3">Learn More</a>
               
-                              <a href="{{ url('https://emrati.acusync.net/category/coffee')}}" class="btn btn-top  rounded-pill mb-3">Buy</a>
+                              <a href="{{ url('https://emiraticoffee.ae/category/coffee')}}" class="btn btn-top  rounded-pill mb-3">Buy</a>
 </div>
               </div>
               </div>
@@ -1130,7 +1130,7 @@ font-size: 32px !important;
               <p class="sub-para fw-normal">Get up to 3% Daily Cash back with every purchase.
                  </p>
                 <div class="">
-                <a class=" btn btn-primary  rounded-pill" href="{{ url('https://emrati.acusync.net/category/coffee')}}">Learn More</a>
+                <a class=" btn btn-primary  rounded-pill" href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Learn More</a>
                 </div>
           </div>
         </div>
@@ -1153,7 +1153,7 @@ font-size: 32px !important;
                  </p>
 
                 <div class="">
-                <a class="btn btn-primary  rounded-pill" href="{{ url('https://emrati.acusync.net/category/coffee')}}">Learn More</a>
+                <a class="btn btn-primary  rounded-pill" href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Learn More</a>
                 </div>
             </div>
           </div>
@@ -1166,9 +1166,9 @@ font-size: 32px !important;
                 <p class="sub-para fw-normal">Lean. Mean. M3 machine
                  </p>
 
-                <a class="btn btn-primary rounded-pill "  href="{{ url('https://emrati.acusync.net/category/coffee')}}">Learn More</a>
+                <a class="btn btn-primary rounded-pill "  href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Learn More</a>
                 
-                                <a class="btn btn-top  rounded-pill "  href="{{ url('https://emrati.acusync.net/category/coffee')}}">Buy</a>
+                                <a class="btn btn-top  rounded-pill "  href="{{ url('https://emiraticoffee.ae/category/coffee')}}">Buy</a>
 
                 </div>
             </div>

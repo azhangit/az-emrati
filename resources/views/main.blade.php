@@ -18,7 +18,7 @@
     @php $lang = get_system_language()->code;  @endphp
     <!-- Sliders -->
     
-        <link rel="stylesheet" href="https://emrati.acusync.net/public/assets/css/custom-style.css">
+        <link rel="stylesheet" href="https://emiraticoffee.ae/public/assets/css/custom-style.css">
 
     
     <div class="home-banner-area mb-3" style="">
@@ -749,7 +749,7 @@
             <h1 class="text-dark " data-title="{{ translate('Add to wishlist') }}">{{ translate('Coffee') }}</h1>
              <p class="text-dark" data-title="{{ translate('Add to wishlist') }}">{{ translate('Explore the Wonders of Geisha') }}</p>
             <div>
-    <a class="btn btn-primary rounded-pill " href="{{ url('https://emrati.acusync.net/category/coffee')}}">{{ translate('Shop Now') }}</a>
+    <a class="btn btn-primary rounded-pill " href="{{ url('https://emiraticoffee.ae/category/coffee')}}">{{ translate('Shop Now') }}</a>
         <a class="btn bg-none btn-top rounded-pill my-3 py-2 px-5 openPopup" href="#" data-slug="geisha-carloman-carranza">{{ translate('Buy Now') }}</a>
             </div>
             </div>
@@ -779,9 +779,9 @@
               </div>
                 <div>
 
-                <a href="{{ url('https://emrati.acusync.net/category/coffee')}}" class=" btn btn-primary rounded-pill   ">{{ translate('Learn More') }}</a>
+                <a href="{{ url('https://emiraticoffee.ae/category/coffee')}}" class=" btn btn-primary rounded-pill   ">{{ translate('Learn More') }}</a>
 
-                <a href="{{ url('https://emrati.acusync.net/category/coffee')}}" class=" btn btn-top rounded-pill   ">{{ translate('Buy Now') }}</a>
+                <a href="{{ url('https://emiraticoffee.ae/category/coffee')}}" class=" btn btn-top rounded-pill   ">{{ translate('Buy Now') }}</a>
                 
               </div>
 
@@ -805,8 +805,8 @@
 <!--<div class="d-flex justify-self-end flex-column">-->
     <p>{{ translate('Try Our Mixed Tape Today') }}</p>
     <div>
-    <a class="btn btn-primary rounded-pill my-3 py-2 px-5 " href="{{ url('https://emrati.acusync.net/category/coffee')}}">{{ translate('Learn More') }}</a>
-        <a class="btn bg-none btn-top rounded-pill my-3 py-2 px-5 " href="{{ url('https://emrati.acusync.net/category/coffee')}}">{{ translate('Buy Now') }}</a>
+    <a class="btn btn-primary rounded-pill my-3 py-2 px-5 " href="{{ url('https://emiraticoffee.ae/category/coffee')}}">{{ translate('Learn More') }}</a>
+        <a class="btn bg-none btn-top rounded-pill my-3 py-2 px-5 " href="{{ url('https://emiraticoffee.ae/category/coffee')}}">{{ translate('Buy Now') }}</a>
 </div>
 </div>
     </div>
@@ -832,11 +832,11 @@
 
     <div class="mb-3">
 
-      <a class=" btn btn-primary  rounded-pill"  href="{{ url('https://emrati.acusync.net/category/coffee')}}">{{ translate('Learn More') }}</a>
+      <a class=" btn btn-primary  rounded-pill"  href="{{ url('https://emiraticoffee.ae/category/coffee')}}">{{ translate('Learn More') }}</a>
 
 
 
-      <a class=" btn btn-top  rounded-pill"  href="{{ url('https://emrati.acusync.net/category/coffee')}}">{{ translate('Buy Now') }}</a>
+      <a class=" btn btn-top  rounded-pill"  href="{{ url('https://emiraticoffee.ae/category/coffee')}}">{{ translate('Buy Now') }}</a>
     </div>
 
     <!--<div class="py-4">-->
@@ -1173,7 +1173,7 @@ color: white;
 
 
 
-                <a class=" btn btn-primary  rounded-pill" href="https://emrati.acusync.net/category/coffee" bis_skin_checked="1">{{ translate('Learn More') }}</a>
+                <a class=" btn btn-primary  rounded-pill" href="https://emiraticoffee.ae/category/coffee" bis_skin_checked="1">{{ translate('Learn More') }}</a>
 
 
                 <a class=" btn btn-top  rounded-pill openPopup" href="#" data-slug="ethiopia-deri-kidame-2" bis_skin_checked="1">{{ translate('Buy Now') }}</a>
@@ -1193,7 +1193,7 @@ color: white;
                      
                      
 
-            <a class="btn btn-primary rounded-pill    " href="https://emrati.acusync.net/category/coffee" bis_skin_checked="1">{{ translate('Learn More') }}</a>
+            <a class="btn btn-primary rounded-pill    " href="https://emiraticoffee.ae/category/coffee" bis_skin_checked="1">{{ translate('Learn More') }}</a>
 
             <a class="btn btn-top rounded-pill   openPopup  " href="#" data-slug="gozen-organic-matcha-powder" bis_skin_checked="1">{{ translate('Buy Now') }}</a>
 
@@ -1208,7 +1208,7 @@ color: white;
                  </p>
 
 <div class="pt-2" bis_skin_checked="1">
-                <a href="https://emrati.acusync.net/category/coffee" class="btn  btn-primary rounded-pill mb-3" bis_skin_checked="1">{{ translate('Sign Up') }}</a>
+                <a href="https://emiraticoffee.ae/category/coffee" class="btn  btn-primary rounded-pill mb-3" bis_skin_checked="1">{{ translate('Sign Up') }}</a>
               
 
 </div>
@@ -1223,7 +1223,7 @@ color: white;
               <p class="sub-para fw-normal">{{ translate('Travel the Coffee World with Emirati Coffee') }}
                  </p>
                 <div class="" bis_skin_checked="1">
-                <a class=" btn btn-primary  rounded-pill" href="https://emrati.acusync.net/category/coffee" bis_skin_checked="1">{{ translate('Learn More') }}</a>
+                <a class=" btn btn-primary  rounded-pill" href="https://emiraticoffee.ae/category/coffee" bis_skin_checked="1">{{ translate('Learn More') }}</a>
                 </div>
 
     </div>
@@ -1236,7 +1236,7 @@ color: white;
                  </p>
 
                 <div class="" bis_skin_checked="1">
-                <a class="btn btn-primary  rounded-pill" href="https://emrati.acusync.net/category/coffee" bis_skin_checked="1">{{ translate('Learn More') }}</a>
+                <a class="btn btn-primary  rounded-pill" href="https://emiraticoffee.ae/category/coffee" bis_skin_checked="1">{{ translate('Learn More') }}</a>
                 </div>
 
     </div>
@@ -1247,7 +1247,7 @@ color: white;
                 <p class="sub-para fw-normal">{{ translate('Never Run Out of Coffee Again') }}
                  </p>
 
-                <a class="btn btn-primary rounded-pill " href="https://emrati.acusync.net/category/coffee" bis_skin_checked="1">{{ translate('Subscribe Now') }}</a>
+                <a class="btn btn-primary rounded-pill " href="https://emiraticoffee.ae/category/coffee" bis_skin_checked="1">{{ translate('Subscribe Now') }}</a>
                 
 
                 </div>
@@ -1261,7 +1261,7 @@ color: white;
                 <!--<p class="sub-para fw-normal">Never Run Out of Coffee Again-->
                 <!-- </p>-->
 
-                <a class="btn btn-primary rounded-pill " href="https://emrati.acusync.net/category/coffee" bis_skin_checked="1">{{ translate('Subscribe Now') }}</a>
+                <a class="btn btn-primary rounded-pill " href="https://emiraticoffee.ae/category/coffee" bis_skin_checked="1">{{ translate('Subscribe Now') }}</a>
                 
 
                 </div>

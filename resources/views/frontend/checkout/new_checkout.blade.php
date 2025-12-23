@@ -43,6 +43,15 @@
       <div class="col-12 col-lg-8">
         <!-- Delivery Section -->
         <div class="form-section">
+          @if ($errors->any())
+              <div class="alert alert-danger">
+                  <ul class="mb-0">
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+          @endif
           <h4 class="section-title">Delivery</h4>
           <!-- radio buttons -->
   <div class="mb-3">
@@ -194,55 +203,117 @@
     });
 
     // Initialize Stripe
-    var stripe = Stripe("{{ env('STRIPE_KEY') }}");
-    var elements = stripe.elements();
-    var style = {
-      base: {
-        color: "#32325d",
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#aab7c4"
-        }
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a"
-      }
-    };
-    var card = elements.create("card", { style: style });
-    card.mount("#card-element");
+    var stripe, elements, card;
+    try {
+        if ("{{ env('STRIPE_KEY') }}") {
+            stripe = Stripe("{{ env('STRIPE_KEY') }}");
+            elements = stripe.elements();
+            var style = {
+              base: {
+                color: "#32325d",
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: "antialiased",
+                fontSize: "16px",
+                "::placeholder": {
+                  color: "#aab7c4"
+                }
+              },
+              invalid: {
+                color: "#fa755a",
+                iconColor: "#fa755a"
+              }
+            };
+            card = elements.create("card", { style: style });
+            card.mount("#card-element");
 
-    // Real-time validation errors
-    card.on("change", function(event) {
-      var displayError = document.getElementById("card-errors");
-      displayError.textContent = event.error ? event.error.message : "";
-    });
+            // Real-time validation errors
+            card.on("change", function(event) {
+              var displayError = document.getElementById("card-errors");
+              displayError.textContent = event.error ? event.error.message : "";
+            });
+        }
+    } catch(e) {
+        console.error("Stripe initialization failed:", e);
+    }
 
     // AJAX-based payment form submission
     $('#payment-form').on('submit', function(event) {
       event.preventDefault();
+      console.log("Form submit triggered");
+      var $btn = $(this).find('button[type="submit"]');
+      $btn.prop('disabled', true).text('Processing...');
+
       var form = $(this);
-      stripe.createToken(card).then(function(result) {
-        if (result.error) {
-          $('#card-errors').text(result.error.message);
-        } else {
-          $('#stripe_token').val(result.token.id);
-          $.ajax({
+      
+      if (typeof stripe !== 'undefined' && stripe) {
+          console.log("Stripe is defined, creating token...");
+          stripe.createToken(card).then(function(result) {
+            console.log("Stripe result received:", result);
+            if (result.error) {
+              console.log("Stripe error:", result.error.message);
+              $('#card-errors').text(result.error.message);
+              $btn.prop('disabled', false).text('Complete order'); // Re-enable button
+            } else {
+              console.log("Stripe success, token:", result.token.id);
+              $('#stripe_token').val(result.token.id);
+              submitForm(form, $btn);
+            }
+          }).catch(function(err){
+             console.error("Stripe createToken failed:", err);
+             alert("Stripe error: " + err);
+             $btn.prop('disabled', false).text('Complete order');
+          });
+      } else {
+          console.warn("Stripe undefined, submitting directly...");
+          submitForm(form, $btn);
+      }
+    });
+
+    function submitForm(form, $btn) {
+       console.log("Starting AJAX submit to:", form.attr('action'));
+       $.ajax({
             url: form.attr('action'),
             type: form.attr('method'),
             data: form.serialize(),
             success: function(response) {
+              console.log("AJAX Success:", response);
               if (response.redirect_url) {
                 window.location.href = response.redirect_url;
               } else {
                 alert('Order placed successfully!');
+                // Optional: redirect or reload
               }
             },
             error: function(jqXHR, textStatus, errorThrown) {
-              console.log(jqXHR.responseText);
-              alert('Payment failed: ' + errorThrown);
+              console.log("AJAX Error:", jqXHR.status, jqXHR.responseText);
+              $btn.prop('disabled', false).text('Complete order'); // Re-enable button
+              
+              if (jqXHR.status === 422) {
+                console.log("Validation errors detected");
+                var errors = jqXHR.responseJSON.errors;
+                $('.invalid-feedback').remove();
+                $('.is-invalid').removeClass('is-invalid');
+
+                $.each(errors, function(field, messages) {
+                  var input = $('[name="' + field + '"]');
+                  if (input.length > 0) {
+                    input.addClass('is-invalid');
+                    if (input.attr('type') === 'radio' || input.attr('type') === 'checkbox') {
+                         input.parent().after('<div class="invalid-feedback d-block">' + messages[0] + '</div>');
+                    } else {
+                         input.after('<div class="invalid-feedback d-block">' + messages[0] + '</div>');
+                    }
+                  }
+                });
+                
+                if ($(".is-invalid").length > 0) {
+                    $('html, body').animate({
+                        scrollTop: $(".is-invalid").first().offset().top - 100
+                    }, 500);
+                }
+              } else {
+                alert('Payment/Order failed: ' + errorThrown);
+              }
             }
           });
         }

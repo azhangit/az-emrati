@@ -71,6 +71,15 @@
                 <div class="col-xxl-8 col-xl-10 mx-auto">
                     <form id="checkout-shipping-form" class="form-default" data-toggle="validator" action="{{ route('checkout.store_shipping_infostore') }}" role="form" method="POST" novalidate>
     @csrf
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     {{-- Logged-in User Checkout --}}
     @if(Auth::check())
 @php
@@ -166,6 +175,9 @@
                             <div class="alpha-7 fw-700">{{ translate('Add New Address') }}</div>
                         </div>
                     </div>
+                    @error('address_id')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="tab-pane fade {{ $loggedMode === 'pickup' ? 'show active' : '' }}"
@@ -178,15 +190,24 @@
                     </div>
                     <div class="form-group">
                         <label>{{ translate('Full Name') }}</label>
-                        <input type="text" name="pickup_name" class="form-control" data-mode-field="pickup" value="{{ Auth::user()->name }}" required>
+                        <input type="text" name="pickup_name" class="form-control @error('pickup_name') is-invalid @enderror" data-mode-field="pickup" value="{{ Auth::user()->name }}" required>
+                        @error('pickup_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>{{ translate('Email Address') }}</label>
-                        <input type="email" name="pickup_email" class="form-control" data-mode-field="pickup" value="{{ Auth::user()->email }}">
+                        <input type="email" name="pickup_email" class="form-control @error('pickup_email') is-invalid @enderror" data-mode-field="pickup" value="{{ Auth::user()->email }}">
+                        @error('pickup_email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label>{{ translate('Phone Number') }}</label>
-                        <input type="text" name="pickup_phone" class="form-control" data-mode-field="pickup" value="{{ Auth::user()->phone }}" required>
+                        <input type="text" name="pickup_phone" class="form-control @error('pickup_phone') is-invalid @enderror" data-mode-field="pickup" value="{{ Auth::user()->phone }}" required>
+                        @error('pickup_phone')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -250,61 +271,85 @@
             <!-- Name -->
             <div class="form-group">
                 <label>{{ translate('Full Name') }}</label>
-                <input type="text" name="name" class="form-control" data-mode-field="shipping" required value="{{ old('name') }}">
+                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" data-mode-field="shipping" required value="{{ old('name') }}">
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Email -->
             <div class="form-group">
                 <label>{{ translate('Email Address') }}</label>
-                <input type="email" name="email" class="form-control" data-mode-field="shipping" required value="{{ old('email') }}">
+                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" data-mode-field="shipping" required value="{{ old('email') }}">
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Phone -->
             <div class="form-group">
                 <label>{{ translate('Phone Number') }}</label>
-                <input type="text" name="phone" class="form-control" data-mode-field="shipping" required value="{{ old('phone') }}">
+                <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" data-mode-field="shipping" required value="{{ old('phone') }}">
+                @error('phone')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Address -->
             <div class="form-group">
                 <label>{{ translate('Street Address') }}</label>
-                <input type="text" name="address" class="form-control" placeholder="House no, street name" data-mode-field="shipping" required value="{{ old('address') }}">
+                <input type="text" name="address" class="form-control @error('address') is-invalid @enderror" placeholder="House no, street name" data-mode-field="shipping" required value="{{ old('address') }}">
+                @error('address')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Country -->
             <div class="form-group">
                 <label>{{ translate('Country') }}</label>
-                <select id="guest_country_id" class="form-control"
+                <select id="guest_country_id" class="form-control @error('country_id') is-invalid @enderror"
                         data-live-search="true" name="country_id" data-mode-field="shipping" required>
                     <option value="">{{ translate('Select your country') }}</option>
                     @foreach (get_active_countries() as $country)
                         <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>{{ $country->name }}</option>
                     @endforeach
                 </select>
+                @error('country_id')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- State -->
             <div class="form-group">
                 <label>{{ translate('State / Province') }}</label>
-                <select id="guest_state_id" class="form-control"
+                <select id="guest_state_id" class="form-control @error('state_id') is-invalid @enderror"
                         data-live-search="true" name="state_id" data-mode-field="shipping" required>
                     <option value="">{{ translate('Select State') }}</option>
                 </select>
+                @error('state_id')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- City -->
             <div class="form-group">
                 <label>{{ translate('City') }}</label>
-                <select id="guest_city_id" class="form-control"
+                <select id="guest_city_id" class="form-control @error('city_id') is-invalid @enderror"
                         data-live-search="true" name="city_id" data-mode-field="shipping" required>
                     <option value="">{{ translate('Select City') }}</option>
                 </select>
+                @error('city_id')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Postal -->
             <div class="form-group">
                 <label>{{ translate('Postal / ZIP Code') }}</label>
-                <input type="text" name="postal_code" class="form-control" data-mode-field="shipping" value="{{ old('postal_code') }}">
+                <input type="text" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" data-mode-field="shipping" value="{{ old('postal_code') }}">
+                @error('postal_code')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
         </div>
 
@@ -318,15 +363,24 @@
             </div>
             <div class="form-group">
                 <label>{{ translate('Full Name') }}</label>
-                <input type="text" name="pickup_name" class="form-control" data-mode-field="pickup" value="{{ old('pickup_name') }}" required>
+                <input type="text" name="pickup_name" class="form-control @error('pickup_name') is-invalid @enderror" data-mode-field="pickup" value="{{ old('pickup_name') }}" required>
+                @error('pickup_name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label>{{ translate('Email Address') }}</label>
-                <input type="email" name="pickup_email" class="form-control" data-mode-field="pickup" value="{{ old('pickup_email') }}">
+                <input type="email" name="pickup_email" class="form-control @error('pickup_email') is-invalid @enderror" data-mode-field="pickup" value="{{ old('pickup_email') }}">
+                @error('pickup_email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label>{{ translate('Phone Number') }}</label>
-                <input type="text" name="pickup_phone" class="form-control" data-mode-field="pickup" value="{{ old('pickup_phone') }}" required>
+                <input type="text" name="pickup_phone" class="form-control @error('pickup_phone') is-invalid @enderror" data-mode-field="pickup" value="{{ old('pickup_phone') }}" required>
+                @error('pickup_phone')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
         </div>
     </div>
@@ -391,6 +445,35 @@ $(document).on('change', '#guest_state_id', function() {
 
 
 $(function () {
+    // Auto-populate State/City on page load (e.g. after validation error)
+    var selectedCountry = $('#guest_country_id').val();
+    var selectedState = "{{ old('state_id') }}";
+    var selectedCity  = "{{ old('city_id') }}";
+
+    if (selectedCountry) {
+        $.post('{{ route("get-state") }}', {
+            _token: '{{ csrf_token() }}',
+            country_id: selectedCountry
+        }, function(response) {
+            $('#guest_state_id').html(response);
+            if (selectedState) {
+                $('#guest_state_id').val(selectedState);
+                
+                // If state was also selected, fetch cities
+                $.post('{{ route("get-city") }}', {
+                    _token: '{{ csrf_token() }}',
+                    state_id: selectedState
+                }, function(response) {
+                    $('#guest_city_id').html(response);
+                    if (selectedCity) {
+                        $('#guest_city_id').val(selectedCity);
+                    }
+                    AIZ.plugins.bootstrapSelect('refresh');
+                });
+            }
+            AIZ.plugins.bootstrapSelect('refresh');
+        });
+    }
     // Initialize Bootstrap tabs for guest checkout
     $('#guestShippingTabs a').on('click', function (e) {
         e.preventDefault();

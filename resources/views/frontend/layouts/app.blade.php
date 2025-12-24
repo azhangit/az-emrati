@@ -823,10 +823,12 @@ $.ajaxSetup({
             acc[i].addEventListener("click", function() {
                 this.classList.toggle("active");
                 var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
-                } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
+                if (panel) {
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
                 }
             });
         }
@@ -860,17 +862,24 @@ $.ajaxSetup({
 
   // Open modal utility
   function openModal() {
-    $(MODAL_ID).classList.add('show');
-    $(MODAL_ID).style.display = 'block';
-    $(MODAL_ID).removeAttribute('aria-hidden');
+    const modal = $(MODAL_ID);
+    if (!modal) return;
+    modal.classList.add('show');
+    modal.style.display = 'block';
+    modal.removeAttribute('aria-hidden');
     document.body.classList.add('modal-open');
-    setTimeout(()=> { $(INPUT_ID).focus(); }, 100);
+    setTimeout(()=> { 
+        const input = $(INPUT_ID);
+        if(input) input.focus(); 
+    }, 100);
   }
   // Close modal utility
   function closeModal() {
-    $(MODAL_ID).classList.remove('show');
-    $(MODAL_ID).style.display = 'none';
-    $(MODAL_ID).setAttribute('aria-hidden','true');
+    const modal = $(MODAL_ID);
+    if (!modal) return;
+    modal.classList.remove('show');
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden','true');
     document.body.classList.remove('modal-open');
   }
 
@@ -1001,4 +1010,27 @@ $.ajaxSetup({
     @endphp
 
 </body>
+<script>
+    $(document).ready(function() {
+        // Fix for mobile dropdown
+        $('.my-custom-dropdown-btn').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent immediate closing
+            
+            // Close other open dropdowns
+            $('.my-custom-dropdown-btn').not(this).parent().find('.custom-dropdown-menu, .my-custom-dropdown-menu').hide();
+            
+            // Toggle current dropdown
+            // Check both classes as they seem to be used interchangeably
+            $(this).parent().find('.custom-dropdown-menu, .my-custom-dropdown-menu').toggle();
+        });
+
+        // Close when clicking outside
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.my-custom-dropdown').length) {
+                $('.my-custom-dropdown .custom-dropdown-menu, .my-custom-dropdown .my-custom-dropdown-menu').hide();
+            }
+        });
+    });
+</script>
 </html>

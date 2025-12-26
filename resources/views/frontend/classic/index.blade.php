@@ -768,7 +768,7 @@
              <p class="text-dark" data-title="{{ translate('Add to wishlist') }}">{{ translate('Explore the Wonders of Geisha') }}</p>
             <div>
     <a class="btn bg-none btn-top rounded-pill " href="{{ url($navBaseUrl . '/category/coffee')}}">{{ translate('Explore') }}</a>
-        <a class="btn btn-primary rounded-pill my-3 py-2 px-5 openPopup" href="#" data-slug="geisha-carloman-carranza">{{ translate('Buy Now') }}</a>
+        <a class="btn btn-primary rounded-pill my-3 py-2 px-5 openPopup" href="#" data-slug="colombia-arabic-coffee">{{ translate('Buy Now') }}</a>
             </div>
             </div>
             <!--<img src="{{ asset('public/assets/img/hero-16e.png') }}"  alt="Responsive Image" class="img-fluid mt-3">-->

@@ -742,7 +742,7 @@ $reordered = reorderAttributes($array);
                                     $qty += $stock->qty;
                                 }
                             @endphp
-                            <div class="avialable-amount opacity-60">
+                            <div class="avialable-amount d-none opacity-60">
                                 @if ($detailedProduct->stock_visibility_state == 'quantity')
                                     (<span id="available-quantity">{{ $qty }}</span>
                                     {{ translate('available') }})

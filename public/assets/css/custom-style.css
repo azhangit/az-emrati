@@ -1,4 +1,4 @@
-/*your custom css goes here*/ 
+/*your custom css goes here*/
 @font-face {
     font-family: 'SF Pro Display';
     src: url('public/assets/fonts/SFProDisplay-BlackItalic.eot');
@@ -361,15 +361,15 @@
 
 
 /*.modal .dropdown-menu .inner{*/
-    
+
 /*        position: relative;*/
 /*    z-index: 111111111111111;*/
 /*    pointer-events: auto;*/
-    
-    
-    
+
+
+
 /*}*/
 
-.popup .avialable-amount{
-    display:none !important;
+.popup .avialable-quantity {
+    display: none !important;
 }

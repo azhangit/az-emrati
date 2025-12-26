@@ -1021,8 +1021,8 @@ li{
                 <!--</li>-->
            
 
-        <li class="my-custom-dropdown">
-  <span class="my-custom-dropdown-btn" data-action="open-search" data-device="mobile">
+        <li class="nav-item">
+  <span class="" data-action="open-search" data-device="mobile">
     <i class="ri-search-2-line"></i>
   </span>
 </li>

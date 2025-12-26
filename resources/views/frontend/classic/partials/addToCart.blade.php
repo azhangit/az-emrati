@@ -204,7 +204,7 @@
                                             <i class="las la-plus"></i>
                                         </button>
                                     </div>
-                                    <div class="avialable-amount opacity-60">
+                                    <div class="avialable-amount d-none opacity-60">
                                         @if($product->stock_visibility_state == 'quantity')
                                         (<span id="available-quantity">{{ $qty }}</span> {{ translate('available')}})
                                         @elseif($product->stock_visibility_state == 'text' && $qty >= 1)

@@ -35,7 +35,7 @@ position: none !important;
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{ translate('New Address') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -88,9 +88,7 @@ position: none !important;
                                 <label>{{ translate('City')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control mb-3  rounded-0" data-live-search="true"  id="city_id" name="city_id" >
-
-                                </select>
+                                <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Enter City')}}" name="city_name" value="">
                             </div>
                         </div>
 
@@ -163,7 +161,7 @@ position: none !important;
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{ translate('New Address') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

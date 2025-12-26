@@ -42,7 +42,6 @@
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         background: #f8f9fa;
-        min-height: 400px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -427,6 +426,7 @@
         
         .logo-section {
             padding: 0;
+            margin-inline: auto;
         }
         
         .booking-section {
@@ -585,10 +585,13 @@ function renderCalendar() {
         // Check if date is available
         const isAvailable = availableDates.includes(dateStr);
         
-        if (!isAvailable) {
+        if (!isAvailable || cellDate < today) {
             day.classList.add('other-month');
             day.style.opacity = '0.3';
             day.style.cursor = 'not-allowed';
+            if (cellDate < today) {
+                 day.setAttribute('title', '{{ translate("Past date") }}');
+            }
         } else {
             // Highlight today
             if (cellDate.getTime() === today.getTime()) {
@@ -758,8 +761,18 @@ function checkBookingReady() {
 }
 
 document.getElementById('prevMonth').addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
+    const today = new Date();
+    const prevMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+    
+    // Allow going back only if the previous month is not in the past relative to today's month
+    // We compare strings "YYYY-MM" or just check if prevMonthDate's end is < today's start
+    // A simpler check: if currentDate is already the same month as today, don't go back.
+    
+    if (currentDate.getFullYear() > today.getFullYear() || 
+       (currentDate.getFullYear() === today.getFullYear() && currentDate.getMonth() > today.getMonth())) {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    }
 });
 
 document.getElementById('nextMonth').addEventListener('click', () => {

@@ -93,13 +93,7 @@ transition: none;
                 <label>{{ translate('City')}}</label>
             </div>
             <div class="col-md-10">
-                <select class="form-control mb-3  rounded-0 form-control-changes" data-live-search="true"  id="edit_city_id" name="city_id" >
-                    @foreach ($cities as $key => $city)
-                        <option value="{{ $city->id }}" @if($address_data->city_id == $city->id) selected @endif>
-                            {{ $city->name }}
-                        </option>
-                    @endforeach
-                </select>
+                <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Enter City')}}" name="city_name" value="{{ $address_data->city_name ?? optional($address_data->city)->name }}">
             </div>
         </div>
         

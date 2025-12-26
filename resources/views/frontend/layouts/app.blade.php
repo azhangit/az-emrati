@@ -636,8 +636,13 @@ $.ajaxSetup({
         }
 
         function checkAddToCartValidity(){
+            var $form = $('#option-choice-form');
+            if ($('#content-pop #option-choice-form').length > 0 && $('#popupOverlay').css('display') !== 'none') {
+                $form = $('#content-pop #option-choice-form');
+            }
+            
             var names = {};
-            $('#option-choice-form input:radio').each(function() { // find unique names
+            $form.find('input:radio').each(function() { // find unique names
                 names[$(this).attr('name')] = true;
             });
             var count = 0;
@@ -645,7 +650,7 @@ $.ajaxSetup({
                 count++;
             });
 
-            if($('#option-choice-form input:radio:checked').length == count){
+            if($form.find('input:radio:checked').length == count){
                 return true;
             }
 
@@ -653,6 +658,10 @@ $.ajaxSetup({
         }
 
         function addToCart(){
+            var $form = $('#option-choice-form');
+            if ($('#content-pop #option-choice-form').length > 0 && $('#popupOverlay').css('display') !== 'none') {
+                $form = $('#content-pop #option-choice-form');
+            }
             
             if(checkAddToCartValidity()) {
                 
@@ -660,7 +669,7 @@ $.ajaxSetup({
                 $.ajax({
                     type:"POST",
                     url: '{{ route('cart.addToCart') }}',
-                    data: $('#option-choice-form').serializeArray(),
+                    data: $form.serializeArray(),
                     success: function(data){
                     AIZ.plugins.notify('success', 'Product added into cart successfully');
                        $('#addToCart-modal-body').html(null);
@@ -682,6 +691,10 @@ $.ajaxSetup({
 
         function buyNow(){
             
+            var $form = $('#option-choice-form');
+            if ($('#content-pop #option-choice-form').length > 0 && $('#popupOverlay').css('display') !== 'none') {
+                $form = $('#content-pop #option-choice-form');
+            }
 
             if(checkAddToCartValidity()) {
                 $('#addToCart-modal-body').html(null);
@@ -690,7 +703,7 @@ $.ajaxSetup({
                 $.ajax({
                     type:"POST",
                     url: '{{ route('cart.addToCart') }}',
-                    data: $('#option-choice-form').serializeArray(),
+                    data: $form.serializeArray(),
                     success: function(data){
                         if(data.status == 1){
                             $('#addToCart-modal-body').html(data.modal_view);
@@ -698,18 +711,21 @@ $.ajaxSetup({
                             window.location.replace("{{ route('cart') }}");
                         }
                         else{
-                            $('#addToCart-modal-body').html(null);
-                            $('.c-preloader').hide();
-                            $('#modal-size').removeClass('modal-lg');
                             $('#addToCart-modal-body').html(data.modal_view);
+                            AIZ.plugins.notify('warning', data.message || "Please choose all the options");
                         }
+                        
+                        $('.c-preloader').hide();
+                        $('#modal-size').removeClass('modal-lg');
+                        $('#addToCart').modal('show');
                     }
-               });
+                });
             }
             else{
                 AIZ.plugins.notify('warning', "{{ translate('Please choose all the options') }}");
             }
         }
+
 
         function bid_single_modal(bid_product_id, min_bid_amount){
             @if (Auth::check() && (isCustomer() || isSeller()))

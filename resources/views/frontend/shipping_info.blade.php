@@ -141,8 +141,7 @@
                                                     <div class="fs-14 text-dark fw-500 ml-2">{{ $address->postal_code }}</div>
                                                 </div>
                                                 <div class="d-flex info__span">
-                                                    <div class="fs-14 text-secondary">{{ translate('City') }}</div>
-                                                    <div class="fs-14 text-dark fw-500 ml-2">{{ optional($address->city)->name }}</div>
+                                                    <div class="fs-14 text-dark fw-500 ml-2">{{ $address->city_name ?? optional($address->city)->name }}</div>
                                                 </div>
                                                 <div class="d-flex info__span">
                                                     <div class="fs-14 text-secondary">{{ translate('State') }}</div>
@@ -334,11 +333,9 @@
             <!-- City -->
             <div class="form-group">
                 <label>{{ translate('City') }}</label>
-                <select id="guest_city_id" class="form-control @error('city_id') is-invalid @enderror"
-                        data-live-search="true" name="city_id" data-mode-field="shipping" required>
-                    <option value="">{{ translate('Select City') }}</option>
-                </select>
-                @error('city_id')
+                <input type="text" class="form-control @error('city_name') is-invalid @enderror"
+                       name="city_name" value="{{ old('city_name') }}" placeholder="{{ translate('Enter City') }}" data-mode-field="shipping">
+                @error('city_name')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
@@ -431,17 +428,7 @@ $(document).on('change', '#guest_country_id', function() {
     });
 });
 
-$(document).on('change', '#guest_state_id', function() {
-    var state_id = $(this).val();
-    $.post('{{ route("get-city") }}', {
-        _token: '{{ csrf_token() }}',
-        state_id: state_id
-    }, function(response) {
-        $('#guest_city_id').html(response);
-        AIZ.plugins.bootstrapSelect('refresh');
-    });
-
-});
+// City auto-population removed as it is now a text field
 
 
 $(function () {

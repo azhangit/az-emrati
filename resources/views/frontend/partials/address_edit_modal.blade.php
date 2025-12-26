@@ -52,13 +52,7 @@
                 <label>{{ translate('City')}}</label>
             </div>
             <div class="col-md-10">
-                <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="city_id" required>
-                    @foreach ($cities as $key => $city)
-                        <option value="{{ $city->id }}" @if($address_data->city_id == $city->id) selected @endif>
-                            {{ $city->name }}
-                        </option>
-                    @endforeach
-                </select>
+                <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Enter City')}}" name="city_name" value="{{ optional($address_data->city)->name }}">
             </div>
         </div>
         

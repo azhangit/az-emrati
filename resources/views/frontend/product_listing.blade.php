@@ -336,7 +336,7 @@
                         
                         
                         <!-- Products -->
-                        <div>
+                        <div class="overflow-hidden">
                                  
 <div class="row g-4 justify-content-center">
     @foreach ($products as $product)

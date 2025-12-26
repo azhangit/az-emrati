@@ -313,13 +313,12 @@ class CheckoutController extends Controller
             'address'     => 'required|string',
             'country_id'  => 'required|integer',
             'state_id'    => 'required|integer',
-            'city_id'     => 'required|integer',
+            'city_name'   => 'nullable|string',
             'postal_code' => 'nullable|string|max:20',
         ]);
 
         $country = optional(\App\Models\Country::find($request->country_id));
         $state   = optional(\App\Models\State::find($request->state_id));
-        $city    = optional(\App\Models\City::find($request->city_id));
 
         session()->put('guest_shipping_address', [
             'name'        => $request->name,
@@ -328,10 +327,10 @@ class CheckoutController extends Controller
             'address'     => $request->address,
             'country'     => $country->name,
             'state'       => $state->name,
-            'city'        => $city->name,
+            'city'        => $request->city_name,
             'country_id'  => $country->id,
             'state_id'    => $state->id,
-            'city_id'     => $city->id,
+            'city_id'     => null,
             'postal_code' => $request->postal_code,
             'mode'        => 'shipping',
         ]);

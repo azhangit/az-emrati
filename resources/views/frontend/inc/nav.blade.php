@@ -624,6 +624,13 @@
             color: white !important;
         }
         
+        .navbar .stop-propagation i{
+          color: #000  !important;
+        }
+
+
+
+        
         
        .top-navbar .dropdown a {
     color: #E8E8ED !important;

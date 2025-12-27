@@ -57,7 +57,9 @@
                                 <label>{{ translate('City')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Enter City')}}" name="city_name" value="">
+                                <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="city_id" required>
+
+                                </select>
                             </div>
                         </div>
 
@@ -183,7 +185,10 @@
             get_states(country_id);
         });
 
-        // City auto-population removed
+        $(document).on('change', '[name=state_id]', function() {
+            var state_id = $(this).val();
+            get_city(state_id);
+        });
         
         function get_states(country_id) {
             $('[name="state"]').html("");

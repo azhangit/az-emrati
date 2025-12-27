@@ -141,7 +141,8 @@
                                                     <div class="fs-14 text-dark fw-500 ml-2">{{ $address->postal_code }}</div>
                                                 </div>
                                                 <div class="d-flex info__span">
-                                                    <div class="fs-14 text-dark fw-500 ml-2">{{ $address->city_name ?? optional($address->city)->name }}</div>
+                                                    <div class="fs-14 text-secondary">{{ translate('City') }}</div>
+                                                    <div class="fs-14 text-dark fw-500 ml-2">{{ optional($address->city)->name }}</div>
                                                 </div>
                                                 <div class="d-flex info__span">
                                                     <div class="fs-14 text-secondary">{{ translate('State') }}</div>
@@ -310,7 +311,7 @@
                         data-live-search="true" name="country_id" data-mode-field="shipping" required>
                     <option value="">{{ translate('Select your country') }}</option>
                     @foreach (get_active_countries() as $country)
-                        <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>{{ $country->name }}</option>
+                        <option value="{{ $country->id }}">{{ $country->name }}</option>
                     @endforeach
                 </select>
                 @error('country_id')

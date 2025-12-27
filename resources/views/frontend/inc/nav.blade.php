@@ -1705,135 +1705,70 @@ li{
             </div>
         </div>
     </div>
-    
-    <script>
-        $(document).ready(function() {
-  // Hover to open dropdown
-  $('.dropdown').hover(function() {
-    $(this).find('.dropdown-menu').stop(true, true).slideDown(200);
-  }, function() {
-    $(this).find('.dropdown-menu').stop(true, true).slideUp(200);
-  });
-
-  // Blur div pe hover se dropdown close
-  $('.nav-blur').on('mouseenter', function() {
-    $(this).closest('.dropdown').find('.dropdown-menu').stop(true, true).slideUp(200);
-  });
-});
-
-    </script>
-    
-    <script>
-        
-         window.addEventListener("scroll", function () {
-    let navbar = document.getElementById("navbar");
-    if (window.scrollY > 30) {
-        navbar.classList.add("scrolled"); // Change color on scroll
-    } else {
-        navbar.classList.remove("scrolled"); // Reset color
-    }
-});
-    </script>
-
-    @section('script')
-        <script type="text/javascript">
-            function show_order_details(order_id) {
-                $('#order-details-modal-body').html(null);
-
-                if (!$('#modal-size').hasClass('modal-lg')) {
-                    $('#modal-size').addClass('modal-lg');
-                }
-
-                $.post('{{ route('orders.details') }}', {
-                    _token: AIZ.data.csrf,
-                    order_id: order_id
-                }, function(data) {
-                    $('#order-details-modal-body').html(data);
-                    $('#order_details').modal();
-                    $('.c-preloader').hide();
-                    AIZ.plugins.bootstrapSelect('refresh');
-                });
-            }
-            
-           
-// user dropdown script
-        document.addEventListener("DOMContentLoaded", function () {
-            const dropdownBtn = document.getElementById("uniqueDropdownBtn");
-            const dropdownContent = document.getElementById("uniqueDropdownContent");
-
-            dropdownBtn.addEventListener("click", function (event) {
-                event.preventDefault();
-                dropdownContent.style.display = (dropdownContent.style.display === "block") ? "none" : "block";
-            });
-
-            document.addEventListener("click", function (event) {
-                if (!dropdownBtn.contains(event.target) && !dropdownContent.contains(event.target)) {
-                    dropdownContent.style.display = "none";
-                }
-            });
-        });
-        
-        document.addEventListener("DOMContentLoaded", function () {
-    const dropdownBtn = document.getElementById("uniqueDropdownBtn");
-
-    dropdownBtn.addEventListener("click", function (event) {
-        window.location.href = "{{ url($navBaseUrl . '/register') }}";
-    });
-});
-
-
-// mobile user dropdown
-
-document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".my-custom-dropdown").forEach(dropdown => {
-                const dropdownToggle = dropdown.querySelector(".my-custom-dropdown-btn");
-                const dropdownMenu = dropdown.querySelector(".my-custom-dropdown-menu");
-
-                dropdownToggle.addEventListener("click", function (event) {
-                    event.preventDefault(); // Prevents redirect
-
-                    // Hide all other custom dropdowns before showing this one
-                    document.querySelectorAll(".my-custom-dropdown-menu").forEach(menu => {
-                        if (menu !== dropdownMenu) menu.style.display = "none";
-                    });
-
-                    // Toggle this dropdown
-                    dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
-                });
-
-                document.addEventListener("click", function (event) {
-                    if (!dropdown.contains(event.target)) {
-                        dropdownMenu.style.display = "none";
-                    }
-                });
-            });
-        });
-
-</script>
-
 <script>
-    document.querySelectorAll('.dropdown-toggle').forEach(button => {
-        button.addEventListener('click', function (e) {
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ----------------------------
+    // 1️⃣ Custom dropdowns (mobile + account)
+    // ----------------------------
+    document.querySelectorAll(".my-custom-dropdown").forEach(dropdown => {
+        const btn = dropdown.querySelector(".my-custom-dropdown-btn");
+        const menu = dropdown.querySelector(".my-custom-dropdown-menu");
+
+        if (!btn || !menu) return; // Safety check
+
+        // Toggle dropdown on click
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
             e.stopPropagation();
 
-            // Close all dropdowns first
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                if (menu !== this.nextElementSibling) {
-                    menu.classList.remove('show');
-                }
+            // Close other dropdowns
+            document.querySelectorAll(".my-custom-dropdown-menu").forEach(m => {
+                if (m !== menu) m.style.display = "none";
             });
 
-            // Toggle the clicked one
-            const dropdown = this.nextElementSibling;
-            dropdown.classList.toggle('show');
+            // Toggle current
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
         });
     });
 
-    // Optional: close on outside click
-    document.addEventListener('click', function () {
-        document.querySelectorAll('.dropdown-menu').forEach(menu => {
-            menu.classList.remove('show');
+    // Close all dropdowns when clicking outside
+    document.addEventListener("click", function() {
+        document.querySelectorAll(".my-custom-dropdown-menu").forEach(menu => {
+            menu.style.display = "none";
         });
     });
 
-    @endsection 
+
+    // ----------------------------
+    // 2️⃣ Desktop hover dropdowns (if any)
+    // ----------------------------
+    document.querySelectorAll(".dropdown").forEach(dropdown => {
+        const menu = dropdown.querySelector(".dropdown-menu");
+        if (!menu) return;
+
+        dropdown.addEventListener("mouseenter", function() {
+            menu.classList.add("show");
+        });
+        dropdown.addEventListener("mouseleave", function() {
+            menu.classList.remove("show");
+        });
+    });
+
+
+    // ----------------------------
+    // 3️⃣ Navbar scroll effect
+    // ----------------------------
+    const navbar = document.getElementById("navbar");
+    if (navbar) {
+        window.addEventListener("scroll", function() {
+            if (window.scrollY > 30) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        });
+    }
+
+});
+</script>

@@ -533,8 +533,11 @@ $.ajaxSetup({
         });
 
         function updateNavCart(view,count){
+            // Debugging selector count
+            // alert('Cart Count Elements: ' + $('.cart-count').length);
+            // alert('Cart Update Elements: ' + $('.carted-update').length);
+            
             $('.cart-count').html(count);
-            //alert('test');
             $('.carted-update').html(view);
         }
 
@@ -658,6 +661,7 @@ $.ajaxSetup({
         }
 
         function addToCart(){
+            console.log('addToCart function initiated'); 
             var $form = $('#option-choice-form');
             if ($('#content-pop #option-choice-form').length > 0 && $('#popupOverlay').css('display') !== 'none') {
                 $form = $('#content-pop #option-choice-form');
@@ -671,16 +675,26 @@ $.ajaxSetup({
                     url: '{{ route('cart.addToCart') }}',
                     data: $form.serializeArray(),
                     success: function(data){
-                    AIZ.plugins.notify('success', 'Product added into cart successfully');
-                       $('#addToCart-modal-body').html(null);
-                       $('.c-preloader').hide();
-                       $('#modal-size').removeClass('modal-lg');
-                       $('#addToCart-modal-body').html(data.modal_view);
-                       AIZ.extra.plusMinus();
-                       AIZ.plugins.slickCarousel();
-                       updateNavCart(data.nav_cart_view,data.cart_count);
-                       $('#closePopup').click();
-                      // $('#addToCart').modal('showCartModal');
+                        console.log('AJAX success', data);
+                        // Prioritize UI updates
+                        updateNavCart(data.nav_cart_view, data.cart_count);
+                        
+                        AIZ.plugins.notify('success', 'Product added into cart successfully');
+                        $('#addToCart-modal-body').html(null);
+                        $('.c-preloader').hide();
+                        $('#modal-size').removeClass('modal-lg');
+                        $('#addToCart-modal-body').html(data.modal_view);
+                        
+                        // Execute plugins safely
+                        try {
+                            AIZ.extra.plusMinus();
+                            AIZ.plugins.slickCarousel();
+                        } catch (e) {
+                            console.error('Plugin execution failed:', e);
+                        }
+                        
+                        $('#closePopup').click();
+                       // $('#addToCart').modal('showCartModal');
                     }
                 });
             }

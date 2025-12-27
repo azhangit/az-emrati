@@ -63,7 +63,7 @@
     */
     public function admin_products(Request $request)
     {
-    CoreComponentRepository::instantiateShopRepository();
+    // CoreComponentRepository::instantiateShopRepository();
 
     $type = 'In House';
     $col_name = null;
@@ -303,7 +303,7 @@
     */
     public function admin_product_edit(Request $request, $id)
     {
-    CoreComponentRepository::initializeCache();
+    // CoreComponentRepository::initializeCache();
 
     $product = Product::findOrFail($id);
     if ($product->digital == 1) {

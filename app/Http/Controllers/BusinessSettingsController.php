@@ -35,85 +35,85 @@ class BusinessSettingsController extends Controller
 
     public function general_setting(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.general_settings');
     }
 
     public function activation(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.activation');
     }
 
     public function social_login(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.social_login');
     }
 
     public function smtp_settings(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.smtp_settings');
     }
 
     public function google_analytics(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.google_configuration.google_analytics');
     }
 
     public function google_recaptcha(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.google_configuration.google_recaptcha');
     }
 
     public function google_map(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.google_configuration.google_map');
     }
 
     public function google_firebase(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.google_configuration.google_firebase');
     }
 
     public function facebook_chat(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.facebook_chat');
     }
 
     public function facebook_comment(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.facebook_configuration.facebook_comment');
     }
 
     public function payment_method(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.payment_method');
     }
 
     public function file_system(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::initializeCache();
         return view('backend.setup_configurations.file_system');
     }
 
@@ -538,31 +538,31 @@ class BusinessSettingsController extends Controller
 
     public function import_data(Request $request)
     {
-        $url = 'https://activeitzone.com/ecommerce-demo-data-import/import';
-        $header = array(
-            'Content-Type:application/json'
-        );
-        $data['main_url'] = $request->main_url;
-        $data['domain'] = $request->domain;
-        $data['purchase_key'] = $request->purchase_key;
-        $data['layout'] = $request->layout;
-        $request_data_json = json_encode($data);
+        // $url = 'https://activeitzone.com/ecommerce-demo-data-import/import';
+        // $header = array(
+        //     'Content-Type:application/json'
+        // );
+        // $data['main_url'] = $request->main_url;
+        // $data['domain'] = $request->domain;
+        // $data['purchase_key'] = $request->purchase_key;
+        // $data['layout'] = $request->layout;
+        // $request_data_json = json_encode($data);
         
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $request_data_json);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-        $raw_file_data = curl_exec($ch);
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_URL, $url);
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, $request_data_json);
+        // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        // curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        // $raw_file_data = curl_exec($ch);
         
-        if(json_decode($raw_file_data, true)['status']) {
-            flash(translate('Demo data uploaded successfully'))->success();
-        } else {
-            flash(translate(json_decode($raw_file_data, true)['message']))->error();
-        }
+        // if(json_decode($raw_file_data, true)['status']) {
+        //     flash(translate('Demo data uploaded successfully'))->success();
+        // } else {
+        //     flash(translate(json_decode($raw_file_data, true)['message']))->error();
+        // }
         
         return back();
     }

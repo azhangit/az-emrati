@@ -42,6 +42,7 @@ class OrderController extends Controller
 
 public function exportCsv(Request $request): StreamedResponse
 {
+    \Log::info('Export CSV requested');
     if (function_exists('set_time_limit')) @set_time_limit(0);
 
     $selectedIds = collect((array)$request->input('ids'))->filter()->values()->all();
@@ -483,7 +484,7 @@ private function normalizeVariantKey($variation): string
     // All Orders
     public function all_orders(Request $request)
     {
-        CoreComponentRepository::instantiateShopRepository();
+        // CoreComponentRepository::instantiateShopRepository();
 
         $date = $request->date;
         $sort_search = null;

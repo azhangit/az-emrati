@@ -126,10 +126,6 @@ class NagadUtility {
             return true;
         }
 
-        Cache::rememberForever('app-activation', function () {
-            return 'yes';
-        });
-
-        return true;
+      
     }
 }

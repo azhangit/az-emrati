@@ -1025,28 +1025,28 @@ $.ajaxSetup({
         echo get_setting('footer_script');
     @endphp
 
-</body>
-<script>
-    $(document).ready(function() {
-        // Fix for mobile dropdown
-        $('.my-custom-dropdown-btn').on('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation(); // Prevent immediate closing
-            
-            // Close other open dropdowns
-            $('.my-custom-dropdown-btn').not(this).parent().find('.custom-dropdown-menu, .my-custom-dropdown-menu').hide();
-            
-            // Toggle current dropdown
-            // Check both classes as they seem to be used interchangeably
-            $(this).parent().find('.custom-dropdown-menu, .my-custom-dropdown-menu').toggle();
-        });
 
-        // Close when clicking outside
-        $(document).on('click', function(event) {
-            if (!$(event.target).closest('.my-custom-dropdown').length) {
-                $('.my-custom-dropdown .custom-dropdown-menu, .my-custom-dropdown .my-custom-dropdown-menu').hide();
-            }
-        });
+    <script>
+$(document).ready(function() {
+    $('.my-custom-dropdown-btn').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Toggle current menu (even if parent container missing)
+        $(this).siblings('.custom-dropdown-menu, .my-custom-dropdown-menu').toggle();
+
+        // Close other dropdowns
+        $('.my-custom-dropdown-btn').not(this)
+            .siblings('.custom-dropdown-menu, .my-custom-dropdown-menu')
+            .hide();
     });
+
+    $(document).on('click', function(event) {
+        $('.custom-dropdown-menu, .my-custom-dropdown-menu').hide();
+    });
+});
+
 </script>
+</body>
+
 </html>

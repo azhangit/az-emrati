@@ -49,7 +49,7 @@
     </div>
     
     <div class="banner-event-2-img col-md-6 order-md-2 text-md-start col-12 order-1 text-center p-0 m-0">
-    <img src="{{asset('public/assets/img/image-11-1.png')}}" alt="" class="img-fluid">
+    <img src="{{asset('/assets/img/image-11-1.png')}}" alt="" class="img-fluid">
     
     </div>
     </div>
@@ -70,7 +70,7 @@
     </div>
     
     <div class="banner-event-3-img col-md-6 order-md-1 text-md-start col-12 order-1 text-center p-0 m-0" style="border-radius:40px 0 0 40px;">
-    <img src="{{asset('public/assets/img/image-12-1.png')}}" alt="" class="img-fluid">
+    <img src="{{asset('/assets/img/image-12-1.png')}}" alt="" class="img-fluid">
     
     </div>
     </div>
@@ -89,7 +89,7 @@
     </div>
     
     <div class="banner-event-4-img  col-md-6 order-md-2 text-md-start col-12 order-1 text-center p-0 m-0">
-    <img src="{{asset('public/assets/img/image-13-1.png')}}" alt="" class="img-fluid">
+    <img src="{{asset('/assets/img/image-13-1.png')}}" alt="" class="img-fluid">
     
     </div>
     </div>    

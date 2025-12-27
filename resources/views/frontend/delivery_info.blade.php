@@ -234,7 +234,6 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <h6 class="fs-14 fw-700 mt-3">{{ translate('Local Pickup Only') }}</h6>
-                                                    <p class="text-muted mb-0">{{ translate('Home delivery and carrier options are disabled for guest pickup orders.') }}</p>
                                                 </div>
                                             </div>
                                             @if ($pickup_point_list)
@@ -389,7 +388,7 @@
                                                     <div class="row pt-3">
                                                         <div class="col-12">
                                                             <h6 class="fs-14 fw-700 mt-3">{{ translate('Local Pickup Only') }}</h6>
-                                                            <p class="text-muted mb-0">{{ translate('Home delivery and carrier options are disabled for guest pickup orders.') }}</p>
+                                                            <p class="text-muted mb-0">{{ translate('.') }}</p>
                                                         </div>
                                                     </div>
                                                     @if ($pickup_point_list)

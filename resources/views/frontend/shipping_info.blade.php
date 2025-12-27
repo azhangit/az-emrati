@@ -185,9 +185,7 @@
                      role="tabpanel"
                      aria-labelledby="logged-pickup-tab"
                      data-mode-panel="pickup">
-                    <div class="alert alert-info">
-                        {{ translate('Local Pickup selected. No address required – just let us know how to contact you!') }}
-                    </div>
+
                     <div class="form-group">
                         <label>{{ translate('Full Name') }}</label>
                         <input type="text" name="pickup_name" class="form-control @error('pickup_name') is-invalid @enderror" data-mode-field="pickup" value="{{ Auth::user()->name }}" required>

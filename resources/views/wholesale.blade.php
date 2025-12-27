@@ -6,7 +6,7 @@
 
 @section ('content')
 <div id="work">
-    <link rel="stylesheet" href="{{asset('public/assets/css/wholesale.css') }}">
+    <link rel="stylesheet" href="{{asset('/assets/css/wholesale.css') }}">
     <div class="container">
         <div class="top-heading pt-5 d-flex text-center">
             <div class="row">

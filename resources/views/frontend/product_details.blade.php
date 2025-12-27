@@ -53,7 +53,7 @@
     <meta property="product:price:currency"
         content="{{ get_system_default_currency()->code }}" />
     <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}">
-    <link rel="stylesheet" href="{{asset('public/assets/css/colombia.css')}}">
+    <link rel="stylesheet" href="{{asset('/assets/css/colombia.css')}}">
 @endsection
 
 @section('content')

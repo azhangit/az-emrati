@@ -148,7 +148,7 @@
     <div class="col-md-6 d-flex justify-content-end">
       <div class="box-shadow">
           
-                    <img src="{{asset('/assets/img/home-page/news-room-4.png')}}" class="img-fluid" alt="...">
+                    <img src="{{asset('/assets/img/home-page/our-history.png')}}" class="img-fluid" alt="...">
            
         <div class="box-body">
          <div class="title-category">{{ translate('OUR HISTORY') }}</div>
@@ -163,7 +163,7 @@
     
     <div class="col-md-6 d-flex  ">
         <div class="box-shadow">
-                      <img src="{{ asset('/assets/img/home-page/news-room-3.png')}}" class="img-fluid" alt="...">
+                      <img src="{{ asset('/assets/img/home-page/our-coffee.png')}}" class="img-fluid" alt="...">
 
           <div class="box-body">
         <div class="title-category">{{ translate('OUR COFFEE') }}</div>
@@ -180,7 +180,7 @@
     
       <div class="col-md-6 d-flex justify-content-end ">
         <div class="box-shadow">
-        <img src="{{ asset('/assets/img/home-page/news-room-1.png')}}" class="img-fluid" alt="...">
+        <img src="{{ asset('/assets/img/home-page/our-mission.png')}}" class="img-fluid" alt="...">
           <div class="box-body">
         <div class="title-category">   {{ translate('OUR MISSION') }}</div>
           <div class="title-headline-2">
@@ -195,7 +195,7 @@
       <div class="col-md-6 d-flex ">  
       
         <div class="box-shadow">
-          <img src="{{ asset('/assets/img/home-page/news-room-2.png')}}  " class="img-fluid" alt="...">
+          <img src="{{ asset('/assets/img/home-page/our-vision.png')}}  " class="img-fluid" alt="...">
           <div class="box-body">
             <div class="title-category">{{ translate('OUR VISION') }}</div>
              <div class="title-headline-2">

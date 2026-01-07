@@ -15,7 +15,7 @@
 				<h5 class="mb-0 h6">{{ translate('Institute Information') }}</h5>
 			</div>
 			<div class="card-body">
-				<form action="{{ route('institutes.store') }}" method="POST">
+				<form action="{{ route('institutes.store') }}" method="POST" enctype="multipart/form-data">
 					@csrf
 					<div class="form-group mb-3">
 						<label for="name">{{translate('Name')}} <span class="text-danger">*</span></label>

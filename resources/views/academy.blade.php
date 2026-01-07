@@ -399,7 +399,18 @@
     @media (max-width: 768px){
 .owl-carousel .item img {
     height: 495px !important;        /* Set a fixed height */
-}    }
+}   
+
+    .institute-card-wrapper
+    {
+    flex-direction:column;
+    }
+
+
+}
+
+
+
 
     
 
@@ -465,7 +476,8 @@
 
         @foreach($institutes as $institute)
         <a href="{{ route('courses.by-institute', $institute->id) }}" style="text-decoration: none; color: inherit;">
-        <div class="card institute-card" style="display: flex; justify-content: center; align-items: center; width: 10rem; margin:10px 10px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
+        <div class="institute-card" style="display: flex; flex-direction:column; justify-content: center; align-items: center; text-transform: uppercase;
+    font-weight: 600;  width: 10rem; margin:10px 10px; cursor: pointer; ">
           <img src="{{ uploaded_asset($institute->image) }}"  class="card-img-top" alt="{{ $institute->name }}" onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
           <div class="card-body align-content-center">
             <p class="card-text">{{ $institute->name }}</p>

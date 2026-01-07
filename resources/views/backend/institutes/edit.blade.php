@@ -15,7 +15,7 @@
 				<h5 class="mb-0 h6">{{ translate('Institute Information') }}</h5>
 			</div>
 			<div class="card-body">
-				<form action="{{ route('institutes.update', $institute->id) }}" method="POST">
+				<form action="{{ route('institutes.update', $institute->id) }}" method="POST" enctype="multipart/form-data">
 					@csrf
 					@method('PUT')
 					<div class="form-group mb-3">
@@ -24,7 +24,7 @@
 					</div>
 					<div class="form-group mb-3">
 						<label for="image">{{translate('Image')}} <span class="text-danger">*</span></label>
-						<div class="input-group" data-toggle="aizuploader" data-type="image" data-selected="{{ $institute->image }}">
+						<div class="input-group" data-toggle="aizuploader" data-type="image">
 							<div class="input-group-prepend">
 									<div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
 							</div>

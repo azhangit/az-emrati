@@ -312,10 +312,7 @@
         border-radius: 12px;
         }
     
-    .institute-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
-    }
+
 
     .institute-card-wrapper{
         display: flex;

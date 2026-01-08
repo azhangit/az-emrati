@@ -137,10 +137,15 @@ class AizUploadController extends Controller
                     file_put_contents($request->file('aiz_file'), $cleanSVG);
                 }
 
-                $path = $request->file('aiz_file')->store('uploads/all', 'local');
-                if ($path === false) {
-                     return '{}';
-                }
+                $file = $request->file('aiz_file');
+                $filename = $file->hashName();
+                $file->move(public_path('uploads/all'), $filename);
+                $path = 'uploads/all/' . $filename;
+                
+                // $path = $request->file('aiz_file')->store('uploads/all', 'local');
+                // if ($path === false) {
+                //      return '{}';
+                // }
                 $size = $request->file('aiz_file')->getSize();
 
                 // Return MIME type ala mimetype extension

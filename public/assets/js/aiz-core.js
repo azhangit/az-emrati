@@ -403,8 +403,10 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     for (var i = 0; i < data.length; i++) {
                         var thumb = "";
                         var hidden = "";
-                                thumb =
+                        if (data[i].type === "image") {
+                            thumb =
                                 '<img src="' +
+                                AIZ.data.fileBaseUrl +
                                 data[i].file_name +
                                 '" class="img-fit">';
                         } else {

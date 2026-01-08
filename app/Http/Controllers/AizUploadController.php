@@ -253,7 +253,14 @@ class AizUploadController extends Controller
                     break;
             }
         }
-        return $uploads->paginate(60)->appends(request()->query());
+        $uploads = $uploads->paginate(60)->appends(request()->query());
+
+        $uploads->getCollection()->transform(function ($upload) {
+            $upload->file_name = my_asset($upload->file_name);
+            return $upload;
+        });
+
+        return $uploads;
     }
 
     public function destroy($id)

@@ -1310,8 +1310,8 @@ if (!function_exists('getBaseURL')) {
 if (!function_exists('getFileBaseURL')) {
     function getFileBaseURL()
     {
-        if (env('FILESYSTEM_DRIVER') != 'local') {
-            return env(Str::upper(env('FILESYSTEM_DRIVER')) . '_URL') . '/';
+        if (config('filesystems.default') != 'local') {
+            return config('filesystems.disks.' . config('filesystems.default') . '.url') . '/';
         }
 
         return getBaseURL() . 'public/';

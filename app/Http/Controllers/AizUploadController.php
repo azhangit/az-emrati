@@ -201,9 +201,9 @@ class AizUploadController extends Controller
                 //     }
                 // }
 
-                if (env('FILESYSTEM_DRIVER') != 'local') {
+                if (config('filesystems.default') != 'local') {
 
-                    Storage::disk(env('FILESYSTEM_DRIVER'))->put(
+                    Storage::disk(config('filesystems.default'))->put(
                         $path,
                         file_get_contents(base_path('public/') . $path),
                         [

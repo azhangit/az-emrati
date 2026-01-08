@@ -403,8 +403,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     for (var i = 0; i < data.length; i++) {
                         var thumb = "";
                         var hidden = "";
-                        if (data[i].type === "image") {
-                            thumb =
+                                thumb =
                                 '<img src="' +
                                 data[i].file_name +
                                 '" class="img-fit">';

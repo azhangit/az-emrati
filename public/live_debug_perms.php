@@ -1,39 +1,49 @@
 <?php
-// live_debug_perms.php
+// live_debug_perms.php (Standalone - No Laravel Dependencies)
 
-echo "<h1>Server Permission Debugger</h1>";
+echo "<h1>Simple Permission Debugger</h1>";
 
-$public_path = public_path();
-echo "<b>Public Path:</b> " . $public_path . "<br>";
+// Current directory (assuming file is in public_html/ or public/)
+$current_dir = __DIR__;
+echo "<b>Current Script Directory:</b> " . $current_dir . "<br>";
 
-$upload_path = public_path('uploads/all');
-echo "<b>Target Upload Path:</b> " . $upload_path . "<br>";
+// Target path: uploads/all
+$target_dir = $current_dir . '/uploads/all';
+echo "<b>Target Upload Directory:</b> " . $target_dir . "<br>";
 
-if (!file_exists($upload_path)) {
-    echo "<span style='color:red'>Path does not exist! attempting to create...</span><br>";
-    if (mkdir($upload_path, 0777, true)) {
-        echo "<span style='color:green'>Created path successfully.</span><br>";
+// Check if directory exists
+if (!file_exists($target_dir)) {
+    echo "Directory not found. Attempting to create...<br>";
+    // Try to create recursively
+    if (@mkdir($target_dir, 0777, true)) {
+        echo "<span style='color:green'>Created directory successfully.</span><br>";
     } else {
-        echo "<span style='color:red'>Failed to create path. Check parent permissions.</span><br>";
+        $error = error_get_last();
+        echo "<span style='color:red'>Failed to create directory. Error: " . ($error['message'] ?? 'Unknown') . "</span><br>";
     }
 } else {
-    echo "Path exists.<br>";
+    echo "Directory exists.<br>";
 }
 
+// Check Writability
 echo "<b>Is Writable?</b> ";
-if (is_writable($upload_path)) {
+if (is_writable($target_dir)) {
     echo "<span style='color:green'>YES</span><br>";
 } else {
     echo "<span style='color:red'>NO</span><br>";
 }
 
-echo "<b>Current PHP User:</b> " . exec('whoami') . "<br>";
+// Check Owner
+$user = function_exists('exec') ? exec('whoami') : 'N/A';
+echo "<b>Server User (whoami):</b> " . $user . "<br>";
 
-$test_file = $upload_path . '/test_perm.txt';
-echo "<b>Attempting to write file...</b><br>";
+// Try Writing a File
+$test_file = $target_dir . '/test_perm_check.txt';
+echo "<b>Attempting to Write Test File...</b><br>";
 
-if (@file_put_contents($test_file, 'Testing write access...')) {
-    echo "<span style='color:green'>Write Success!</span><br>";
+if (@file_put_contents($test_file, 'Permission Check Successful')) {
+    echo "<span style='color:green'>Write Success! File created.</span><br>";
+    // Cleanup
     unlink($test_file);
 } else {
     $error = error_get_last();
@@ -41,5 +51,6 @@ if (@file_put_contents($test_file, 'Testing write access...')) {
 }
 
 echo "<hr>";
-echo "<h3>Recommendations:</h3>";
-echo "If 'Is Writable' is NO, please go to File Manager and set permissions for <code>" . $upload_path . "</code> to <b>777</b>.<br>";
+echo "<h3>Next Steps:</h3>";
+echo "If Write Failed, please set permissions of <code>$target_dir</code> to <b>777</b> using your File Manager.";
+?>

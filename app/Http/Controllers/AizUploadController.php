@@ -9,6 +9,7 @@ use Auth;
 use Storage;
 use Image;
 use enshrined\svgSanitize\Sanitizer;
+use Illuminate\Support\Facades\Log;
 
 class AizUploadController extends Controller
 {
@@ -105,6 +106,8 @@ class AizUploadController extends Controller
         if ($request->hasFile('aiz_file')) {
             $upload = new Upload;
             $extension = strtolower($request->file('aiz_file')->getClientOriginalExtension());
+            
+            Log::info("Upload initiated for file: " . $request->file('aiz_file')->getClientOriginalName());
 
             if (
                 env('DEMO_MODE') == 'On' &&
@@ -140,9 +143,12 @@ class AizUploadController extends Controller
                 $path = $request->file('aiz_file')->store('uploads/all', 'local');
 
                 if ($path === false) {
+                     Log::error("File storage failed for: " . $request->file('aiz_file')->getClientOriginalName());
                      flash(translate('File upload failed! Check server permissions.'))->error();
                      return '{}';
                 }
+                
+                Log::info("File stored successfully at path: " . $path);
 
                 $size = $request->file('aiz_file')->getSize();
 
@@ -170,6 +176,7 @@ class AizUploadController extends Controller
                         clearstatcache();
                         $size = $img->filesize();
                     } catch (\Exception $e) {
+                        Log::error("Image optimization failed: " . $e->getMessage());
                         //dd($e);
                     }
                 } 
@@ -229,6 +236,7 @@ class AizUploadController extends Controller
                 $upload->type = $type[$upload->extension];
                 $upload->file_size = $size;
                 $upload->save();
+                Log::info("Upload record saved with ID: " . $upload->id);
             }
             return '{}';
         }

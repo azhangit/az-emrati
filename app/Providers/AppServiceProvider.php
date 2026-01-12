@@ -10,9 +10,6 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
-use Swift_SmtpTransport; // <--- YE NAYA ADD KIYA HAI
-use Swift_Preferences;   // <--- YE BHI ADD KIYA HAI
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -29,14 +26,12 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
-
-        //  Guest checkout ke liye temp_user_id
-        if (!auth()->check()) {
-            if (!Session::has('temp_user_id')) {
-                Session::put('temp_user_id', Str::random(20));
-            }
+       //  Guest checkout ke liye temp_user_id
+    if (!auth()->check()) {
+        if (!Session::has('temp_user_id')) {
+            Session::put('temp_user_id', Str::random(20));
         }
-
+    }
         // ☕️ Coffee Varieties
         View::composer('frontend.inc.nav', function ($view) {
             $coffeeProducts = Product::where('category_id', 4)
@@ -81,18 +76,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // 🛠️ SSL FIX: Allow Self-Signed Certificates
-        $this->app->extend('swift.transport', function ($transport) {
-            if ($transport instanceof Swift_SmtpTransport) {
-                $transport->setStreamOptions([
-                    'ssl' => [
-                        'allow_self_signed' => true,
-                        'verify_peer' => false,
-                        'verify_peer_name' => false,
-                    ],
-                ]);
-            }
-            return $transport;
-        });
+        //
     }
 }

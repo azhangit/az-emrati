@@ -21,23 +21,30 @@ class NotificationUtility
     $array['order'] = $order;
 
     try {
+        \Log::info("Sending order placement emails for Order Code: " . $order->code);
+
         // 🟢 Agar login user hai
         if ($order->user && $order->user->email != null) {
+            \Log::info("Queuing email for Registered User: " . $order->user->email);
             Mail::to($order->user->email)->queue(new InvoiceEmailManager($array));
         }
 
         // 🟢 Seller ko mail
         if ($order->orderDetails->first()->product->user->email ?? false) {
-            Mail::to($order->orderDetails->first()->product->user->email)->queue(new InvoiceEmailManager($array));
+             $sellerEmail = $order->orderDetails->first()->product->user->email;
+            \Log::info("Queuing email for Seller: " . $sellerEmail);
+            Mail::to($sellerEmail)->queue(new InvoiceEmailManager($array));
         }
 
         // 🟢 Guest case me — admin ko mail (force send)
+        \Log::info("Queuing email for Admin (Hardcoded): connecttoabdulrehman01@gmail.com");
         Mail::to('connecttoabdulrehman01@gmail.com')->queue(new InvoiceEmailManager($array));
 
         // 🟢 Agar guest ka email shipping_address JSON me hai
         if (!$order->user && $order->shipping_address) {
             $guest_address = json_decode($order->shipping_address);
             if (!empty($guest_address->email)) {
+                \Log::info("Queuing email for Guest: " . $guest_address->email);
                 Mail::to($guest_address->email)->queue(new InvoiceEmailManager($array));
             }
         }

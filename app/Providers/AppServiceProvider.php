@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+  public function boot()
     {
         Schema::defaultStringLength(191);
         Paginator::useBootstrap();
@@ -26,45 +26,39 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
-       //  Guest checkout ke liye temp_user_id
-    if (!auth()->check()) {
-        if (!Session::has('temp_user_id')) {
-            Session::put('temp_user_id', Str::random(20));
+
+        //  Guest checkout ke liye temp_user_id
+        if (!auth()->check()) {
+            if (!Session::has('temp_user_id')) {
+                Session::put('temp_user_id', Str::random(20));
+            }
         }
-    }
-        // ☕️ Coffee Varieties
+        
+        // 🔥 SSL FIX FOR LOCALHOST (Ye naya code hai)
+        // Ye Laravel ko force karega ke wo Certificate error ignore kare
+        if (env('APP_ENV') !== 'production' || env('MAIL_HOST') == '127.0.0.1') {
+            stream_context_set_default([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                ],
+            ]);
+        }
+
+        // ☕️ Coffee Varieties (Aapka purana code)
         View::composer('frontend.inc.nav', function ($view) {
-            $coffeeProducts = Product::where('category_id', 4)
-                ->where('published', 1)
-                ->get();
-
-            $exclusiveProducts = Product::where('category_id', 9)
-                ->where('published', 1)
-                ->get();
-
-            $capsuleProducts = Product::where('category_id', 5)
-                ->where('published', 1)
-                ->get();
-
-            $instantProducts = Product::where('category_id', 8)
-                ->where('published', 1)
-                ->get();
-
-            $dripProducts = Product::where('category_id', 6)
-                ->where('published', 1)
-                ->get();
-
-            $teaProducts = Product::where('category_id', 7)
-                ->where('published', 1)
-                ->get();
+            // ... (Aapka baqi code waisa hi rahega)
+            $coffeeProducts = Product::where('category_id', 4)->where('published', 1)->get();
+            $exclusiveProducts = Product::where('category_id', 9)->where('published', 1)->get();
+            $capsuleProducts = Product::where('category_id', 5)->where('published', 1)->get();
+            $instantProducts = Product::where('category_id', 8)->where('published', 1)->get();
+            $dripProducts = Product::where('category_id', 6)->where('published', 1)->get();
+            $teaProducts = Product::where('category_id', 7)->where('published', 1)->get();
 
             $view->with(compact(
-                'coffeeProducts',
-                'exclusiveProducts',
-                'capsuleProducts',
-                'instantProducts',
-                'dripProducts',
-                'teaProducts'
+                'coffeeProducts', 'exclusiveProducts', 'capsuleProducts',
+                'instantProducts', 'dripProducts', 'teaProducts'
             ));
         });
     }

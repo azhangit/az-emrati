@@ -138,6 +138,12 @@ class AizUploadController extends Controller
                 }
 
                 $path = $request->file('aiz_file')->store('uploads/all', 'local');
+
+                if ($path === false) {
+                     flash(translate('File upload failed! Check server permissions.'))->error();
+                     return '{}';
+                }
+
                 $size = $request->file('aiz_file')->getSize();
 
                 // Return MIME type ala mimetype extension

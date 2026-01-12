@@ -1314,7 +1314,7 @@ if (!function_exists('getFileBaseURL')) {
             return config('filesystems.disks.' . config('filesystems.default') . '.url') . '/';
         }
 
-        return getBaseURL() . 'public/';
+        return asset('/');
     }
 }
 

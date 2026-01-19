@@ -73,13 +73,13 @@ use App\Jobs\SendSubscriptionEmailJob;
 
 // routes/web.php
 use App\Http\Controllers\OrderController;
-
+use Illuminate\Support\Facades\Http;
 Route::get('/ajax/search-products', [\App\Http\Controllers\Frontend\AjaxSearchController::class, 'products'])
      ->name('ajax.search.products');
      
 Route::get('/instagram/feed', InstagramFeedController::class)
     ->name('instagram.feed');
-    use Illuminate\Support\Facades\Http;
+
 
 
     Route::get('/instagram/debug-once', function () {

@@ -535,8 +535,8 @@ background-image: linear-gradient(180deg,  #A259B6 46.9%, #1E4B7D 100%);
       </div>
 
       <h5 class="fw-bold mt-4">{{ translate('Contact Us') }}</h5>
-      <p class="mb-1">Phone: <a href="tel:+97143395814">+ 971 4 339 5814</a></p>
-      <p class="mb-1">WhatsApp: <a href="tel:+971568886034">+971 56 888 6034</a></p>
+      <p class="mb-1">Phone: <a href="tel:+97143395814">+ 971 04 262 1081</a></p>
+      <p class="mb-1">WhatsApp: <a href="tel:+971568886034">+971 04 267 4845</a></p>
       <p class="mb-1">Email: <a href="mailto:info@emiraticoffee.com">info@emiraticoffee.com</a></p>
 
       <!-- Directions button -->

@@ -351,6 +351,22 @@ Route::get('/test-subscription-email', function () {
     return "Email job dispatched for schedule id: $scheduleId";
 });
 
+Route::get('/test-email', function () {
+    $email = request()->query('email');
+    if (!$email) {
+        return "Please provide an email query parameter. Example: /test-email?email=connecttoabdulrehman01@gmail.com";
+    }
+    try {
+        \Mail::raw('This is a test email from the system.', function ($message) use ($email) {
+            $message->to($email)
+                ->subject('Test Email');
+        });
+        return "Email sent to $email successfully!";
+    } catch (\Throwable $e) {
+        return "Failed to send email: " . $e->getMessage();
+    }
+});
+
 Route::get('/admin/subscription', [SubStableController::class, 'index'])->name('admin.subscription.index');
 Route::get('/admin/subscription/{id}', [SubStableController::class, 'show'])->name('admin.subscription.show'); 
 

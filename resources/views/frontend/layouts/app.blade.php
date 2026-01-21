@@ -256,6 +256,12 @@
     echo get_setting('header_script');
 @endphp
 
+    <style>
+        /* Force high z-index for dropdowns to appear above modals */
+        body > .dropdown-menu {
+            z-index: 10000 !important;
+        }
+    </style>
 </head>
 <body>
     

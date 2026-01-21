@@ -60,7 +60,7 @@ position: none !important;
                             </div>
                             <div class="col-md-10">
                                 <div class="mb-3">
-                                    <select class="form-control  rounded-0" data-live-search="true" id="country_id" data-placeholder="{{ translate('Select your country') }}" name="country_id" required>
+                                    <select class="form-control rounded-0" id="country_id" name="country_id" required>
                                         <option value="">{{ translate('Select your country') }}</option>
                                         @foreach (get_active_countries() as $key => $country)
                                             <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -76,7 +76,7 @@ position: none !important;
                                 <label>{{ translate('State')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control mb-3  rounded-0" data-live-search="true" id="state_id" name="state_id" required>
+                                <select class="form-control mb-3 rounded-0" id="state_id" name="state_id" required>
 
                                 </select>
                             </div>
@@ -88,7 +88,9 @@ position: none !important;
                                 <label>{{ translate('City')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Enter City')}}" name="city_name" value="">
+                                <select class="form-control mb-3 rounded-0" id="city_id" name="city_id" required>
+
+                                </select>
                             </div>
                         </div>
 
@@ -196,7 +198,6 @@ window.add_new_address = function(){
                 success: function (response) {
                     $('#edit_modal_body').html(response.html);
                     $('#edit-address-modal').modal('show');
-                    AIZ.plugins.bootstrapSelect('refresh');
 
                     @if (get_setting('google_map') == 1)
                         var lat     = -33.8688;
@@ -238,7 +239,6 @@ window.add_new_address = function(){
                     var obj = JSON.parse(response);
                      if (obj) {
                         $('[name="state_id"]').html(obj);
-                        AIZ.plugins.bootstrapSelect('refresh');
                     }
                 }
             });
@@ -259,7 +259,6 @@ window.add_new_address = function(){
                     var obj = JSON.parse(response);
                     if (obj) {
                         $('[name="city_id"]').html(obj);
-                        AIZ.plugins.bootstrapSelect('refresh');
                     }
 
                 }

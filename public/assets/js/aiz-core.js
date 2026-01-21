@@ -55,7 +55,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     selected,
                     $(this)
                         .closest(".file-preview")
-                        .prev('[data-toggle="aizuploader"]')
+                        .prev('[data-toggle="aizuploader"]'),
                 );
                 $(this).closest(".file-preview-item").remove();
             });
@@ -79,7 +79,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                             (x) =>
                                                 x.id ===
                                                 AIZ.uploader.data
-                                                    .clickedForDelete
+                                                    .clickedForDelete,
                                         )
                                     ];
                                 $.ajax({
@@ -103,7 +103,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                                         AIZ.uploader.data
                                                             .clickedForDelete
                                                     );
-                                                }
+                                                },
                                             );
                                         AIZ.uploader.data.selectedFilesObject =
                                             AIZ.uploader.data.selectedFilesObject.filter(
@@ -112,12 +112,12 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                                         item !==
                                                         clickedForDeleteObject
                                                     );
-                                                }
+                                                },
                                             );
                                         AIZ.uploader.updateUploaderSelected();
                                         AIZ.uploader.getAllUploads(
                                             AIZ.data.appUrl +
-                                                "/aiz-uploader/get-uploaded-files"
+                                                "/aiz-uploader/get-uploaded-files",
                                         );
                                         AIZ.uploader.data.clickedForDelete =
                                             null;
@@ -125,7 +125,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                     },
                                 });
                             }
-                        }
+                        },
                     );
                 });
             });
@@ -138,7 +138,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     var valueObject =
                         AIZ.uploader.data.allFiles[
                             AIZ.uploader.data.allFiles.findIndex(
-                                (x) => x.id === value
+                                (x) => x.id === value,
                             )
                         ];
                     // console.log(valueObject);
@@ -146,7 +146,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     elem.closest(".aiz-file-box-wrap").toggleAttr(
                         "data-selected",
                         "true",
-                        "false"
+                        "false",
                     );
                     if (!AIZ.uploader.data.multiple) {
                         elem.closest(".aiz-file-box-wrap")
@@ -162,16 +162,16 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         AIZ.uploader.data.selectedFilesObject.push(valueObject);
                     } else {
                         AIZ.uploader.data.selectedFiles =
-                            AIZ.uploader.data.selectedFiles.filter(function (
-                                item
-                            ) {
-                                return item !== value;
-                            });
+                            AIZ.uploader.data.selectedFiles.filter(
+                                function (item) {
+                                    return item !== value;
+                                },
+                            );
                         AIZ.uploader.data.selectedFilesObject =
                             AIZ.uploader.data.selectedFilesObject.filter(
                                 function (item) {
                                     return item !== valueObject;
-                                }
+                                },
                             );
                     }
                     AIZ.uploader.addSelectedValue();
@@ -190,7 +190,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
         },
         updateUploaderSelected: function () {
             $(".aiz-uploader-selected").html(
-                AIZ.uploader.updateFileHtml(AIZ.uploader.data.selectedFiles)
+                AIZ.uploader.updateFileHtml(AIZ.uploader.data.selectedFiles),
             );
         },
         clearUploaderSelected: function () {
@@ -208,12 +208,12 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             $('[name="aiz-show-selected"]').prop("checked", false);
             $('[name="aiz-uploader-sort"] option[value=newest]').prop(
                 "selected",
-                true
+                true,
             );
         },
         getAllUploads: function (url, search_key = null, sort_key = null) {
             $(".aiz-uploader-all").html(
-                '<div class="align-items-center d-flex h-100 justify-content-center w-100"><div class="spinner-border" role="status"></div></div>'
+                '<div class="align-items-center d-flex h-100 justify-content-center w-100"><div class="spinner-border" role="status"></div></div>',
             );
             var params = {};
             if (search_key != null && search_key.length > 0) {
@@ -280,7 +280,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     //     ].aria_hidden = false;
                     // }
                     AIZ.uploader.getAllUploads(
-                        AIZ.data.appUrl + "/aiz-uploader/get-uploaded-files"
+                        AIZ.data.appUrl + "/aiz-uploader/get-uploaded-files",
                     );
                 }
                 AIZ.uploader.updateUploaderFiles();
@@ -292,7 +292,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 AIZ.uploader.getAllUploads(
                     AIZ.data.appUrl + "/aiz-uploader/get-uploaded-files",
                     value,
-                    $('[name="aiz-uploader-sort"]').val()
+                    $('[name="aiz-uploader-sort"]').val(),
                 );
                 // if (AIZ.uploader.data.allFiles.length > 0) {
                 //     for (
@@ -326,7 +326,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 AIZ.uploader.getAllUploads(
                     AIZ.data.appUrl + "/aiz-uploader/get-uploaded-files",
                     $('[name="aiz-uploader-search"]').val(),
-                    value
+                    value,
                 );
 
                 // if (value === "oldest") {
@@ -365,7 +365,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             for (var i = 0; i < AIZ.uploader.data.allFiles.length; i++) {
                 if (
                     !AIZ.uploader.data.selectedFiles.includes(
-                        AIZ.uploader.data.allFiles[i].id
+                        AIZ.uploader.data.allFiles[i].id,
                     )
                 ) {
                     AIZ.uploader.data.allFiles[i].selected = false;
@@ -385,13 +385,13 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 AIZ.uploader.data.allFiles = AIZ.uploader.data.allFiles.filter(
                     function (item) {
                         return type.includes(item.type);
-                    }
+                    },
                 );
             }
         },
         updateUploaderFiles: function () {
             $(".aiz-uploader-all").html(
-                '<div class="align-items-center d-flex h-100 justify-content-center w-100"><div class="spinner-border" role="status"></div></div>'
+                '<div class="align-items-center d-flex h-100 justify-content-center w-100"><div class="spinner-border" role="status"></div></div>',
             );
 
             var data = AIZ.uploader.data.allFiles;
@@ -468,7 +468,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     }
                 } else {
                     $(".aiz-uploader-all").html(
-                        '<div class="align-items-center d-flex h-100 justify-content-center w-100 nav-tabs"><div class="text-center"><h3>No files found</h3></div></div>'
+                        '<div class="align-items-center d-flex h-100 justify-content-center w-100 nav-tabs"><div class="text-center"><h3>No files found</h3></div></div>',
                     );
                 }
                 AIZ.uploader.uploadSelect();
@@ -491,7 +491,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
 
                         if (data.length > 0) {
                             elem.find(".file-amount").html(
-                                AIZ.uploader.updateFileHtml(data)
+                                AIZ.uploader.updateFileHtml(data),
                             );
                             for (var i = 0; i < data.length; i++) {
                                 var thumb = "";
@@ -538,10 +538,10 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             }
                         } else {
                             elem.find(".file-amount").html(
-                                AIZ.local.choose_file
+                                AIZ.local.choose_file,
                             );
                         }
-                    }
+                    },
                 );
             } else {
                 elem.find(".file-amount").html(AIZ.local.choose_file);
@@ -617,7 +617,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     i++
                 ) {
                     var index = AIZ.uploader.data.allFiles.findIndex(
-                        (x) => x.id === AIZ.uploader.data.selectedFiles[i]
+                        (x) => x.id === AIZ.uploader.data.selectedFiles[i],
                     );
                     var thumb = "";
                     if (AIZ.uploader.data.allFiles[index].type === "image") {
@@ -644,7 +644,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             type = "all",
             selectd = "",
             multiple = false,
-            callback = null
+            callback = null,
         ) {
             // $("body").append('<div class="aiz-uploader-backdrop"></div>');
 
@@ -680,7 +680,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     AIZ.uploader.getAllUploads(
                         AIZ.data.appUrl + "/aiz-uploader/get-uploaded-files",
                         null,
-                        $('[name="aiz-uploader-sort"]').val()
+                        $('[name="aiz-uploader-sort"]').val(),
                     );
                     AIZ.uploader.updateUploaderSelected();
                     AIZ.uploader.clearUploaderSelected();
@@ -693,10 +693,10 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         if (AIZ.uploader.data.next_page_url != null) {
                             $('[name="aiz-show-selected"]').prop(
                                 "checked",
-                                false
+                                false,
                             );
                             AIZ.uploader.getAllUploads(
-                                AIZ.uploader.data.next_page_url
+                                AIZ.uploader.data.next_page_url,
                             );
                         }
                     });
@@ -705,10 +705,10 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         if (AIZ.uploader.data.prev_page_url != null) {
                             $('[name="aiz-show-selected"]').prop(
                                 "checked",
-                                false
+                                false,
                             );
                             AIZ.uploader.getAllUploads(
-                                AIZ.uploader.data.prev_page_url
+                                AIZ.uploader.data.prev_page_url,
                             );
                         }
                     });
@@ -726,9 +726,9 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                 callback(AIZ.uploader.data.selectedFiles);
                             }
                             $("#aizUploaderModal").modal("hide");
-                        }
+                        },
                     );
-                }
+                },
             );
             // }, 50);
         },
@@ -756,10 +756,10 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             "input",
                             type,
                             oldSelectedFiles,
-                            multiple
+                            multiple,
                         );
                     }
-                }
+                },
             );
         },
         previewGenerate: function () {
@@ -810,7 +810,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                         "</h6>" +
                                         "<p>" +
                                         AIZ.extra.bytesToSize(
-                                            data[i].file_size
+                                            data[i].file_size,
                                         ) +
                                         "</p>" +
                                         "</div>" +
@@ -828,7 +828,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                     .find(".file-amount")
                                     .html(AIZ.local.choose_file);
                             }
-                        }
+                        },
                     );
                 }
             });
@@ -937,7 +937,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                 document.execCommand(
                                     "insertText",
                                     false,
-                                    bufferText
+                                    bufferText,
                                 );
                             }
                         },
@@ -946,13 +946,13 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
 
                 var nativeHtmlBuilderFunc = $this.summernote(
                     "module",
-                    "videoDialog"
+                    "videoDialog",
                 ).createVideoNode;
 
                 $this.summernote("module", "videoDialog").createVideoNode =
                     function (url) {
                         var wrap = $(
-                            '<div class="embed-responsive embed-responsive-16by9"></div>'
+                            '<div class="embed-responsive embed-responsive-16by9"></div>',
                         );
                         var html = nativeHtmlBuilderFunc(url);
                         html = $(html).addClass("embed-responsive-item");
@@ -1033,7 +1033,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         $this.val(
                             picker.startDate.format(format) +
                                 separator +
-                                picker.endDate.format(format)
+                                picker.endDate.format(format),
                         );
                     });
                 }
@@ -1135,7 +1135,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         '<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
                         "</div>" +
                         "</div>",
-                }
+                },
             );
         },
         aizUppy: function () {
@@ -1205,7 +1205,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 });
                 uppy.on("upload-success", function () {
                     AIZ.uploader.getAllUploads(
-                        AIZ.data.appUrl + "/aiz-uploader/get-uploaded-files"
+                        AIZ.data.appUrl + "/aiz-uploader/get-uploaded-files",
                     );
                 });
             }
@@ -1233,8 +1233,8 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                                         '<div class="countdown-item"><span class="countdown-digit">%-D</span></div><span class="countdown-separator">:</span>' +
                                         '<div class="countdown-item"><span class="countdown-digit">%H</span></div><span class="countdown-separator">:</span>' +
                                         '<div class="countdown-item"><span class="countdown-digit">%M</span></div><span class="countdown-separator">:</span>' +
-                                        '<div class="countdown-item"><span class="countdown-digit">%S</span></div>'
-                                )
+                                        '<div class="countdown-item"><span class="countdown-digit">%S</span></div>',
+                                ),
                             );
                         });
                 });
@@ -1271,14 +1271,14 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         if (distance > 0) {
                             // Time calculation for days, hours, minutes & seconds
                             let d = Math.floor(
-                                distance / (1000 * 60 * 60 * 24)
+                                distance / (1000 * 60 * 60 * 24),
                             );
                             let h = Math.floor(
                                 (distance % (1000 * 60 * 60 * 24)) /
-                                    (1000 * 60 * 60)
+                                    (1000 * 60 * 60),
                             );
                             let m = Math.floor(
-                                (distance % (1000 * 60 * 60)) / (1000 * 60)
+                                (distance % (1000 * 60 * 60)) / (1000 * 60),
                             );
                             let s = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -1493,14 +1493,14 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                 $(".aiz-range-slider").each(function () {
                     var c = document.getElementById("input-slider-range"),
                         d = document.getElementById(
-                            "input-slider-range-value-low"
+                            "input-slider-range-value-low",
                         ),
                         e = document.getElementById(
-                            "input-slider-range-value-high"
+                            "input-slider-range-value-high",
                         ),
                         f = [d, e];
 
-                    noUiSlider.create(c, {
+                    (noUiSlider.create(c, {
                         start: [
                             parseInt(d.getAttribute("data-range-value-low")),
                             parseInt(e.getAttribute("data-range-value-high")),
@@ -1508,10 +1508,10 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         connect: !0,
                         range: {
                             min: parseInt(
-                                c.getAttribute("data-range-value-min")
+                                c.getAttribute("data-range-value-min"),
                             ),
                             max: parseInt(
-                                c.getAttribute("data-range-value-max")
+                                c.getAttribute("data-range-value-max"),
                             ),
                         },
                     }),
@@ -1520,7 +1520,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         }),
                         c.noUiSlider.on("change", function (a, b) {
                             rangefilter(a);
-                        });
+                        }));
                 });
             }
         },
@@ -1687,7 +1687,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         background_repeat: "no-repeat",
                         background_size: "cover",
                     },
-                }
+                },
             );
         },
     };
@@ -1889,7 +1889,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             $("body").addClass("overflow-hidden");
                         }
                     }
-                }
+                },
             );
         },
         collapseSidebar: function () {
@@ -1919,7 +1919,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                         $(target).addClass("opened");
                         $($this).addClass("opened");
                     }
-                }
+                },
             );
         },
         autoScroll: function () {
@@ -1951,14 +1951,14 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                             self.autoScroll.animate(
                                 { scrollTop: self.iScrollTop },
                                 "slow",
-                                "linear"
+                                "linear",
                             );
                         } else {
                             self.iScrollTop -= self.iScrollTop;
                             self.autoScroll.animate(
                                 { scrollTop: "0px" },
                                 "fast",
-                                "swing"
+                                "swing",
                             );
                         }
                     }, self.delay);
@@ -1986,7 +1986,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     var $this = $(this);
                     var parent = $this.data("parent");
                     $this.closest(parent).remove();
-                }
+                },
             );
         },
         selectHideShow: function () {
@@ -2006,85 +2006,108 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             });
         },
         plusMinus: function () {
-    // Har quantity wrapper ko independently handle karo
-    $(".aiz-plus-minus").each(function () {
-        var $wrap  = $(this);
-        var $input = $wrap.find("input");
+            // Har quantity wrapper ko independently handle karo
+            $(".aiz-plus-minus").each(function () {
+                var $wrap = $(this);
+                var $input = $wrap.find("input");
 
-        // Safe parse with defaults
-        var min = parseInt($input.attr("min"), 10);
-        var max = parseInt($input.attr("max"), 10);
-        var val = parseInt($input.val(), 10);
-
-        if (isNaN(min)) min = 1;
-        if (isNaN(max)) max = Number.POSITIVE_INFINITY;
-        if (isNaN(val)) val = min;
-
-        // Clamp shuru mein hi
-        if (val < min) { val = min; $input.val(val); }
-        if (val > max) { val = max; $input.val(val); }
-
-        // Buttons state
-        $wrap.find('[data-type="minus"]').prop("disabled", val <= min);
-        $wrap.find('[data-type="plus"]').prop("disabled", val >= max);
-
-        // Button click (scoped)
-        $wrap.find("button")
-            .off("click.plusminus")
-            .on("click.plusminus", function (e) {
-                e.preventDefault();
-
-                var type = $(this).data("type");
-                var cur  = parseInt($input.val(), 10);
-                var min  = parseInt($input.attr("min"), 10);
-                var max  = parseInt($input.attr("max"), 10);
-
-                if (isNaN(min)) min = 1;
-                if (isNaN(max)) max = Number.POSITIVE_INFINITY;
-                if (isNaN(cur)) cur = min;
-
-                if (type === "minus" && cur > min) {
-                    $input.val(cur - 1).trigger("change");
-                } else if (type === "plus" && cur < max) {
-                    $input.val(cur + 1).trigger("change");
-                }
-
-                var nv = parseInt($input.val(), 10);
-                $wrap.find('[data-type="minus"]').prop("disabled", nv <= min);
-                $wrap.find('[data-type="plus"]').prop("disabled", nv >= max);
-            });
-
-        // Input change (direct typing)
-        $input
-            .off("change.plusminus")
-            .on("change.plusminus", function () {
+                // Safe parse with defaults
                 var min = parseInt($input.attr("min"), 10);
                 var max = parseInt($input.attr("max"), 10);
-                var v   = parseInt($input.val(), 10);
+                var val = parseInt($input.val(), 10);
 
                 if (isNaN(min)) min = 1;
                 if (isNaN(max)) max = Number.POSITIVE_INFINITY;
-                if (isNaN(v)) v = min;
+                if (isNaN(val)) val = min;
 
-                if (v < min) {
-                    alert(translate("Sorry, the minimum limit has been reached"));
-                    v = min;
+                // Clamp shuru mein hi
+                if (val < min) {
+                    val = min;
+                    $input.val(val);
                 }
-                if (v > max) {
-                    alert(translate("Sorry, the maximum limit has been reached"));
-                    v = max;
+                if (val > max) {
+                    val = max;
+                    $input.val(val);
                 }
 
-                $input.val(v);
-                $wrap.find('[data-type="minus"]').prop("disabled", v <= min);
-                $wrap.find('[data-type="plus"]').prop("disabled", v >= max);
+                // Buttons state
+                $wrap.find('[data-type="minus"]').prop("disabled", val <= min);
+                $wrap.find('[data-type="plus"]').prop("disabled", val >= max);
 
-                if (typeof getVariantPrice === "function") {
-                    getVariantPrice();
-                }
+                // Button click (scoped)
+                $wrap
+                    .find("button")
+                    .off("click.plusminus")
+                    .on("click.plusminus", function (e) {
+                        e.preventDefault();
+
+                        var type = $(this).data("type");
+                        var cur = parseInt($input.val(), 10);
+                        var min = parseInt($input.attr("min"), 10);
+                        var max = parseInt($input.attr("max"), 10);
+
+                        if (isNaN(min)) min = 1;
+                        if (isNaN(max)) max = Number.POSITIVE_INFINITY;
+                        if (isNaN(cur)) cur = min;
+
+                        if (type === "minus" && cur > min) {
+                            $input.val(cur - 1).trigger("change");
+                        } else if (type === "plus" && cur < max) {
+                            $input.val(cur + 1).trigger("change");
+                        }
+
+                        var nv = parseInt($input.val(), 10);
+                        $wrap
+                            .find('[data-type="minus"]')
+                            .prop("disabled", nv <= min);
+                        $wrap
+                            .find('[data-type="plus"]')
+                            .prop("disabled", nv >= max);
+                    });
+
+                // Input change (direct typing)
+                $input
+                    .off("change.plusminus")
+                    .on("change.plusminus", function () {
+                        var min = parseInt($input.attr("min"), 10);
+                        var max = parseInt($input.attr("max"), 10);
+                        var v = parseInt($input.val(), 10);
+
+                        if (isNaN(min)) min = 1;
+                        if (isNaN(max)) max = Number.POSITIVE_INFINITY;
+                        if (isNaN(v)) v = min;
+
+                        if (v < min) {
+                            alert(
+                                translate(
+                                    "Sorry, the minimum limit has been reached",
+                                ),
+                            );
+                            v = min;
+                        }
+                        if (v > max) {
+                            alert(
+                                translate(
+                                    "Sorry, the maximum limit has been reached",
+                                ),
+                            );
+                            v = max;
+                        }
+
+                        $input.val(v);
+                        $wrap
+                            .find('[data-type="minus"]')
+                            .prop("disabled", v <= min);
+                        $wrap
+                            .find('[data-type="plus"]')
+                            .prop("disabled", v >= max);
+
+                        if (typeof getVariantPrice === "function") {
+                            getVariantPrice();
+                        }
+                    });
             });
-    });
-},
+        },
 
         hovCategoryMenu: function () {
             $("#category-menu-icon, #category-sidebar")
@@ -2125,7 +2148,7 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             if (AIZ.data.appUrl.slice(-1) == "/") {
                 AIZ.data.appUrl = AIZ.data.appUrl.slice(
                     0,
-                    AIZ.data.appUrl.length - 1
+                    AIZ.data.appUrl.length - 1,
                 );
                 // console.log(AIZ.data.appUrl);
             }
@@ -2259,8 +2282,8 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
     top_category_products_tab("all");
     inhouse_top_brands("all");
     inhouse_top_categories("all");
-    top_sellers_products_tab('all');
-    top_brands_products_tab('all');
+    top_sellers_products_tab("all");
+    top_brands_products_tab("all");
 
     $(".top_category_products_tab").click(function () {
         top_category_products_tab($(this).data("target"));
@@ -2375,6 +2398,4 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             },
         });
     }
-
-    
 })(jQuery);

@@ -26775,11 +26775,11 @@ img.jssocials-share-logo {
   overflow: hidden !important;
 }
 
-* Bootstrap v4.5.0 (https://getbootstrap.com/)
+/* * Bootstrap v4.5.0 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
+ */ 
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -30005,7 +30005,7 @@ input[type="submit"].btn-block {
 }
 .dropdown-item:focus,
 .dropdown-item:hover {
-  color: ##f8f9fa;
+  color: #f8f9fa;
   text-decoration: none;
   background-color: transparent;
 }
@@ -53529,11 +53529,11 @@ img.jssocials-share-logo {
   overflow: hidden !important;
 }
 
-* Bootstrap v4.5.0 (https://getbootstrap.com/)
+/* * Bootstrap v4.5.0 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
+ */ 
 :root {
   --blue: #007bff;
   --indigo: #6610f2;

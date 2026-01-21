@@ -29,7 +29,7 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="mb-3">
-                                    <select class="form-control aiz-selectpicker rounded-0" data-live-search="true" data-placeholder="{{ translate('Select your country') }}" name="country_id" required>
+                                    <select class="form-control rounded-0" name="country_id" required>
                                         <option value="">{{ translate('Select your country') }}</option>
                                         @foreach (get_active_countries() as $key => $country)
                                             <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -45,7 +45,7 @@
                                 <label>{{ translate('State')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="state_id" required>
+                                <select class="form-control mb-3 rounded-0" name="state_id" required>
 
                                 </select>
                             </div>
@@ -57,7 +57,7 @@
                                 <label>{{ translate('City')}}</label>
                             </div>
                             <div class="col-md-10">
-                                <select class="form-control mb-3 aiz-selectpicker rounded-0" data-live-search="true" name="city_id" required>
+                                <select class="form-control mb-3 rounded-0" name="city_id" required>
 
                                 </select>
                             </div>
@@ -163,7 +163,6 @@
                 success: function (response) {
                     $('#edit_modal_body').html(response.html);
                     $('#edit-address-modal').modal('show');
-                    AIZ.plugins.bootstrapSelect('refresh');
 
                     @if (get_setting('google_map') == 1)
                         var lat     = -33.8688;
@@ -182,16 +181,19 @@
         
         $(document).on('change', '[name=country_id]', function() {
             var country_id = $(this).val();
-            get_states(country_id);
+            var $scope = $(this).closest('form');
+            get_states(country_id, $scope);
         });
 
         $(document).on('change', '[name=state_id]', function() {
             var state_id = $(this).val();
-            get_city(state_id);
+            var $scope = $(this).closest('form');
+            get_city(state_id, $scope);
         });
         
-        function get_states(country_id) {
-            $('[name="state"]').html("");
+        function get_states(country_id, $scope) {
+            var $target = $scope ? $scope.find('[name="state_id"]') : $('[name="state_id"]');
+            $target.html("");
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -204,15 +206,15 @@
                 success: function (response) {
                     var obj = JSON.parse(response);
                     if(obj != '') {
-                        $('[name="state_id"]').html(obj);
-                        AIZ.plugins.bootstrapSelect('refresh');
+                        $target.html(obj);
                     }
                 }
             });
         }
 
-        function get_city(state_id) {
-            $('[name="city"]').html("");
+        function get_city(state_id, $scope) {
+            var $target = $scope ? $scope.find('[name="city_id"]') : $('[name="city_id"]');
+            $target.html("");
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -225,8 +227,7 @@
                 success: function (response) {
                     var obj = JSON.parse(response);
                     if(obj != '') {
-                        $('[name="city_id"]').html(obj);
-                        AIZ.plugins.bootstrapSelect('refresh');
+                        $target.html(obj);
                     }
                 }
             });

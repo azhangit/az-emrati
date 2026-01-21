@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-10">
                 <div class="mb-3">
-                    <select class="form-control aiz-selectpicker rounded-0" data-live-search="true" data-placeholder="{{ translate('Select your country')}}" name="country_id" id="edit_country" required>
+                    <select class="form-control rounded-0" name="country_id" id="edit_country" required>
                         <option value="">{{ translate('Select your country') }}</option>
                         @foreach (get_active_countries() as $key => $country)
                         <option value="{{ $country->id }}" @if($address_data->country_id == $country->id) selected @endif>
@@ -36,7 +36,7 @@
                 <label>{{ translate('State')}}</label>
             </div>
             <div class="col-md-10">
-                <select class="form-control mb-3 aiz-selectpicker rounded-0" name="state_id" id="edit_state"  data-live-search="true" required>
+                <select class="form-control mb-3 rounded-0" name="state_id" id="edit_state" required>
                     @foreach ($states as $key => $state)
                         <option value="{{ $state->id }}" @if($address_data->state_id == $state->id) selected @endif>
                             {{ $state->name }}
@@ -52,7 +52,13 @@
                 <label>{{ translate('City')}}</label>
             </div>
             <div class="col-md-10">
-                <input type="text" class="form-control mb-3 rounded-0" placeholder="{{ translate('Enter City')}}" name="city_name" value="{{ optional($address_data->city)->name }}">
+                <select class="form-control mb-3 rounded-0" name="city_id" id="edit_city" required>
+                    @foreach (\App\Models\City::where('state_id', $address_data->state_id)->get() as $key => $city)
+                        <option value="{{ $city->id }}" @if($address_data->city_id == $city->id) selected @endif>
+                            {{ $city->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
         </div>
         

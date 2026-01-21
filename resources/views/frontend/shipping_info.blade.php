@@ -305,10 +305,10 @@
             <!-- Country -->
             <div class="form-group">
                 <label>{{ translate('Country') }}</label>
-                <select id="guest_country_id" class="form-control @error('country_id') is-invalid @enderror"
-                        data-live-search="true" name="country_id" data-mode-field="shipping" required>
-                    <option value="">{{ translate('Select your country') }}</option>
-                    @foreach (get_active_countries() as $country)
+                <select class="form-control rounded-0 @error('country_id') is-invalid @enderror"
+                        name="country_id" id="guest_country_id" required>
+                    <option value="">{{ translate('Select Country') }}</option>
+                    @foreach (\App\Models\Country::where('status', 1)->get() as $key => $country)
                         <option value="{{ $country->id }}">{{ $country->name }}</option>
                     @endforeach
                 </select>
@@ -320,8 +320,8 @@
             <!-- State -->
             <div class="form-group">
                 <label>{{ translate('State / Province') }}</label>
-                <select id="guest_state_id" class="form-control @error('state_id') is-invalid @enderror"
-                        data-live-search="true" name="state_id" data-mode-field="shipping" required>
+                <select id="guest_state_id" class="form-control rounded-0 @error('state_id') is-invalid @enderror"
+                        name="state_id" data-mode-field="shipping" required>
                     <option value="">{{ translate('Select State') }}</option>
                 </select>
                 @error('state_id')
@@ -332,9 +332,11 @@
             <!-- City -->
             <div class="form-group">
                 <label>{{ translate('City') }}</label>
-                <input type="text" class="form-control @error('city_name') is-invalid @enderror"
-                       name="city_name" value="{{ old('city_name') }}" placeholder="{{ translate('Enter City') }}" data-mode-field="shipping">
-                @error('city_name')
+                <select id="guest_city_id" class="form-control rounded-0 @error('city_id') is-invalid @enderror"
+                        name="city_id" data-mode-field="shipping" required>
+                    <option value="">{{ translate('Select City') }}</option>
+                </select>
+                @error('city_id')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
@@ -414,6 +416,7 @@
 @endsection
 
 @section('script')
+@section('script')
 <script>
 $(document).on('change', '#guest_country_id', function() {
     var country_id = $(this).val();
@@ -421,11 +424,26 @@ $(document).on('change', '#guest_country_id', function() {
         _token: '{{ csrf_token() }}',
         country_id: country_id
     }, function(response) {
-        $('#guest_state_id').html(response);
+        var content = JSON.parse(response);
+        $('#guest_state_id').html(content);
         $('#guest_city_id').html('<option value="">{{ translate("Select City") }}</option>');
-        AIZ.plugins.bootstrapSelect('refresh');
+        
     });
 });
+
+$('#guest_state_id').change(function() {
+    var state_id = $(this).val();
+    $.post('{{ route("get-city") }}', {
+        _token: '{{ csrf_token() }}',
+        state_id: state_id
+    }, function(response) {
+        var content = JSON.parse(response);
+        $('#guest_city_id').html(content);
+        
+    });
+});
+
+
 
 // City auto-population removed as it is now a text field
 
@@ -450,14 +468,15 @@ $(function () {
                     _token: '{{ csrf_token() }}',
                     state_id: selectedState
                 }, function(response) {
-                    $('#guest_city_id').html(response);
+                    var content = JSON.parse(response);
+                    $('#guest_city_id').html(content);
                     if (selectedCity) {
                         $('#guest_city_id').val(selectedCity);
                     }
-                    AIZ.plugins.bootstrapSelect('refresh');
+                    
                 });
             }
-            AIZ.plugins.bootstrapSelect('refresh');
+            
         });
     }
     // Initialize Bootstrap tabs for guest checkout

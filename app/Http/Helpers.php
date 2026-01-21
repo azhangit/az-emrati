@@ -971,6 +971,9 @@ function getShippingCost($carts, $index, $carrier = '')
         // 🔵 Guest user ka flow (shipping_address JSON se city_id uthana)
         $shippingAddress = is_object($firstCart) ? $firstCart->shipping_address : ($firstCart['shipping_address'] ?? null);
         $guest_shipping = $shippingAddress ? json_decode($shippingAddress, true) : [];
+        if (empty($guest_shipping) && Session::has('guest_shipping_address')) {
+             $guest_shipping = Session::get('guest_shipping_address');
+        }
         $city_id = $guest_shipping['city_id'] ?? null;
     }
 

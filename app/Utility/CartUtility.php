@@ -17,12 +17,12 @@ class CartUtility
 
         if (isset($product->choice_options) && count(json_decode($product->choice_options)) > 0) {
             //Gets all the choice values of customer choice option and generate a string like Black-S-Cotton
-           foreach (json_decode($product->choice_options) as $choice) {
-    $key = 'attribute_id_' . $choice->attribute_id;
-    if (isset($data[$key])) {
-        $str .= '-' . str_replace(' ', '', $data[$key]);
-    }
-}
+                   foreach (json_decode($product->choice_options) as $choice) {
+            $key = 'attribute_id_' . $choice->attribute_id;
+            if (isset($request[$key])) {
+                $str .= '-' . str_replace(' ', '', $request[$key]);
+            }
+        }
 
         }
         return $str;

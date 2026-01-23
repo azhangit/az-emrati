@@ -107,8 +107,8 @@
                         $shipping += $product_shipping_cost;
                         
                         $product_name_with_choice = $product->getTranslation('name');
-                        if ($cartItem['variant'] != null) {
-                            $product_name_with_choice = $product->getTranslation('name') . ' - ' . $cartItem['variant'];
+                        if ($cartItem['variation'] != null) {
+                            $product_name_with_choice = $product->getTranslation('name') . ' - ' . $cartItem['variation'];
                         }
                     @endphp
                     <tr class="cart_item">

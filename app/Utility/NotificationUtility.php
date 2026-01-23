@@ -37,8 +37,8 @@ class NotificationUtility
         }
 
         // 🟢 Guest case me — admin ko mail (force send)
-        \Log::info("Queuing email for Admin (Hardcoded): connecttoabdulrehman01@gmail.com");
-        Mail::to('connecttoabdulrehman01@gmail.com')->queue(new InvoiceEmailManager($array));
+        \Log::info("Queuing email for Admin (Hardcoded): order@emiraticoffee.com");
+        Mail::to('order@emiraticoffee.com')->queue(new InvoiceEmailManager($array));
 
         // 🟢 Agar guest ka email shipping_address JSON me hai
         if (!$order->user && $order->shipping_address) {

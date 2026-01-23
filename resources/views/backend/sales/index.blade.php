@@ -146,10 +146,15 @@
                                     {{ count($order->orderDetails) }}
                                 </td>
                                 <td>
-                                    @if ($order->user != null)
+                                    @php
+                                        $shipping_address = json_decode($order->shipping_address, true);
+                                    @endphp
+                                    @if ($shipping_address && isset($shipping_address['name']))
+                                        {{ $shipping_address['name'] }}
+                                    @elseif ($order->user != null)
                                         {{ $order->user->name }}
                                     @else
-                                        Guest ({{ $order->guest_id }})
+                                        {{ translate('Guest') }} ({{ $order->guest_id }})
                                     @endif
                                 </td>
                                 <td>

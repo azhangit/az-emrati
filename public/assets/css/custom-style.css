@@ -373,3 +373,19 @@
 .popup .avialable-quantity {
     display: none !important;
 }
+/* Fix for invisible selected option in megabox */
+.aiz-megabox input:checked ~ .aiz-megabox-elem,
+.aiz-megabox input:checked ~ .aiz-megabox-elem.popup-megabox {
+    border-color: var(--primary) !important;
+    background-color: var(--primary) !important;
+    color: #fff !important;
+    opacity: 1 !important;
+}
+
+/* Ensure the element itself has a base style if missing */
+.aiz-megabox .aiz-megabox-elem,
+.aiz-megabox .aiz-megabox-elem.popup-megabox {
+    border: 1px solid #e2e5ec;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}

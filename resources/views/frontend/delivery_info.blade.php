@@ -239,11 +239,8 @@
                                             @if ($pickup_point_list)
                                                 <div class="mt-3 pickup_point_id_admin">
                                                     <select
-                                                        class="form-control aiz-selectpicker rounded-0"
+                                                        class="form-control rounded-0"
                                                         name="pickup_point_id_{{ get_admin()->id }}"
-                                                        data-live-search="true"
-                                                        data-size="10"
-                                                        data-none-results-text="!"
                                                         required
                                                     >
                                                         <option value="">{{ translate('Select your nearest pickup point')}}</option>
@@ -394,11 +391,8 @@
                                                     @if ($pickup_point_list)
                                                         <div class="mt-4 pickup_point_id_{{ $key }}">
                                                             <select
-                                                                class="form-control aiz-selectpicker rounded-0"
+                                                                class="form-control rounded-0"
                                                                 name="pickup_point_id_{{ $key }}"
-                                                                data-live-search="true"
-                                                                data-size="10"
-                                                                data-none-results-text="!"
                                                                 required
                                                             >
                                                                 <option value="">{{ translate('Select your nearest pickup point')}}</option>

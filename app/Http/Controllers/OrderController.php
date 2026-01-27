@@ -58,7 +58,7 @@ public function exportCsv(Request $request): StreamedResponse
             'user:id,name,email',
             'shop:id,name,user_id',
             'orderDetails:id,order_id,product_id,quantity,price,tax,shipping_cost,variation,payment_status,delivery_status',
-            'orderDetails.product:id,name,auction_product,category_id',
+            'orderDetails.product:id,name,auction_product,category_id,weight,choice_options',
             'orderDetails.product.stocks:id,product_id,sku,variant',
             'orderDetails.product.main_category:id,name',
             'orderDetails.product.categories:id,name',
@@ -75,7 +75,7 @@ public function exportCsv(Request $request): StreamedResponse
 
     $filename = 'orders_selected_' . now()->format('Y-m-d_H-i') . '.csv';
 
-    return response()->streamDownload(function () use ($q) {
+    return response()->streamDownload(function () use ($q, $allAttributes) {
         if (ob_get_level() > 0) { @ob_end_clean(); }
 
         $out = fopen('php://output', 'w');
@@ -211,7 +211,7 @@ public function exportCsv(Request $request): StreamedResponse
                     $this->csvSafe($this->formatVariationReadable($od->variation, $p, $allAttributes)),
                     $this->csvSafe($catsStr),
                     $qty,
-                    $p->weight ?? 0,
+                    $p?->weight ?? 0,
                     $this->csvSafe($customerLabel),
 
                     $this->moneyFmt($order->grand_total),

@@ -12,6 +12,7 @@ use App\Models\ProductStock;
 use App\Models\OrderDetail;
 use App\Models\CouponUsage;
 use App\Models\Coupon;
+use App\Models\Attribute;
 use App\Models\User;
 use App\Models\CombinedOrder;
 use App\Models\SmsTemplate;
@@ -66,6 +67,9 @@ public function exportCsv(Request $request): StreamedResponse
         ->when(!empty($selectedIds), fn($qq) => $qq->whereIn('id', $selectedIds))
         ->orderBy('id');
 
+    // Pre-load all attributes for name mapping
+    $allAttributes = Attribute::all()->pluck('name', 'id');
+
     // (Optional) Agar aap new_orders se billing map use kar rahe hain to yahan rakhein,
     // warna billing ko shipping JSON se hi nikaalna hai to un helpers ka use karein.
 
@@ -81,9 +85,8 @@ public function exportCsv(Request $request): StreamedResponse
         fputcsv($out, [
             'ID','Order Code',
             'User Name','User Email',
-            'Num. of Products','Product Names','Product SKUs','Product Categories',
-            'Product Quantity',
-            'Customer Label',
+            'Num. of Products','Product Names','Product SKUs','Product Variations','Product Categories',
+            'Product Quantity','Item Weight',           'Customer Label',
             'Amount','Delivery Status','Payment Method','Payment Status',
 
             // Shipping (pehle jaisa)
@@ -139,9 +142,10 @@ public function exportCsv(Request $request): StreamedResponse
 
                     '', // Product Names
                     '', // Product SKUs
+                    '', // Product Variations
                     '', // Product Categories
                     0,  // Product Quantity
-
+                    '', // Item Weight
                     $this->csvSafe($customerLabel),
 
                     $this->moneyFmt($order->grand_total),
@@ -204,9 +208,10 @@ public function exportCsv(Request $request): StreamedResponse
 
                     $this->csvSafe($pName),
                     $this->csvSafe($sku),
+                    $this->csvSafe($this->formatVariationReadable($od->variation, $p, $allAttributes)),
                     $this->csvSafe($catsStr),
                     $qty,
-
+                    $p->weight ?? 0,
                     $this->csvSafe($customerLabel),
 
                     $this->moneyFmt($order->grand_total),
@@ -478,6 +483,63 @@ private function normalizeVariantKey($variation): string
     $simple = preg_replace('/(?:Size-|Color-|Option-)/i', '', $raw);
     $simple = preg_replace('/\s+/', '', $simple);
     return trim($simple, '-');
+}
+
+/**
+ * Parses the hyphenated variation string (e.g. "-S-Red" or "Red-S-Cotton")
+ * back into readable format "Size: S | Color: Red" using Product choice_options.
+ */
+private function formatVariationReadable($variation, $product, $allAttributes): string
+{
+    if (empty($variation)) return '';
+    
+    // If it's already a clean string or JSON (handled by old normalizer if needed, but we try specific format first)
+    // The App/Utility/CartUtility creates strings like:  [Color] - [Option1] - [Option2] ...
+    // If Color is missing, it starts with "-" -> "-Option1-Option2"
+    
+    // 1. Check if direct JSON/Array (legacy support)
+    if (is_array($variation) || (is_string($variation) && str_starts_with($variation, '{'))) {
+        return $this->normalizeVariation($variation);
+    }
+
+    if (!$product) return (string)$variation;
+
+    $parts = explode('-', (string)$variation);
+    
+    // Safety check: if split failed or empty
+    if (empty($parts)) return (string)$variation;
+
+    $readableParts = [];
+
+    // Part 0 is Color (or empty if no color)
+    $colorVal = $parts[0] ?? '';
+    if ($colorVal !== '') {
+        $readableParts[] = "Color: $colorVal";
+    }
+
+    // Subsequent parts match choice_options order
+    // Options start at index 1 in $parts
+    $options = json_decode($product->choice_options ?? '[]');
+    if (!is_array($options)) $options = [];
+
+    foreach ($options as $i => $option) {
+        $partIndex = $i + 1; // 1-based index because 0 is color
+        if (isset($parts[$partIndex])) {
+            $val = $parts[$partIndex];
+            if ($val !== '') {
+                $attrName = $allAttributes[$option->attribute_id] ?? 'Option';
+                $readableParts[] = "$attrName: $val";
+            }
+        }
+    }
+
+    if (empty($readableParts)) {
+        // Fallback: just return the raw string if we couldn't parse it nicely
+        // (removes leading hyphen for aesthetics)
+        return ltrim((string)$variation, '-');
+    }
+
+    return implode(' | ', $readableParts);
 }
 
 

@@ -797,7 +797,7 @@
             <div class="">
               <h1>{{ translate('Limited Edition') }}</h1>
                 <!--<h5>Anaerobic Natural</h5>-->
-                <p>{{ translate('Explore Our Private Collection') }}</p>
+                <p>{{ translate('Explore Our Limited Edition') }}</p>
               </div>
                 <div>
 

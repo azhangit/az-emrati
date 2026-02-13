@@ -1508,10 +1508,10 @@ li{
                     <a class="nav-link" href="{{ url($navBaseUrl . '/event')}}">{{ translate('Events') }}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{{ url($navBaseUrl . '/about')}}">{{ translate('About US') }}</a>
+                    <a class="nav-link" href="{{ url($navBaseUrl . '/about')}}">{{ translate('About Us') }}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{{ url($navBaseUrl . '/contact')}}">{{ translate('Contact US') }}</a>
+                    <a class="nav-link" href="{{ url($navBaseUrl . '/contact')}}">{{ translate('Contact Us') }}</a>
                   </li>
                   
                   

@@ -622,19 +622,20 @@ background-image: linear-gradient(180deg,  #A259B6 46.9%, #1E4B7D 100%);
    
 <div class="container">
   <!-- Main Heading -->
-  <h2 class="fw-bold mb-2">{{ translate('Al Hamra Mall (Ras Al Khaimah, UAE)') }}</h2>
+  <h2 class="fw-bold mb-2">{{ translate('Al Hamra Mall (Ras Al Khaimah)') }}</h2>
   
   <!-- Address -->
   <address class="mb-4">
-{{ translate('Sheikh Mohamed Bin Salem Rd - Al Jazeera Al Hamra-Qaryat Al Hamra - Ras Al Khaimah - United Arab Emirates') }}
+{{ translate('Sheikh Mohamed Bin Salem Rd - Al Jazeera Al Hamra-Qaryat Al Hamra - Ras Al Khaimah') }}
   </address>
 
 
       <h5 class="fw-bold">{{ translate('Our Working Hours') }}</h5>
-      <p class="mb-1">{{ translate('Monday to Friday 9am to 5pm') }}</p>
-      <p class="mb-1">{{ translate('Saturday 9am to 3pm') }}</p>
+      <p class="mb-1">{{ translate('Sun - Thur : 10 am - 10 pm') }}</p>
+      <p class="mb-1">{{ translate('Fri - Sat : 10 am - 12 pm') }}</p>
       <p class="mb-1">{{ translate('Sunday closed') }}</p>
 
+      
 
     <!-- Contact Us -->
     <div class="mb-3">

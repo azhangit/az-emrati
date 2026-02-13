@@ -101,8 +101,8 @@
     <div class="pt-2 mt-3 drip-box-details rtl">
         <!-- Product name -->
         <span class="d-block text-reset  text card-main-head ">
-            <span class="d-block text-reset fw-600 fs-19 "
-                title="{{ $product->getTranslation('name') }}">{{ $product->getTranslation('name') }}</span>
+            <span class="d-block text-reset fw-600 fs-19 product-name-transform"
+                title="{{ $product->getTranslation('name') }}">{{ ucwords(strtolower($product->getTranslation('name'))) }}</span>
                 
         </span>
       

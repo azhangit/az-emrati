@@ -80425,4 +80425,9 @@ font-size: 9px;
 
 
 
-
+.currency-icon {
+    width: 14px;
+    height: 14px;
+    margin-bottom: 3px;
+    margin-right: 3px;
+}

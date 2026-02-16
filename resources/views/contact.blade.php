@@ -547,7 +547,7 @@ background-image: linear-gradient(180deg,  #A259B6 46.9%, #1E4B7D 100%);
           target="_blank" 
           rel="noopener"
         >
-          {{ translate('GET DIRECTIONS') }}
+          {{ translate('Get Directions') }}
         </a>
       </div>
     </div>
@@ -579,7 +579,7 @@ background-image: linear-gradient(180deg,  #A259B6 46.9%, #1E4B7D 100%);
           target="_blank" 
           rel="noopener"
         >
-          {{ translate('GET DIRECTIONS') }}
+          {{ translate('Get Directions') }}
         </a>
       </div>
     </div>

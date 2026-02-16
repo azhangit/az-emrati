@@ -765,7 +765,7 @@
         <div class="hero-banner" id="hero-banner">
             <div class="mt-3 mb-3">
             <h1 class="text-dark " data-title="{{ translate('Add to wishlist') }}">{{ translate('Coffee') }}</h1>
-             <p class="text-dark" data-title="{{ translate('Add to wishlist') }}">{{ translate('Explore the Wonders of Geisha') }}</p>
+             <p class="text-dark" data-title="{{ translate('Add to wishlist') }}">{{ translate('Explore the Wonders of Colombia') }}</p>
             <div>
     <a class="btn bg-none btn-top rounded-pill " href="{{ url($navBaseUrl . '/category/coffee')}}">{{ translate('Explore') }}</a>
         <a class="btn btn-primary rounded-pill my-3 py-2 px-5 openPopup" href="#" data-slug="colombia-arabic-coffee">{{ translate('Buy Now') }}</a>

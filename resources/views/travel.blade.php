@@ -410,7 +410,7 @@ body {
                 <a href="#" class="story-image-link">
                     <img src="{{asset('/assets/img/home-page/lady.png')}}" alt="A woman smiling in a greenhouse on a farm.">
                 </a>
-                <div class="story-caption">
+                <div class="story-caption d-none">
                     <p>{{ translate('The Éco Ferme Fructueux wants to say a HUGE THANK YOU for her incredible time with us! You were much more than a guest... a true farm superhero! 💚') }}</p>
                 </div>
             </div>
@@ -420,7 +420,7 @@ body {
                 <a href="#" class="story-image-link">
                     <img src="{{asset('/assets/img/home-page/image-2222.png')}}" alt="Two women embracing in front of a wall with 'Eco Ferme' graffiti.">
                 </a>
-                <div class="story-caption">
+                <div class="story-caption d-none">
                     <p>{{ translate('The Éco Ferme Fructueux wants to say a HUGE THANK YOU for her incredible time with us! You were much more than a guest... a true farm superhero! 💚') }}</p>
                 </div>
             </div>
@@ -430,7 +430,7 @@ body {
                  <a href="#" class="story-image-link">
                     <img src="{{asset('/assets/img/home-page/fermentaiton.png')}}" alt="Farmers sorting freshly harvested red coffee cherries.">
                 </a>
-                <div class="story-caption">
+                <div class="story-caption d-none">
                     <p>{{ translate('The Éco Ferme Fructueux wants to say a HUGE THANK YOU for her incredible time with us! You were much more than a guest... a true farm superhero! 💚') }}</p>
                 </div>
             </div>
@@ -440,7 +440,7 @@ body {
                  <a href="#" class="story-image-link">
                     <img src="{{asset('/assets/img/home-page/Renovated-Farmhouse.png')}}" alt="A farmhouse with a red roof on a lush green hillside coffee plantation.">
                 </a>
-                <div class="story-caption">
+                <div class="story-caption d-none">
                     <p>{{ translate('The Éco Ferme Fructueux wants to say a HUGE THANK YOU for her incredible time with us! You were much more than a guest... a true farm superhero! 💚') }}</p>
                 </div>
             </div>

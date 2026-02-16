@@ -1021,7 +1021,7 @@ font-size: 32px !important;
     height: 100%; /* Make them take full height */
     width: 120px;  /* Clickable area width */
     border: none;
-  opacity:0;
+  /* opacity:0; */
     cursor: pointer;
 }
 

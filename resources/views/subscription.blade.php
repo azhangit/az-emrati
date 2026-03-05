@@ -878,7 +878,7 @@ jQuery(document).ready(function() {
             html += `<div class="col-md-4 mb-2 product-size">
                 <label class="w-100">
                     <input type="radio" name="weight_radio" value="${sz.size}" data-price="${sz.price}" class="size-radio" >
-                    <span>${sz.size} - ${sz.price} PKR</span>
+                    <span>${sz.size} - ${sz.formatted_price}</span>
                 </label>
             </div>`;
         });

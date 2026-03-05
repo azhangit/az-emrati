@@ -12,9 +12,9 @@
             <div class="row">
           <h4 >{{ translate('Emirati at Work') }}</h4>
     <h3>{{ translate('Work As One Or One Thousand') }}</h3>
-    <p>{{ translate('In the late 1930s, our founder’s grandfather loads his ships with spices, textiles and machinery, and bags of small green beans that would change the course of his life.') }}</p>
+    <p>{{ translate('Our wholesale program is designed to support cafés, restaurants, offices, and retailers with quality coffee at competitive rates. Contact us to learn more about our wholesale options and pricing.') }}</p>
     
-    <h6 class="my-2">{{ translate('It’s the first of its kind, and ode to a small green bean.') }}</h6>
+    <!-- <h6 class="my-2">{{ translate('It’s the first of its kind, and ode to a small green bean.') }}</h6> -->
         </div>
     
     </div>

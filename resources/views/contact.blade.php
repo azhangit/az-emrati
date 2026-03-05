@@ -633,7 +633,7 @@ background-image: linear-gradient(180deg,  #A259B6 46.9%, #1E4B7D 100%);
       <h5 class="fw-bold">{{ translate('Our Working Hours') }}</h5>
       <p class="mb-1">{{ translate('Sun - Thur : 10 am - 10 pm') }}</p>
       <p class="mb-1">{{ translate('Fri - Sat : 10 am - 12 pm') }}</p>
-      <p class="mb-1">{{ translate('Sunday closed') }}</p>
+      <!-- <p class="mb-1">{{ translate('Sunday closed') }}</p> -->
 
       
 

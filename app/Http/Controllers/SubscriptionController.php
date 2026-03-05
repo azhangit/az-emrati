@@ -35,9 +35,11 @@ public function getProductSizes(Request $request, $product_id) {
                     ->where('variant', $variant)
                     ->first();
 
+                $raw_price = $stock ? $stock->price : $product->unit_price;
                 $sizes[] = [
                     'size' => $size,
-                    'price' => $stock ? $stock->price : $product->unit_price,
+                    'price' => $raw_price,
+                    'formatted_price' => (string) single_price($raw_price),
                     'variant' => $variant,
                 ];
             }

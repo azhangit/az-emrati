@@ -767,8 +767,9 @@
             <h1 class="text-dark " data-title="{{ translate('Add to wishlist') }}">{{ translate('Coffee') }}</h1>
              <p class="text-dark" data-title="{{ translate('Add to wishlist') }}">{{ translate('Explore the Wonders of Colombia') }}</p>
             <div>
-    <a class="btn bg-none btn-top rounded-pill " href="{{ url($navBaseUrl . '/category/coffee')}}">{{ translate('Explore') }}</a>
-        <a class="btn btn-primary rounded-pill my-3 py-2 px-5 openPopup" href="#" data-slug="colombia-arabic-coffee">{{ translate('Buy Now') }}</a>
+                <!-- href="{{ url($navBaseUrl . '/category/coffee')}}" -->
+    <a class="btn bg-none btn-top rounded-pill openPopup" data-slug="colombia-arabic-coffee">{{ translate('Explore') }}</a>
+        <a class="btn btn-primary rounded-pill my-3 py-2 px-5 openPopup" data-slug="colombia-arabic-coffee">{{ translate('Buy Now') }}</a>
             </div>
             </div>
             <!--<img src="{{ asset('public/assets/img/hero-16e.png') }}"  alt="Responsive Image" class="img-fluid mt-3">-->
@@ -797,7 +798,7 @@
             <div class="">
               <h1>{{ translate('Limited Edition') }}</h1>
                 <!--<h5>Anaerobic Natural</h5>-->
-                <p>{{ translate('Explore Our Limited Edition') }}</p>
+                <p>{{ translate('Explore Our Limited Collection') }}</p>
               </div>
                 <div>
 
@@ -1404,12 +1405,9 @@ color: white;
 .instagram-marquee-track {
     display: flex;
     width: max-content;
-    animation: instagram-scroll 60s linear infinite;
     gap: 16px;
-}
-
-.instagram-carousel:hover .instagram-marquee-track {
-    animation-play-state: paused;
+    /* CSS animation is now handled via requestAnimationFrame for smooth manual control */
+    will-change: transform;
 }
 
 .instagram-card {
@@ -1629,14 +1627,7 @@ color: white;
     }
 }
 
-@keyframes instagram-scroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
+/* CSS Animation removed in favor of JS */
 
 @media only screen and (max-width: 767px){
    .owl-nav button {
@@ -1692,9 +1683,14 @@ color: white;
                         <h3 class="mb-1">Instagram</h3>
                         <a class="text-muted" target="_blank" rel="noopener" href="https://instagram.com/emiraticoffee.ae">@emiraticoffee.ae</a>
                     </div>
-
                 </div>
-                <div class="col-12">
+                <div class="col-12 position-relative">
+                    <button id="instagram-prev" class="btn btn-outline-secondary rounded-circle position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; background: white; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.15); padding: 0; z-index: 10;">
+                        <i class="las la-angle-left" style="font-size: 22px; margin-right: 2px;"></i>
+                    </button>
+                    <button id="instagram-next" class="btn btn-outline-secondary rounded-circle position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; background: white; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.15); padding: 0; z-index: 10;">
+                        <i class="las la-angle-right" style="font-size: 22px; margin-left: 2px;"></i>
+                    </button>
                     <div id="instagram-feed-status" class="instagram-status text-center text-muted small py-4 d-none"></div>
                     <div id="instagram-feed-carousel" class="instagram-carousel">
                         <div id="instagram-marquee-track" class="instagram-marquee-track"></div>
@@ -1988,11 +1984,90 @@ function formatDate(isoString) {
                 const clonedCard = card.cloneNode(true);
                 trackEl.appendChild(clonedCard);
             });
+
+            // Initialize JavaScript Marquee with robust manual controls
+            initInstagramMarquee(trackEl);
         })
         .catch((error) => {
             console.error('Instagram feed error:', error);
             setStatus('{{ translate('Unable to load Instagram feed right now. Please try again later.') }}', 'error');
         });
+
+    function initInstagramMarquee(track) {
+        let currentX = 0;
+        let speed = 0.5; // pixels per frame
+        let isHovered = false;
+        let animationTarget = null;
+        let lastTimestamp = null;
+        
+        // Track hover state
+        track.parentElement.addEventListener('mouseenter', () => isHovered = true);
+        track.parentElement.addEventListener('mouseleave', () => isHovered = false);
+        
+        // Calculate the card width dynamically based on the first item
+        function getCardWidth() {
+            if (track.children.length === 0) return 0;
+            const firstCard = track.children[0];
+            const gap = 16; // from CSS gap: 16px
+            return firstCard.offsetWidth + gap;
+        }
+
+        const btnNext = document.getElementById('instagram-next');
+        const btnPrev = document.getElementById('instagram-prev');
+
+        if (btnNext) {
+            btnNext.addEventListener('click', () => {
+                if (animationTarget === null) animationTarget = currentX;
+                animationTarget += getCardWidth() * 1.5; // Slide logic
+            });
+        }
+
+        if (btnPrev) {
+            btnPrev.addEventListener('click', () => {
+                if (animationTarget === null) animationTarget = currentX;
+                animationTarget -= getCardWidth() * 1.5; // Slide logic
+            });
+        }
+
+        function render(timestamp) {
+            // Frame rate independence for speed
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const delta = timestamp - lastTimestamp;
+            lastTimestamp = timestamp;
+
+            const halfWidth = track.scrollWidth / 2;
+
+            if (animationTarget !== null) {
+                // Smooth slide to target
+                let diff = animationTarget - currentX;
+                if (Math.abs(diff) < 1) {
+                    currentX = animationTarget;
+                    animationTarget = null;
+                } else {
+                    currentX += diff * 0.1; // Ease-out effect
+                }
+            } else if (!isHovered) {
+                // Adjust auto-scroll speed based on delta time to ensure smooth 60fps equivalent
+                currentX += speed * (delta / 6.67); 
+            }
+
+            // Seamlessly loop the track
+            if (halfWidth > 0) {
+                if (currentX >= halfWidth) {
+                    currentX -= halfWidth;
+                    if (animationTarget !== null) animationTarget -= halfWidth;
+                } else if (currentX < 0) {
+                    currentX += halfWidth;
+                    if (animationTarget !== null) animationTarget += halfWidth;
+                }
+            }
+
+            track.style.transform = `translateX(-${currentX}px)`;
+            requestAnimationFrame(render);
+        }
+        
+        requestAnimationFrame(render);
+    }
 })();
 
 // Instagram Modal Functions

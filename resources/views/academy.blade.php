@@ -457,9 +457,9 @@
     
     <div class="bottom-heading text-center py-3">
       <h3>{{ translate('Welcome to Emirati Coffee Academy') }}</h3>
-    <span>{{ translate('Therefore, as a center of excellence and a driving force in the United Arab Emirates coffee market, Emirati Coffee is always poised to expand its vision to encompass coffee education. Given that the country is witnessing the dynamic growth of its talent pool, coffee lovers and enthusiasts alike can rely on us to help enhance their knowledge and confidently face any daunting situation that may come their way.
+    <span>{{ translate('Emirati Coffee is a leading name in the UAE’s coffee industry and continues to grow its focus on coffee education. As the sector develops and new talent emerges, we are committed to helping professionals and coffee enthusiasts strengthen their knowledge and confidently navigate the industry.
 
-At Emirati Coffee, we provide a full range of training programs, including SCA/CQI certification courses, as well as specialized training programs aimed at acquiring basic and advanced industry-specific skills.') }}</span>
+At Emirati Coffee, we offer a range of training programs, including SCA certification courses, as well as specialized courses designed to build both fundamental and advanced industry skills.') }}</span>
     </div>
     
     <!-- banner 1 -->

@@ -401,7 +401,7 @@ body {
 <section class="social-stories-section">
     <div class="container">
         <div class="section-header">
-            <h2 class="main-heading">{{ translate('Social media Emirati Coffee stories') }}</h2>
+            <h2 class="main-heading">{{ translate('Stories Over Coffee') }}</h2>
         </div>
 
         <div class="stories-grid">

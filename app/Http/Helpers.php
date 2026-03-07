@@ -301,13 +301,14 @@ if (!function_exists('cart_product_price')) {
             $product_stock = $product->stocks->where('variant', $str)->first();
             if ($product_stock) {
                 $price = $product_stock->price;
-            }
-
-            if ($product->wholesale_product) {
-                $wholesalePrice = $product_stock->wholesalePrices->where('min_qty', '<=', $cart_product['quantity'])->where('max_qty', '>=', $cart_product['quantity'])->first();
-                if ($wholesalePrice) {
-                    $price = $wholesalePrice->price;
+                if ($product->wholesale_product) {
+                    $wholesalePrice = $product_stock->wholesalePrices->where('min_qty', '<=', $cart_product['quantity'])->where('max_qty', '>=', $cart_product['quantity'])->first();
+                    if ($wholesalePrice) {
+                        $price = $wholesalePrice->price;
+                    }
                 }
+            } else {
+                $price = $product->unit_price;
             }
 
             //discount calculation
@@ -408,7 +409,11 @@ if (!function_exists('cart_product_discount')) {
             $str = $cart_product['variation'];
         }
         $product_stock = $product->stocks->where('variant', $str)->first();
-        $price = $product_stock->price;
+        if ($product_stock) {
+            $price = $product_stock->price;
+        } else {
+            $price = $product->unit_price;
+        }
 
         //discount calculation
         $discount_applicable = false;
@@ -451,7 +456,11 @@ if (!function_exists('carts_product_discount')) {
                 $str = $cart_product['variation'];
             }
             $product_stock = $product->stocks->where('variant', $str)->first();
-            $price = $product_stock->price;
+            if ($product_stock) {
+                $price = $product_stock->price;
+            } else {
+                $price = $product->unit_price;
+            }
 
             //discount calculation
             $discount_applicable = false;

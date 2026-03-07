@@ -3,6 +3,8 @@
 use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Cart;
+use App\Utility\JsonHtmlString;
+
 use App\Models\City;
 use App\Models\Shop;
 use App\Models\User;
@@ -257,13 +259,13 @@ if (!function_exists('format_price')) {
         }
 
         if (get_setting('symbol_format') == 1) {
-            return new \Illuminate\Support\HtmlString(currency_symbol() . $fomated_price);
+            return new JsonHtmlString(currency_symbol() . $fomated_price);
         } else if (get_setting('symbol_format') == 3) {
-            return new \Illuminate\Support\HtmlString(currency_symbol() . ' ' . $fomated_price);
+            return new JsonHtmlString(currency_symbol() . ' ' . $fomated_price);
         } else if (get_setting('symbol_format') == 4) {
-            return new \Illuminate\Support\HtmlString($fomated_price . ' ' . currency_symbol());
+            return new JsonHtmlString($fomated_price . ' ' . currency_symbol());
         }
-        return new \Illuminate\Support\HtmlString($fomated_price . currency_symbol());
+        return new JsonHtmlString($fomated_price . currency_symbol());
     }
 }
 
@@ -590,7 +592,7 @@ if (!function_exists('home_price')) {
             if ($lowest_price == $highest_price) {
                 return format_price(convert_price($lowest_price));
             } else {
-                return new \Illuminate\Support\HtmlString(format_price(convert_price($lowest_price)) . ' - ' . format_price(convert_price($highest_price)));
+                return new JsonHtmlString(format_price(convert_price($lowest_price)) . ' - ' . format_price(convert_price($highest_price)));
             }
         } else {
             return $lowest_price . ' - ' . $highest_price;
@@ -651,7 +653,7 @@ if (!function_exists('home_discounted_price')) {
             if ($lowest_price == $highest_price) {
                 return format_price(convert_price($lowest_price));
             } else {
-                return new \Illuminate\Support\HtmlString(format_price(convert_price($lowest_price)) . ' - ' . format_price(convert_price($highest_price)));
+                return new JsonHtmlString(format_price(convert_price($lowest_price)) . ' - ' . format_price(convert_price($highest_price)));
             }
         } else {
             return $lowest_price . ' - ' . $highest_price;

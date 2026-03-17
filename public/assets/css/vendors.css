@@ -80390,6 +80390,30 @@ font-size: 9px;
 
     margin-left: -20px;
 }
+
+.policies {
+    display: flex;
+    justify-content: start !important;
+    gap: 10px;
+    /* font-size: 14px; */
+    flex-wrap: wrap;
+    gap:0;
+    column-gap:8px;
+}
+
+.policies li {
+  padding-inline-end:8px;
+}
+
+.policies li:not(:last-child) {
+  border-right: 1px solid #000; /* or border-left depending on layout */
+}
+
+.copyright{
+  display:flex;
+}
+
+
 }
 
 

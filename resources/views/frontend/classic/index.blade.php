@@ -744,7 +744,9 @@
         @media (max-width: 768px) {
             .hero-banner {
                 width: 88%; /* Minimum width for mobile */
+                height:40%;
             }
+            
         }
     </style>
 
@@ -1179,6 +1181,10 @@ color: white;
         padding: 7px 15px !important;
         font-size: 15px;
         font-weight: 400;
+    }
+
+    .hero-section p{
+        max-width:27ch;
     }
 }
     </style>

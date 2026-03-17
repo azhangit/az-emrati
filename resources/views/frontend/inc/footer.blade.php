@@ -614,7 +614,7 @@
         
      
     </div>
-    <div class="col-lg-3 mb-2 align-content-center">
+    <div class="col-lg-3 mb-2 align-content-center copyright">
       <span>{{ translate('Copyright © 2025 Emirati Coffee Co.') }}</span>
       <div>{{ translate('All Rights Reserved.') }}</div>
 

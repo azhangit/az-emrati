@@ -742,9 +742,12 @@
 
         /* Responsive Adjustment for Mobile */
         @media (max-width: 768px) {
+            .hero-section{
+                height:145vh;
+            }
             .hero-banner {
                 width: 88%; /* Minimum width for mobile */
-                height:40%;
+                height:50%;
             }
             
         }

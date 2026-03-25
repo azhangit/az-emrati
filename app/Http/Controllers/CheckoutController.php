@@ -602,12 +602,24 @@ class CheckoutController extends Controller
                 }
             }
             if ($validationDateCheckCondition) {
-                if (CouponUsage::where('user_id', Auth::user()->id)->where('coupon_id', $coupon->id)->first() == null) {
+                $user_id = Auth::check() ? Auth::user()->id : null;
+                $temp_user_id = Session::has('temp_user_id') ? Session::get('temp_user_id') : null;
+
+                $usedByThisUser = false;
+                if ($user_id) {
+                    $usedByThisUser = CouponUsage::where('user_id', $user_id)->where('coupon_id', $coupon->id)->exists();
+                }
+
+                if (!$usedByThisUser) {
                     $coupon_details = json_decode($coupon->details);
 
-                    $carts = Cart::where('user_id', Auth::user()->id)
-                        ->where('owner_id', $coupon->user_id)
-                        ->get();
+                    $cartsQuery = Cart::query()->where('owner_id', $coupon->user_id);
+                    if ($user_id) {
+                        $cartsQuery->where('user_id', $user_id);
+                    } else {
+                        $cartsQuery->where('temp_user_id', $temp_user_id);
+                    }
+                    $carts = $cartsQuery->get();
 
                     $coupon_discount = 0;
 
@@ -691,15 +703,18 @@ class CheckoutController extends Controller
 
 
                     if ($coupon_discount > 0) {
-                        Cart::where('user_id', Auth::user()->id)
-                            ->where('owner_id', $coupon->user_id)
-                            ->update(
-                                [
-                                    'discount' => $coupon_discount / count($carts),
-                                    'coupon_code' => $request->code,
-                                    'coupon_applied' => 1
-                                ]
-                            );
+                        $cartsUpdateQuery = Cart::query()->where('owner_id', $coupon->user_id);
+                        if (Auth::check()) {
+                            $cartsUpdateQuery->where('user_id', Auth::user()->id);
+                        } else {
+                            $cartsUpdateQuery->where('temp_user_id', Session::get('temp_user_id'));
+                        }
+
+                        $cartsUpdateQuery->update([
+                            'discount' => $coupon_discount / count($carts),
+                            'coupon_code' => $request->code,
+                            'coupon_applied' => 1
+                        ]);
 
                         $response_message['response'] = 'success';
                         $response_message['message'] = translate('Coupon has been applied');
@@ -720,8 +735,17 @@ class CheckoutController extends Controller
             $response_message['message'] = translate('Invalid coupon!');
         }
 
-        $carts = Cart::where('user_id', Auth::user()->id)->get();
-        $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
+        $cartsQueryReturn = Cart::query();
+        if (Auth::check()) {
+            $cartsQueryReturn->where('user_id', Auth::user()->id);
+        } else {
+            $cartsQueryReturn->where('temp_user_id', Session::get('temp_user_id'));
+        }
+        $carts = $cartsQueryReturn->get();
+        $shipping_info = null;
+        if (count($carts) > 0) {
+            $shipping_info = Address::find($carts[0]['address_id']);
+        }
         
         $returnHTML = view('frontend.'.get_setting('homepage_select').'.partials.cart_summary', compact('coupon', 'carts', 'shipping_info'))->render();
         return response()->json(array('response_message' => $response_message, 'html'=>$returnHTML));
@@ -729,20 +753,35 @@ class CheckoutController extends Controller
 
     public function remove_coupon_code(Request $request)
     {
-        Cart::where('user_id', Auth::user()->id)
-            ->update(
-                [
-                    'discount' => 0.00,
-                    'coupon_code' => '',
-                    'coupon_applied' => 0
-                ]
-            );
+        $cartsQuery = Cart::query();
+        if (Auth::check()) {
+            $cartsQuery->where('user_id', Auth::user()->id);
+        } else {
+            $cartsQuery->where('temp_user_id', Session::get('temp_user_id'));
+        }
+        
+        $cartsQuery->update(
+            [
+                'discount' => 0.00,
+                'coupon_code' => '',
+                'coupon_applied' => 0
+            ]
+        );
 
         $coupon = Coupon::where('code', $request->code)->first();
-        $carts = Cart::where('user_id', Auth::user()->id)
-            ->get();
+        
+        $cartsQueryUpdate = Cart::query();
+        if (Auth::check()) {
+            $cartsQueryUpdate->where('user_id', Auth::user()->id);
+        } else {
+            $cartsQueryUpdate->where('temp_user_id', Session::get('temp_user_id'));
+        }
+        $carts = $cartsQueryUpdate->get();
 
-        $shipping_info = Address::where('id', $carts[0]['address_id'])->first();
+        $shipping_info = null;
+        if (count($carts) > 0) {
+            $shipping_info = Address::find($carts[0]['address_id']);
+        }
 
         return view('frontend.'.get_setting('homepage_select').'.partials.cart_summary', compact('coupon', 'carts', 'shipping_info'));
     }
@@ -753,7 +792,7 @@ class CheckoutController extends Controller
 
             $point = $request->point;
 
-            if (Auth::user()->point_balance >= $point) {
+            if (Auth::check() && Auth::user()->point_balance >= $point) {
                 $request->session()->put('club_point', $point);
                 flash(translate('Point has been redeemed'))->success();
             } else {

@@ -20,14 +20,14 @@ class NewCheckoutController extends Controller
 {
      public function index()
     {
-        if (! auth()->check()) {
-            return redirect()->route('login')
-                             ->with('error', 'You must be logged in to checkout.');
+        $cartItemsQuery = Cart::query();
+        if (auth()->check()) {
+            $cartItemsQuery->where('user_id', auth()->id());
+        } else {
+            $cartItemsQuery->where('temp_user_id', Session::get('temp_user_id'));
         }
 
-        $cartItems = Cart::where('user_id', auth()->id())
-                         ->with('product')
-                         ->get();
+        $cartItems = $cartItemsQuery->with('product')->get();
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('home')
@@ -59,7 +59,13 @@ class NewCheckoutController extends Controller
 
     public function store_shipping_info(Request $request)
 {
-    $cartItems = Cart::where('user_id', auth()->user()->id)->get();
+    $cartItemsQuery = Cart::query();
+    if (auth()->check()) {
+        $cartItemsQuery->where('user_id', auth()->id());
+    } else {
+        $cartItemsQuery->where('temp_user_id', Session::get('temp_user_id'));
+    }
+    $cartItems = $cartItemsQuery->get();
     if ($cartItems->isEmpty()) {
         flash(translate('Your cart is empty'))->warning();
         return redirect()->route('home');
@@ -121,7 +127,13 @@ public function store(Request $request)
     ]);
 
     // Calculate the order amount dynamically from the cart.
-    $carts = Cart::where('user_id', auth()->id())->get();
+    $cartsQuery = Cart::query();
+    if (auth()->check()) {
+        $cartsQuery->where('user_id', auth()->id());
+    } else {
+        $cartsQuery->where('temp_user_id', Session::get('temp_user_id'));
+    }
+    $carts = $cartsQuery->get();
     $subtotal = 0;
     foreach ($carts as $cartItem) {
         $product = Product::find($cartItem->product_id);
@@ -130,8 +142,13 @@ public function store(Request $request)
     }
     // Define a fixed shipping cost and calculate VAT (5% of subtotal)
     $shipping = 28.00;
-    $vat = $subtotal * 0.05;
-    $total = $subtotal + $shipping + $vat;
+    
+    // Apply coupon discount if any
+    $coupon_discount = Session::get('coupon_discount', 0);
+    $discounted_subtotal = max(0, $subtotal - $coupon_discount);
+    
+    $vat = $discounted_subtotal * 0.05;
+    $total = $discounted_subtotal + $shipping + $vat;
     // Convert total amount to cents (assuming currency requires cents)
     $amountInCents = round($total * 100);
 
@@ -155,10 +172,31 @@ public function store(Request $request)
     }
 
     // Create the new order record using the validated data.
+    $validatedData['grand_total'] = $total; // Ensure grand_total is set correctly
     $newOrder = NewOrder::create($validatedData);
 
+    // Record Coupon Usage
+    if (Session::has('coupon_applied') && Session::get('coupon_applied') == 1 && Auth::check()) {
+        $coupon = Coupon::where('code', Session::get('coupon_code'))->first();
+        if ($coupon) {
+            $coupon_usage = new CouponUsage();
+            $coupon_usage->user_id = auth()->id();
+            $coupon_usage->coupon_id = $coupon->id;
+            $coupon_usage->save();
+        }
+    }
+
+    // Clear coupon session
+    Session::forget('coupon_applied');
+    Session::forget('coupon_code');
+    Session::forget('coupon_discount');
+
     // Clear user's cart after checkout.
-    Cart::where('user_id', auth()->id())->delete();
+    if (auth()->check()) {
+        Cart::where('user_id', auth()->id())->delete();
+    } else {
+        Cart::where('temp_user_id', Session::get('temp_user_id'))->delete();
+    }
 
     // Return response based on request type.
     if ($request->ajax()) {

@@ -1040,10 +1040,12 @@ $product->save();
                 $order->coupon_discount = $coupon_discount;
                 $order->grand_total -= $coupon_discount;
 
-                $coupon_usage = new CouponUsage;
-                $coupon_usage->user_id = Auth::user()->id;
-                $coupon_usage->coupon_id = Coupon::where('code', $seller_product[0]->coupon_code)->first()->id;
-                $coupon_usage->save();
+                if (Auth::check()) {
+                    $coupon_usage = new CouponUsage;
+                    $coupon_usage->user_id = Auth::user()->id;
+                    $coupon_usage->coupon_id = Coupon::where('code', $seller_product[0]->coupon_code)->first()->id;
+                    $coupon_usage->save();
+                }
             }
 
             $combined_order->grand_total += $order->grand_total;

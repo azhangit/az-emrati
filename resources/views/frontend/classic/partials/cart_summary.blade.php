@@ -13,7 +13,7 @@
             @php
                 $coupon_discount = 0;
             @endphp
-            @if (Auth::check() && get_setting('coupon_system') == 1)
+            @if (get_setting('coupon_system') == 1)
                 @php
                     $coupon_code = null;
                 @endphp
@@ -258,7 +258,7 @@
         @endif
 
         <!-- Coupon System -->
-        @if (Auth::check() && get_setting('coupon_system') == 1)
+        @if (get_setting('coupon_system') == 1)
             @if ($coupon_discount > 0 && $coupon_code)
                 <div class="mt-3">
                     <form class="" id="remove-coupon-form" enctype="multipart/form-data">

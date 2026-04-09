@@ -264,8 +264,21 @@ class LoginController extends Controller
         }
 
         if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
-            //CoreComponentRepository::instantiateShopRepository();
-            return redirect()->route('admin.dashboard');
+            // Route by permission so limited staff are not forced to an unauthorized dashboard.
+            if (auth()->user()->can('admin_dashboard')) {
+                return redirect()->route('admin.dashboard');
+            }
+
+            if (
+                auth()->user()->can('view_all_orders') ||
+                auth()->user()->can('view_inhouse_orders') ||
+                auth()->user()->can('view_seller_orders') ||
+                auth()->user()->can('view_pickup_point_orders')
+            ) {
+                return redirect()->route('all_orders.index');
+            }
+
+            return redirect()->route('profile.index');
         } elseif (auth()->user()->user_type == 'seller') {
             return redirect()->route('seller.dashboard');
         } else {

@@ -33,6 +33,9 @@
                         <option value="confirmed"
                             @isset($delivery_status) @if ($delivery_status == 'confirmed') selected @endif @endisset>
                             {{ translate('Confirmed') }}</option>
+                        <option value="ready_for_pickup"
+                            @isset($delivery_status) @if ($delivery_status == 'ready_for_pickup') selected @endif @endisset>
+                            {{ translate('Ready for pickup') }}</option>
                         <option value="on_the_way"
                             @isset($delivery_status) @if ($delivery_status == 'on_the_way') selected @endif @endisset>
                             {{ translate('On The Way') }}</option>

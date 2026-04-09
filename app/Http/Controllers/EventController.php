@@ -10,6 +10,42 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->authorizeAdminModuleAccess(['All_Events', 'Create_Events']);
+            return $next($request);
+        })->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    }
+
+    private function authorizeAdminModuleAccess(array $abilities): void
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            abort(403);
+        }
+
+        if ($user->user_type === 'admin') {
+            return;
+        }
+
+        if (method_exists($user, 'hasRole') && $user->hasRole('Super Admin')) {
+            return;
+        }
+
+        foreach ($abilities as $ability) {
+            try {
+                if ($user->can($ability)) {
+                    return;
+                }
+            } catch (\Throwable $e) {
+            }
+        }
+
+        abort(403);
+    }
+
    public function index()
 {
     $events = Event::with('location')->orderBy('date', 'asc')->paginate(20);

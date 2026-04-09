@@ -48,36 +48,46 @@
             <!-- Clear Cache -->
             <div class="aiz-topbar-item mr-3">
                 <div class="d-flex align-items-center">
+                    @if (auth()->user()->user_type == 'admin' || auth()->user()->can('file_system_&_cache_configuration'))
                     <a class="btn btn-topbar has-transition btn-icon btn-circle btn-light p-0 hov-bg-primary hov-svg-white d-flex align-items-center justify-content-center" 
                         href="{{ route('cache.clear') }}" data-toggle="tooltip" data-title="{{ translate('Clear Cache') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                             <path id="_74846e5be5db5b666d3893933be03656" data-name="74846e5be5db5b666d3893933be03656" d="M7.719,8.911H8.9V10.1H7.719v1.185H6.539V10.1H5.36V8.911h1.18V7.726h1.18ZM5.36,13.652h1.18v1.185H5.36v1.185H4.18V14.837H3V13.652H4.18V12.467H5.36Zm13.626-2.763H10.138V10.3a1.182,1.182,0,0,1,1.18-1.185h2.36V2h1.77V9.111h2.36a1.182,1.182,0,0,1,1.18,1.185ZM18.4,18H16.044a9.259,9.259,0,0,0,.582-2.963.59.59,0,1,0-1.18,0A7.69,7.69,0,0,1,14.755,18H12.5a9.259,9.259,0,0,0,.582-2.963.59.59,0,1,0-1.18,0A7.69,7.69,0,0,1,11.216,18H8.958a22.825,22.825,0,0,0,1.163-5.926H18.99A19.124,19.124,0,0,1,18.4,18Z" transform="translate(-3 -2)" fill="#717580"/>
                         </svg>
                     </a>
+                    @endif
                 </div>
             </div>
             <!-- Topbar menus -->
             <div class="aiz-topbar-item mr-2 d-none d-xl-block">
                 <div class="d-flex align-items-center h-100">
+                    @can('admin_dashboard')
                     <a class="aiz-topbar-menu fs-13 fw-600 d-flex align-items-center justify-content-center {{ areActiveRoutes(['admin.dashboard']) }}" 
                         href="{{ route('admin.dashboard') }}">{{ translate('Dashboard') }}</a>
+                    @endcan
+                    @canany(['view_all_orders','view_inhouse_orders','view_seller_orders','view_pickup_point_orders'])
                     <a class="aiz-topbar-menu fs-13 fw-600 d-flex align-items-center justify-content-center {{ areActiveRoutes(['all_orders.index']) }}" 
                         href="{{ route('all_orders.index') }}">{{ translate('Orders') }}</a>
+                    @endcanany
                     {{-- <a class="aiz-topbar-menu fs-13 fw-600 d-flex align-items-center justify-content-center {{ areActiveRoutes(['admin.dashboard']) }}" 
                         href="{{ route('admin.dashboard') }}">{{ translate('Earnings') }}</a> --}}
+                    @canany(['view_all_website_pages','edit_website_page','website_appearance','header_setup','footer_setup','authentication_layout_settings'])
                     <a class="aiz-topbar-menu fs-13 fw-600 d-flex align-items-center justify-content-center {{ (url()->current() == url('/admin/website/custom-pages/edit/home')) ? 'active' : '' }}" 
                         href="{{ route('custom-pages.edit', ['id'=>'home', 'lang'=>env('DEFAULT_LANGUAGE'), 'page'=>'home']) }}">{{ translate('Homepage Settings') }}</a>
+                    @endcanany
                 </div>
             </div>
             <!-- Add New product -->
             <div class="d-flex justify-content-around align-items-center align-items-stretch">
                 <div class="aiz-topbar-item d-none d-sm-block">
                     <div class="d-flex align-items-center h-100">
+                        @can('add_new_product')
                         <a class="btn btn-soft-blue btn-sm d-flex align-items-center rounded-2 hov-svg-white"
                             href="{{ route('products.create') }}">
                             <span class="fw-500 mx-2 mr-0 d-none d-md-block">{{ translate('Add New') }}</span>
                             <i class="las fs-18 la-plus"></i>
                         </a>
+                        @endcan
                     </div>
                 </div>
             </div>

@@ -13,6 +13,25 @@ use Illuminate\Support\Facades\Log;
 
 class AizUploadController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->user_type === 'seller') {
+                return $next($request);
+            }
+
+            if (
+                auth()->user()->user_type === 'admin' ||
+                auth()->user()->can('uploaded_files') ||
+                auth()->user()->can('file_system_&_cache_configuration')
+            ) {
+                return $next($request);
+            }
+
+            abort(403);
+        });
+    }
+
     public function index(Request $request)
     {
 

@@ -1255,6 +1255,8 @@ $product->save();
             }
         }
 
+        $this->sendOrderStatusEmail($order, 'delivery', $request->status);
+
         return 1;
     }
 
@@ -1324,7 +1326,60 @@ $product->save();
             } catch (\Exception $e) {
             }
         }
+
+        $this->sendOrderStatusEmail($order, 'payment', $order->payment_status);
+
         return 1;
+    }
+
+    private function sendOrderStatusEmail(Order $order, string $statusType, string $statusValue): void
+    {
+        if (env('MAIL_USERNAME') == null) {
+            return;
+        }
+
+        $toEmail = $this->resolveOrderCustomerEmail($order);
+        if (!$toEmail) {
+            return;
+        }
+
+        $statusLabel = ucwords(str_replace('_', ' ', $statusValue));
+        $statusMessage = $statusType === 'delivery'
+            ? "Your order {$order->code} is {$statusLabel}."
+            : "Payment status for order {$order->code} is {$statusLabel}.";
+
+        if ($statusType === 'delivery' && $statusValue === 'ready_for_pickup') {
+            $statusMessage = "Your order {$order->code} is ready for pickup.";
+        }
+
+        $array = [
+            'view' => 'emails.invoice',
+            'subject' => "Order {$order->code} {$statusLabel}",
+            'from' => env('MAIL_FROM_ADDRESS'),
+            'order' => $order,
+            'status_type' => $statusType,
+            'status_label' => $statusLabel,
+            'status_message' => $statusMessage,
+        ];
+
+        try {
+            Mail::to($toEmail)->queue(new InvoiceEmailManager($array));
+        } catch (\Exception $e) {
+        }
+    }
+
+    private function resolveOrderCustomerEmail(Order $order): ?string
+    {
+        if ($order->user && !empty($order->user->email)) {
+            return $order->user->email;
+        }
+
+        $shipping = json_decode($order->shipping_address, true);
+        if (is_array($shipping) && !empty($shipping['email'])) {
+            return $shipping['email'];
+        }
+
+        return null;
     }
 
     public function assign_delivery_boy(Request $request)

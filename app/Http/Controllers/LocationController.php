@@ -6,6 +6,42 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->authorizeAdminModuleAccess(['all_locations', 'Create_locations']);
+            return $next($request);
+        });
+    }
+
+    private function authorizeAdminModuleAccess(array $abilities): void
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            abort(403);
+        }
+
+        if ($user->user_type === 'admin') {
+            return;
+        }
+
+        if (method_exists($user, 'hasRole') && $user->hasRole('Super Admin')) {
+            return;
+        }
+
+        foreach ($abilities as $ability) {
+            try {
+                if ($user->can($ability)) {
+                    return;
+                }
+            } catch (\Throwable $e) {
+            }
+        }
+
+        abort(403);
+    }
+
     public function index()
     {
         $locations = Location::orderBy('id', 'desc')->get();

@@ -232,7 +232,7 @@
                     </li>
                 @endcanany
                 <!-- Product -->
-               
+               @canany(['All_Events', 'Create_Events', 'all_locations', 'Create_locations'])
                     <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <div class="aiz-side-nav-icon">
@@ -287,8 +287,10 @@
                        
                         </ul>
                     </li>
+                @endcanany
                
                 <!-- Institutes -->
+                @canany(['all_institutes', 'Create_institutes'])
                 <li class="aiz-side-nav-item">
                     <a href="#" class="aiz-side-nav-link">
                         <div class="aiz-side-nav-icon">
@@ -314,8 +316,10 @@
                         </li>
                     </ul>
                 </li>
+                @endcanany
                
                 <!-- Courses -->
+                @canany(['All_Courses', 'Create_Courses'])
                 <li class="aiz-side-nav-item">
                     <a href="#" class="aiz-side-nav-link">
                         <div class="aiz-side-nav-icon">
@@ -341,6 +345,7 @@
                         </li>
                     </ul>
                 </li>
+                @endcanany
                
 <!--  <li class="aiz-side-nav-item">-->
 <!--                        <a href="#" class="aiz-side-nav-link">-->
@@ -770,6 +775,7 @@
                 @endif
 
                 {{-- Uploads Files --}}
+                @if (auth()->user()->user_type == 'admin' || auth()->user()->can('uploaded_files') || auth()->user()->can('file_system_&_cache_configuration'))
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('uploaded-files.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['uploaded-files.create'])}}">
                         <div class="aiz-side-nav-icon">
@@ -782,6 +788,7 @@
                         <span class="aiz-side-nav-text">{{ translate('Uploaded Files') }}</span>
                     </a>
                 </li>
+                @endif
 
                 <!-- Reports -->
                 @canany(['in_house_product_sale_report','seller_products_sale_report','products_stock_report','product_wishlist_report','user_search_report','commission_history_report','wallet_transaction_report'])

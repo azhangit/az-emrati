@@ -88,6 +88,14 @@
 					<!--<td class="gry-color small">{{  translate('Phone') }}: {{ get_setting('contact_phone') }}</td>-->
 					<td class=" small"><span class="gry-color small">{{  translate('Order Date') }}:</span> <span class=" strong">{{ date('d-m-Y', $order->date) }}</span></td>
 				</tr>
+				@if(!empty($status_message))
+				<tr>
+					<td class="small" style="padding-top:6px;">
+						<span class="gry-color small">{{ translate('Order Update') }}:</span>
+						<span class="strong">{{ $status_message }}</span>
+					</td>
+				</tr>
+				@endif
 			</table>
 
 		</div>

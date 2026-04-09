@@ -1334,7 +1334,7 @@ $product->save();
 
     private function sendOrderStatusEmail(Order $order, string $statusType, string $statusValue): void
     {
-        if (env('MAIL_USERNAME') == null) {
+        if (empty(env('MAIL_FROM_ADDRESS'))) {
             return;
         }
 
@@ -1363,8 +1363,29 @@ $product->save();
         ];
 
         try {
-            Mail::to($toEmail)->queue(new InvoiceEmailManager($array));
-        } catch (\Exception $e) {
+            \Log::info('Order status email sending', [
+                'order_id' => $order->id,
+                'order_code' => $order->code,
+                'to' => $toEmail,
+                'status_type' => $statusType,
+                'status_value' => $statusValue,
+            ]);
+
+            Mail::to($toEmail)->send(new InvoiceEmailManager($array));
+
+            \Log::info('Order status email sent', [
+                'order_id' => $order->id,
+                'to' => $toEmail,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Order status email failed', [
+                'order_id' => $order->id,
+                'order_code' => $order->code,
+                'to' => $toEmail,
+                'status_type' => $statusType,
+                'status_value' => $statusValue,
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 

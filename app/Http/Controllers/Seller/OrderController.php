@@ -198,7 +198,7 @@ class OrderController extends Controller
 
     private function sendOrderStatusEmail(Order $order, string $statusType, string $statusValue): void
     {
-        if (env('MAIL_USERNAME') == null) {
+        if (empty(env('MAIL_FROM_ADDRESS'))) {
             return;
         }
 
@@ -227,8 +227,29 @@ class OrderController extends Controller
         ];
 
         try {
-            Mail::to($toEmail)->queue(new InvoiceEmailManager($array));
-        } catch (\Exception $e) {
+            \Log::info('Seller order status email sending', [
+                'order_id' => $order->id,
+                'order_code' => $order->code,
+                'to' => $toEmail,
+                'status_type' => $statusType,
+                'status_value' => $statusValue,
+            ]);
+
+            Mail::to($toEmail)->send(new InvoiceEmailManager($array));
+
+            \Log::info('Seller order status email sent', [
+                'order_id' => $order->id,
+                'to' => $toEmail,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Seller order status email failed', [
+                'order_id' => $order->id,
+                'order_code' => $order->code,
+                'to' => $toEmail,
+                'status_type' => $statusType,
+                'status_value' => $statusValue,
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 

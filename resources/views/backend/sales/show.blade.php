@@ -14,6 +14,7 @@
                     $delivery_status = $order->delivery_status;
                     $payment_status = $order->payment_status;
                     $admin_user_id = App\Models\User::where('user_type', 'admin')->first()->id;
+                    $can_edit_order_items = auth()->user()->user_type == 'admin' || auth()->user()->can('update_order_payment_status') || auth()->user()->can('update_order_delivery_status');
                 @endphp
 
                 <!--Assign Delivery Boy-->
@@ -96,6 +97,15 @@
                     </div>
                 @endif
             </div>
+            @if ($can_edit_order_items)
+                <div class="row mt-3">
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn btn-primary" id="save_order_items_btn">
+                            {{ translate('Save Item Changes') }}
+                        </button>
+                    </div>
+                </div>
+            @endif
             <div class="mb-3">
                 @php
                     $removedXML = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -211,13 +221,28 @@
                                     {{ translate('Qty') }}
                                 </th>
                                 <th data-breakpoints="lg" class="min-col text-uppercase text-center">
+                                    {{ translate('SKU') }}
+                                </th>
+                                <th data-breakpoints="lg" class="min-col text-uppercase text-center">
                                     {{ translate('Price') }}</th>
+                                <th data-breakpoints="lg" class="min-col text-uppercase text-center">
+                                    {{ translate('Tax') }}</th>
                                 <th data-breakpoints="lg" class="min-col text-uppercase text-right">
                                     {{ translate('Total') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($order->orderDetails as $key => $orderDetail)
+                                @php
+                                    $fallbackSku = '';
+                                    if ($orderDetail->product && $orderDetail->product->stocks && $orderDetail->product->stocks->first()) {
+                                        $fallbackSku = (string) optional($orderDetail->product->stocks->first())->sku;
+                                    }
+                                    $rowSku = $orderDetail->sku ?? $fallbackSku;
+                                    $rowQty = (float) ($orderDetail->quantity ?? 1);
+                                    $rowQty = $rowQty > 0 ? $rowQty : 1;
+                                    $rowUnitPrice = (float) ($orderDetail->price ?? 0) / $rowQty;
+                                @endphp
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>
@@ -246,10 +271,7 @@
                                             </small>
                                             <br>
                                             <small>
-                                                @php
-                                                    $product_stock = json_decode($orderDetail->product->stocks->first(), true);
-                                                @endphp
-                                                {{translate('SKU')}}: {{ $product_stock['sku'] }}
+                                                {{translate('SKU')}}: {{ $rowSku }}
                                             </small>
                                         @elseif ($orderDetail->product != null && $orderDetail->product->auction_product == 1)
                                             <strong>
@@ -283,13 +305,54 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        {{ $orderDetail->quantity }}
+                                        @if ($can_edit_order_items)
+                                            <input type="number" min="0.01" step="0.01"
+                                                class="form-control form-control-sm order-item-field order-item-qty"
+                                                data-order-detail-id="{{ $orderDetail->id }}"
+                                                value="{{ $orderDetail->quantity }}">
+                                        @else
+                                            {{ $orderDetail->quantity }}
+                                        @endif
                                     </td>
                                     <td class="text-center">
-                                        {{ single_price($orderDetail->price / $orderDetail->quantity) }}
+                                        @if ($can_edit_order_items)
+                                            <input type="text"
+                                                class="form-control form-control-sm order-item-field order-item-sku"
+                                                data-order-detail-id="{{ $orderDetail->id }}"
+                                                value="{{ $rowSku }}">
+                                        @else
+                                            {{ $rowSku }}
+                                        @endif
                                     </td>
                                     <td class="text-center">
-                                        {{ single_price($orderDetail->price) }}
+                                        @if ($can_edit_order_items)
+                                            <input type="number" min="0" step="0.01"
+                                                class="form-control form-control-sm order-item-field order-item-unit-price"
+                                                data-order-detail-id="{{ $orderDetail->id }}"
+                                                value="{{ number_format($rowUnitPrice, 2, '.', '') }}">
+                                        @else
+                                            {{ single_price($rowUnitPrice) }}
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($can_edit_order_items)
+                                            <input type="number" min="0" step="0.01"
+                                                class="form-control form-control-sm order-item-field order-item-tax"
+                                                data-order-detail-id="{{ $orderDetail->id }}"
+                                                value="{{ number_format((float) $orderDetail->tax, 2, '.', '') }}">
+                                        @else
+                                            {{ single_price($orderDetail->tax) }}
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($can_edit_order_items)
+                                            <input type="number" min="0" step="0.01"
+                                                class="form-control form-control-sm order-item-field order-item-total-price"
+                                                data-order-detail-id="{{ $orderDetail->id }}"
+                                                value="{{ number_format((float) $orderDetail->price, 2, '.', '') }}">
+                                        @else
+                                            {{ single_price($orderDetail->price) }}
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -396,6 +459,99 @@
                 tracking_code: tracking_code
             }, function(data) {
                 AIZ.plugins.notify('success', '{{ translate('Order tracking code has been updated') }}');
+            });
+        });
+
+        function groupOrderItemInputs() {
+            const grouped = {};
+            document.querySelectorAll('.order-item-field').forEach(function(input) {
+                const id = input.getAttribute('data-order-detail-id');
+                if (!id) return;
+                if (!grouped[id]) {
+                    grouped[id] = {
+                        order_detail_id: parseInt(id)
+                    };
+                }
+                if (input.classList.contains('order-item-qty')) {
+                    grouped[id].quantity = parseFloat(input.value || 0);
+                } else if (input.classList.contains('order-item-sku')) {
+                    grouped[id].sku = input.value || '';
+                } else if (input.classList.contains('order-item-unit-price')) {
+                    grouped[id].unit_price = parseFloat(input.value || 0);
+                } else if (input.classList.contains('order-item-tax')) {
+                    grouped[id].tax = parseFloat(input.value || 0);
+                } else if (input.classList.contains('order-item-total-price')) {
+                    grouped[id].total_price = parseFloat(input.value || 0);
+                }
+            });
+
+            return Object.values(grouped);
+        }
+
+        function recalculateRowFromUnitPrice(detailId) {
+            const qtyInput = document.querySelector('.order-item-qty[data-order-detail-id="' + detailId + '"]');
+            const unitInput = document.querySelector('.order-item-unit-price[data-order-detail-id="' + detailId + '"]');
+            const totalInput = document.querySelector('.order-item-total-price[data-order-detail-id="' + detailId + '"]');
+            if (!qtyInput || !unitInput || !totalInput) return;
+
+            const qty = parseFloat(qtyInput.value || 0);
+            const unit = parseFloat(unitInput.value || 0);
+            totalInput.value = ((qty > 0 ? qty : 0) * (unit > 0 ? unit : 0)).toFixed(2);
+        }
+
+        function recalculateRowFromTotalPrice(detailId) {
+            const qtyInput = document.querySelector('.order-item-qty[data-order-detail-id="' + detailId + '"]');
+            const unitInput = document.querySelector('.order-item-unit-price[data-order-detail-id="' + detailId + '"]');
+            const totalInput = document.querySelector('.order-item-total-price[data-order-detail-id="' + detailId + '"]');
+            if (!qtyInput || !unitInput || !totalInput) return;
+
+            const qty = parseFloat(qtyInput.value || 0);
+            const total = parseFloat(totalInput.value || 0);
+            if (qty > 0) {
+                unitInput.value = (total / qty).toFixed(2);
+            }
+        }
+
+        $(document).on('input', '.order-item-qty, .order-item-unit-price', function() {
+            const detailId = this.getAttribute('data-order-detail-id');
+            recalculateRowFromUnitPrice(detailId);
+        });
+
+        $(document).on('input', '.order-item-total-price', function() {
+            const detailId = this.getAttribute('data-order-detail-id');
+            recalculateRowFromTotalPrice(detailId);
+        });
+
+        $('#save_order_items_btn').on('click', function() {
+            const items = groupOrderItemInputs();
+            if (!items.length) {
+                AIZ.plugins.notify('warning', '{{ translate('No items found to update') }}');
+                return;
+            }
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                url: '{{ route('orders.update_items') }}',
+                type: 'POST',
+                data: {
+                    order_id: {{ $order->id }},
+                    items: items
+                },
+                success: function(response) {
+                    if (response && response.status == 1) {
+                        AIZ.plugins.notify('success', '{{ translate('Order items updated successfully') }}');
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 400);
+                    } else {
+                        AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    }
+                },
+                error: function() {
+                    AIZ.plugins.notify('danger', '{{ translate('Could not update order items') }}');
+                }
             });
         });
     </script>

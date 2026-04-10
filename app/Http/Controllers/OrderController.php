@@ -26,6 +26,7 @@ use App\Utility\SmsUtility;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 class OrderController extends Controller
 {
@@ -36,6 +37,7 @@ class OrderController extends Controller
         $this->middleware(['permission:view_all_orders|view_inhouse_orders|view_seller_orders|view_pickup_point_orders'])->only('all_orders');
         $this->middleware(['permission:view_order_details'])->only('show');
         $this->middleware(['permission:delete_order'])->only('destroy','bulk_order_delete');
+        $this->middleware(['permission:view_order_details|update_order_payment_status|update_order_delivery_status'])->only('update_order_items');
     }
  
 
@@ -1267,6 +1269,111 @@ $product->save();
         $order->save();
 
         return 1;
+    }
+
+    public function update_order_items(Request $request)
+    {
+        $validated = $request->validate([
+            'order_id' => 'required|integer|exists:orders,id',
+            'items' => 'required|array|min:1',
+            'items.*.order_detail_id' => 'required|integer',
+            'items.*.quantity' => 'required|numeric|min:0.01',
+            'items.*.unit_price' => 'nullable|numeric|min:0',
+            'items.*.total_price' => 'nullable|numeric|min:0',
+            'items.*.tax' => 'nullable|numeric|min:0',
+            'items.*.sku' => 'nullable|string|max:255',
+        ]);
+
+        $order = Order::with('orderDetails')->findOrFail($validated['order_id']);
+        $orderDetails = $order->orderDetails->keyBy('id');
+        $hasOrderDetailSkuColumn = Schema::hasColumn('order_details', 'sku');
+
+        DB::transaction(function () use ($validated, $order, $orderDetails, $hasOrderDetailSkuColumn) {
+            foreach ($validated['items'] as $item) {
+                $detailId = (int) $item['order_detail_id'];
+                if (!$orderDetails->has($detailId)) {
+                    continue;
+                }
+
+                $orderDetail = $orderDetails->get($detailId);
+                $qty = (float) $item['quantity'];
+
+                $hasTotal = array_key_exists('total_price', $item) && $item['total_price'] !== null && $item['total_price'] !== '';
+                $hasUnit = array_key_exists('unit_price', $item) && $item['unit_price'] !== null && $item['unit_price'] !== '';
+
+                if ($hasTotal) {
+                    $lineTotal = round((float) $item['total_price'], 2);
+                } elseif ($hasUnit) {
+                    $lineTotal = round(((float) $item['unit_price']) * $qty, 2);
+                } else {
+                    $lineTotal = round((float) $orderDetail->price, 2);
+                }
+
+                $orderDetail->quantity = $qty;
+                $orderDetail->price = $lineTotal;
+
+                if (array_key_exists('tax', $item) && $item['tax'] !== null && $item['tax'] !== '') {
+                    $orderDetail->tax = round((float) $item['tax'], 2);
+                }
+
+                if ($hasOrderDetailSkuColumn && array_key_exists('sku', $item)) {
+                    $orderDetail->sku = $item['sku'];
+                }
+
+                $orderDetail->save();
+
+                // Backward compatibility: if order_details.sku column does not exist,
+                // update SKU in product_stocks against the same product/variant.
+                if (
+                    !$hasOrderDetailSkuColumn &&
+                    array_key_exists('sku', $item) &&
+                    $item['sku'] !== null &&
+                    $item['sku'] !== '' &&
+                    !empty($orderDetail->product_id)
+                ) {
+                    $variant = (string) ($orderDetail->variation ?? '');
+
+                    $stockQuery = ProductStock::where('product_id', $orderDetail->product_id);
+                    if ($variant !== '') {
+                        $stockQuery->where('variant', $variant);
+                    } else {
+                        $stockQuery->where(function ($q) {
+                            $q->whereNull('variant')->orWhere('variant', '');
+                        });
+                    }
+
+                    $stock = $stockQuery->first();
+                    if (!$stock) {
+                        $stock = ProductStock::where('product_id', $orderDetail->product_id)->first();
+                    }
+
+                    if ($stock) {
+                        $stock->sku = $item['sku'];
+                        $stock->save();
+                    }
+                }
+            }
+
+            $subTotal = (float) $order->orderDetails()->sum('price');
+            $taxTotal = (float) $order->orderDetails()->sum('tax');
+            $shippingTotal = (float) $order->orderDetails()->sum('shipping_cost');
+            $couponDiscount = (float) ($order->coupon_discount ?? 0);
+
+            $order->grand_total = max(0, round(($subTotal + $taxTotal + $shippingTotal) - $couponDiscount, 2));
+            $order->save();
+
+            if (!empty($order->combined_order_id)) {
+                $combinedTotal = (float) Order::where('combined_order_id', $order->combined_order_id)->sum('grand_total');
+                CombinedOrder::where('id', $order->combined_order_id)->update([
+                    'grand_total' => round($combinedTotal, 2),
+                ]);
+            }
+        });
+
+        return response()->json([
+            'status' => 1,
+            'message' => translate('Order items updated successfully'),
+        ]);
     }
 
     public function update_payment_status(Request $request)

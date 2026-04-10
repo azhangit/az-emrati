@@ -215,6 +215,10 @@
                                             href="{{ $order_detail_route }}" title="{{ translate('View') }}">
                                             <i class="las la-eye"></i>
                                         </a>
+                                        <a class="btn btn-soft-warning btn-icon btn-circle btn-sm"
+                                            href="{{ $order_detail_route }}" title="{{ translate('Edit') }}">
+                                            <i class="las la-edit"></i>
+                                        </a>
                                     @endcan
                                     <a class="btn btn-soft-info btn-icon btn-circle btn-sm"
                                         href="{{ route('invoice.download', $order->id) }}"

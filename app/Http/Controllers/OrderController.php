@@ -1284,11 +1284,12 @@ $product->save();
             'items.*.sku' => 'nullable|string|max:255',
         ]);
 
-        $order = Order::with('orderDetails')->findOrFail($validated['order_id']);
+        $order = Order::with(['orderDetails.product'])->findOrFail($validated['order_id']);
         $orderDetails = $order->orderDetails->keyBy('id');
         $hasOrderDetailSkuColumn = Schema::hasColumn('order_details', 'sku');
+        $itemChanges = [];
 
-        DB::transaction(function () use ($validated, $order, $orderDetails, $hasOrderDetailSkuColumn) {
+        DB::transaction(function () use ($validated, $order, $orderDetails, $hasOrderDetailSkuColumn, &$itemChanges) {
             foreach ($validated['items'] as $item) {
                 $detailId = (int) $item['order_detail_id'];
                 if (!$orderDetails->has($detailId)) {
@@ -1296,6 +1297,9 @@ $product->save();
                 }
 
                 $orderDetail = $orderDetails->get($detailId);
+                $oldQuantity = (float) ($orderDetail->quantity ?? 0);
+                $oldPrice = round((float) ($orderDetail->price ?? 0), 2);
+                $oldSku = trim((string) ($hasOrderDetailSkuColumn ? ($orderDetail->sku ?? '') : $this->resolveOrderDetailStockSku($orderDetail)));
                 $qty = (float) $item['quantity'];
 
                 $hasTotal = array_key_exists('total_price', $item) && $item['total_price'] !== null && $item['total_price'] !== '';
@@ -1352,6 +1356,22 @@ $product->save();
                         $stock->save();
                     }
                 }
+
+                $newQuantity = (float) ($orderDetail->quantity ?? 0);
+                $newPrice = round((float) ($orderDetail->price ?? 0), 2);
+                $newSku = trim((string) ($hasOrderDetailSkuColumn ? ($orderDetail->sku ?? '') : $this->resolveOrderDetailStockSku($orderDetail)));
+
+                if ($oldQuantity != $newQuantity || $oldPrice != $newPrice || $oldSku !== $newSku) {
+                    $itemChanges[] = [
+                        'product_name' => optional($orderDetail->product)->name ?: ('Product #' . ($orderDetail->product_id ?? $orderDetail->id)),
+                        'old_qty' => $oldQuantity,
+                        'new_qty' => $newQuantity,
+                        'old_price' => $oldPrice,
+                        'new_price' => $newPrice,
+                        'old_sku' => $oldSku,
+                        'new_sku' => $newSku,
+                    ];
+                }
             }
 
             $subTotal = (float) $order->orderDetails()->sum('price');
@@ -1369,6 +1389,10 @@ $product->save();
                 ]);
             }
         });
+
+        if (!empty($itemChanges)) {
+            $this->sendOrderItemsChangedEmail($order->fresh(['user']), $itemChanges);
+        }
 
         return response()->json([
             'status' => 1,
@@ -1508,6 +1532,60 @@ $product->save();
         }
 
         return null;
+    }
+
+    private function resolveOrderDetailStockSku(OrderDetail $orderDetail): string
+    {
+        if (empty($orderDetail->product_id)) {
+            return '';
+        }
+
+        $variant = trim((string) ($orderDetail->variation ?? ''));
+        $stockQuery = ProductStock::where('product_id', $orderDetail->product_id);
+        if ($variant !== '') {
+            $stockQuery->where('variant', $variant);
+        } else {
+            $stockQuery->where(function ($q) {
+                $q->whereNull('variant')->orWhere('variant', '');
+            });
+        }
+
+        $stock = $stockQuery->first();
+        if (!$stock) {
+            $stock = ProductStock::where('product_id', $orderDetail->product_id)->first();
+        }
+
+        return (string) ($stock->sku ?? '');
+    }
+
+    private function sendOrderItemsChangedEmail(Order $order, array $changes): void
+    {
+        if (empty(env('MAIL_FROM_ADDRESS')) || empty($changes)) {
+            return;
+        }
+
+        $toEmail = $this->resolveOrderCustomerEmail($order);
+        if (!$toEmail) {
+            return;
+        }
+
+        try {
+            Mail::send('emails.order_item_changes', [
+                'order' => $order,
+                'changes' => $changes,
+            ], function ($message) use ($toEmail, $order) {
+                $message->from(env('MAIL_FROM_ADDRESS'))
+                    ->to($toEmail)
+                    ->subject('Order ' . $order->code . ' updated');
+            });
+        } catch (\Throwable $e) {
+            \Log::error('Order item change email failed', [
+                'order_id' => $order->id,
+                'order_code' => $order->code,
+                'to' => $toEmail,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     public function assign_delivery_boy(Request $request)

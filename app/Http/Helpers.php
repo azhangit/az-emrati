@@ -587,16 +587,6 @@ if (!function_exists('home_price')) {
             }
         }
 
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $lowest_price += ($lowest_price * $product_tax->tax) / 100;
-                $highest_price += ($highest_price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $lowest_price += $product_tax->tax;
-                $highest_price += $product_tax->tax;
-            }
-        }
-
         if ($formatted) {
             if ($lowest_price == $highest_price) {
                 return format_price(convert_price($lowest_price));
@@ -648,16 +638,6 @@ if (!function_exists('home_discounted_price')) {
             }
         }
 
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $lowest_price += ($lowest_price * $product_tax->tax) / 100;
-                $highest_price += ($highest_price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $lowest_price += $product_tax->tax;
-                $highest_price += $product_tax->tax;
-            }
-        }
-
         if ($formatted) {
             if ($lowest_price == $highest_price) {
                 return format_price(convert_price($lowest_price));
@@ -676,16 +656,6 @@ if (!function_exists('home_base_price_by_stock_id')) {
     {
         $product_stock = ProductStock::findOrFail($id);
         $price = $product_stock->price;
-        $tax = 0;
-
-        foreach ($product_stock->product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-        $price += $tax;
         return format_price(convert_price($price));
     }
 }
@@ -695,16 +665,6 @@ if (!function_exists('home_base_price')) {
     function home_base_price($product, $formatted = true)
     {
         $price = $product->unit_price;
-        $tax = 0;
-
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-        $price += $tax;
         return $formatted ? format_price(convert_price($price)) : convert_price($price);
     }
 }
@@ -716,7 +676,6 @@ if (!function_exists('home_discounted_base_price_by_stock_id')) {
         $product_stock = ProductStock::findOrFail($id);
         $product = $product_stock->product;
         $price = $product_stock->price;
-        $tax = 0;
 
         $discount_applicable = false;
 
@@ -736,15 +695,6 @@ if (!function_exists('home_discounted_base_price_by_stock_id')) {
                 $price -= $product->discount;
             }
         }
-
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-        $price += $tax;
 
         return format_price(convert_price($price));
     }
@@ -756,7 +706,6 @@ if (!function_exists('home_discounted_base_price')) {
     function home_discounted_base_price($product, $formatted = true)
     {
         $price = $product->unit_price;
-        $tax = 0;
 
         $discount_applicable = false;
 
@@ -776,16 +725,6 @@ if (!function_exists('home_discounted_base_price')) {
                 $price -= $product->discount;
             }
         }
-
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-        $price += $tax;
-
 
         return $formatted ? format_price(convert_price($price)) : convert_price($price);
     }

@@ -191,7 +191,7 @@
                                                     <td class="text-right">{{ single_price($order->orderDetails->sum('shipping_cost')) }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>{{ translate('Tax')}}</th>
+                                                    <th>{{ translate('VAT')}}</th>
                                                     <td class="text-right">{{ single_price($order->orderDetails->sum('tax')) }}</td>
                                                 </tr>
                                                 <tr>

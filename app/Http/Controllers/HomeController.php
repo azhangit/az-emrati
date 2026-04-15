@@ -539,7 +539,6 @@ class HomeController extends Controller
         $product = Product::find($request->id);
         $str = '';
         $quantity = 0;
-        $tax = 0;
         $max_limit = 0;
 
         if ($request->has('color')) {
@@ -605,17 +604,6 @@ class HomeController extends Controller
                 $price -= $product->discount;
             }
         }
-
-        // taxes
-        foreach ($product->taxes as $product_tax) {
-            if ($product_tax->tax_type == 'percent') {
-                $tax += ($price * $product_tax->tax) / 100;
-            } elseif ($product_tax->tax_type == 'amount') {
-                $tax += $product_tax->tax;
-            }
-        }
-
-        $price += $tax;
 
         return array(
             'price' => single_price($price * $request->quantity),

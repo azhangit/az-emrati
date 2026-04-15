@@ -121,7 +121,7 @@
 						<th width="15%">{{ translate('Delivery Type') }}</th>
 	                    <th width="10%">{{ translate('Qty') }}</th>
 	                    <th width="15%">{{ translate('Unit Price') }}</th>
-	                    <th width="10%">{{ translate('Tax') }}</th>
+	                    <th width="10%">{{ translate('VAT') }}</th>
 	                    <th width="15%" class="text-right">{{ translate('Total') }}</th>
 	                </tr>
 				</thead>
@@ -162,7 +162,7 @@
 			            <td class="currency">{{ single_price($order->orderDetails->sum('shipping_cost')) }}</td>
 			        </tr>
 			        <tr class="border-bottom">
-			            <th class="gry-color text-left">{{ translate('Total Tax') }}</th>
+			            <th class="gry-color text-left">{{ translate('Total VAT') }}</th>
 			            <td class="currency">{{ single_price($order->orderDetails->sum('tax')) }}</td>
 			        </tr>
                     <tr class="border-bottom">

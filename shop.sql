@@ -341,7 +341,7 @@ INSERT INTO `business_settings` (`id`, `type`, `value`, `lang`, `created_at`, `u
 (111, 'bkash', '0', NULL, '2021-01-22 10:30:03', '2021-01-22 10:30:03'),
 (112, 'bkash_sandbox', '1', NULL, '2021-01-22 10:30:03', '2021-01-22 10:30:03'),
 (113, 'header_menu_labels', '[\"Home\",\"Flash Sale\",\"Blogs\",\"All Brands\",\"All Categories\"]', NULL, '2021-02-16 02:43:11', '2021-02-16 02:52:18'),
-(114, 'header_menu_links', '[\"http:\\/\\/domain.com\",\"http:\\/\\/domain.com\\/flash-deals\",\"http:\\/\\/domain.com\\/blog\",\"http:\\/\\/domain.com\\/brands\",\"http:\\/\\/domain.com\\/categories\"]', NULL, '2021-02-16 02:43:11', '2021-02-18 01:20:04'),
+(114, 'header_menu_links', '[\"https:\\/\\/emiraticoffee.ae\\/\",\"https:\\/\\/emiraticoffee.ae\\/flash-deals\",\"https:\\/\\/emiraticoffee.ae\\/blog\",\"https:\\/\\/emiraticoffee.ae\\/brands\",\"https:\\/\\/emiraticoffee.ae\\/categories\"]', NULL, '2021-02-16 02:43:11', '2021-02-18 01:20:04'),
 (115, 'proxypay', '1', NULL, '2021-06-20 11:25:42', '2021-06-20 11:25:42'),
 (116, 'proxypay_sandbox', '1', NULL, '2021-06-20 11:25:42', '2021-06-20 11:25:42'),
 (117, 'google_map', '0', NULL, '2021-07-27 15:49:39', '2021-07-27 15:49:39'),

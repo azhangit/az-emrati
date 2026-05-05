@@ -41,7 +41,7 @@ ALTER TABLE `blog_categories`
 
 INSERT INTO `business_settings` (`type`, `value`, `created_at`, `updated_at`) VALUES
     ('header_menu_labels', '[\"Home\",\"Flash Sale\",\"Blogs\",\"All Brands\",\"All Categories\"]', '2021-02-16 08:43:11', '2021-02-16 08:52:18'),
-    ('header_menu_links', '[\"http:\\/\\/domain.com\",\"http:\\/\\/domain.com\\/flash-deals\",\"http:\\/\\/domain.com\\/blog\",\"http:\\/\\/domain.com\\/brands\",\"http:\\/\\/domain.com\\/categories\"]', '2021-02-16 08:43:11', '2021-02-18 07:20:04');
+    ('header_menu_links', '[\"https:\\/\\/emiraticoffee.ae\\/\",\"https:\\/\\/emiraticoffee.ae\\/flash-deals\",\"https:\\/\\/emiraticoffee.ae\\/blog\",\"https:\\/\\/emiraticoffee.ae\\/brands\",\"https:\\/\\/emiraticoffee.ae\\/categories\"]', '2021-02-16 08:43:11', '2021-02-18 07:20:04');
 
 UPDATE `business_settings` SET `value` = '4.0' WHERE `business_settings`.`type` = 'current_version';
 

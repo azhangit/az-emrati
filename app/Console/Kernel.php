@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\RefreshInstagramAccessTokenJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -27,8 +28,10 @@ class Kernel extends ConsoleKernel
         // NEW: instagram feed ko warm-up / refresh karne ka cron
         $schedule->command('refresh:instagram')->hourly();
         
-        // Refresh Instagram Access Token weekly (keeps it alive indefinitely)
-        $schedule->command('instagram:refresh-token')->weekly();
+        // Refresh Instagram Access Token daily
+        $schedule->job(new RefreshInstagramAccessTokenJob())
+            ->dailyAt('02:00')
+            ->withoutOverlapping();
 
         // agar chaho to everyFifteenMinutes() bhi kar sakte ho
         // $schedule->command('refresh:instagram')->everyFifteenMinutes();

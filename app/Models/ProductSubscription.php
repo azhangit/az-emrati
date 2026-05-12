@@ -26,4 +26,9 @@ public function address()
 {
     return $this->belongsTo(Address::class, 'address_id');
 }
+
+public function schedule()
+{
+    return $this->hasOne(SubscriptionSchedule::class, 'subscription_id');
+}
 }

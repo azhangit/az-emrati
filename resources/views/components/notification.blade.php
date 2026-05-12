@@ -82,6 +82,19 @@
                              {{ translate('payment') }}
                          @endif
                          {{ single_price($notification->data['payment_amount']).' '.translate('is').' '.translate($notification->data['status']) }}
+                    @elseif ($notification->type == 'App\Notifications\SubscriptionDeliveryDueNotification')
+                        @php
+                            $subRoute = route('admin.subscription.show', $notification->data['subscription_id']);
+                        @endphp
+                        {{ translate('Subscription delivery due: ') }}
+                        @if ($is_linkable && $user_type == 'admin')
+                            <a href="{{ $subRoute }}">
+                                {{ $notification->data['product_name'] ?? 'Product' }}
+                            </a>
+                        @else
+                            {{ $notification->data['product_name'] ?? 'Product' }}
+                        @endif
+                        {{ translate(' for user ') }}{{ $notification->data['user_name'] ?? '-' }}
                     @endif
                 </p>
                 <small class="text-muted">

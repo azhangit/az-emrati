@@ -135,7 +135,7 @@
                                     $unreadNotifications = auth()->user()->unreadNotifications();
                                 @endphp
                                 <div class="tab-pane active" id="orders-notifications" role="tabpanel">
-                                    <x-notification :notifications="$unreadNotifications->where('type', 'App\Notifications\OrderNotification')->take(20)->get()" />
+                                    <x-notification :notifications="$unreadNotifications->whereIn('type', ['App\Notifications\OrderNotification', 'App\Notifications\SubscriptionDeliveryDueNotification'])->take(20)->get()" />
                                 </div>
                                 <div class="tab-pane" id="sellers-notifications" role="tabpanel">
                                     <x-notification :notifications="$unreadNotifications->where('type', 'like', '%shop%')->take(20)->get()" />

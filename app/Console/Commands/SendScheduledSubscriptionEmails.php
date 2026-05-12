@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\SubscriptionSchedule;
 use App\Jobs\SendSubscriptionEmailJob;
+use Illuminate\Support\Facades\Schema;
 
 class SendScheduledSubscriptionEmails extends Command
 {
@@ -13,22 +14,25 @@ class SendScheduledSubscriptionEmails extends Command
 
     public function handle()
     {
-        $schedules = SubscriptionSchedule::where('active', true)
-            ->whereDate('next_send_date', '<=', now())
-            ->get();
-
-        foreach ($schedules as $schedule) {
-            dispatch(new SendSubscriptionEmailJob($schedule->id));
-
-            $schedule->sent_count += 1;
-            if ($schedule->sent_count >= $schedule->total_weeks) {
-                $schedule->active = false;
-            } else {
-                $schedule->next_send_date = now()->addMinutes($schedule->frequency_weeks);
-            }
-            $schedule->save();
+        if (!Schema::hasTable('subscription_schedules')) {
+            $this->warn('subscription_schedules table not found. Skipping.');
+            return self::SUCCESS;
         }
 
-        $this->info('Subscription emails dispatched successfully.');
+        $schedules = SubscriptionSchedule::where('active', true)
+            ->where('next_send_date', '<=', now())
+            ->whereHas('subscription', function ($q) {
+                $q->whereNotIn('status', ['pending_delivery', 'completed', 'cancelled']);
+            })
+            ->get();
+
+        $dispatched = 0;
+        foreach ($schedules as $schedule) {
+            dispatch(new SendSubscriptionEmailJob($schedule->id));
+            $dispatched++;
+        }
+
+        $this->info("Subscription check complete. Due schedules: {$dispatched}");
+        return self::SUCCESS;
     }
 }

@@ -264,6 +264,7 @@ Route::get('/test-subscription-email', function () {
 
 Route::get('/admin/subscription', [SubStableController::class, 'index'])->name('admin.subscription.index');
 Route::get('/admin/subscription/{id}', [SubStableController::class, 'show'])->name('admin.subscription.show'); 
+Route::post('/admin/subscription/{id}/mark-delivered', [SubStableController::class, 'markDelivered'])->name('admin.subscription.mark_delivered');
 
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('product.subscribe');
 Route::get('/subscription/get-product-sizes/{id}', [SubscriptionController::class, 'getProductSizes']);

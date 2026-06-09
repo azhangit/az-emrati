@@ -1417,6 +1417,7 @@ color: white;
     width: max-content;
     gap: 16px;
     direction: ltr;
+    align-items: stretch;
     /* CSS animation is now handled via requestAnimationFrame for smooth manual control */
     will-change: transform;
 }
@@ -1426,8 +1427,8 @@ color: white;
     overflow: hidden;
     background: #f7f7f7;
     height: 240px;
-    width: 420px;
-    flex-shrink: 0;
+    width: clamp(240px, 28vw, 420px);
+    flex: 0 0 clamp(240px, 28vw, 420px);
     cursor: pointer;
     direction: ltr;
 }
@@ -1655,7 +1656,8 @@ color: white;
 @media only screen and (max-width: 768px){
     .instagram-card {
         height: 200px;
-        width: 320px;
+        width: clamp(220px, 62vw, 320px);
+        flex-basis: clamp(220px, 62vw, 320px);
     }
     
     .instagram-card__meta {
@@ -1667,7 +1669,8 @@ color: white;
 @media only screen and (max-width: 576px){
     .instagram-card {
         height: 180px;
-        width: 280px;
+        width: clamp(210px, 76vw, 280px);
+        flex-basis: clamp(210px, 76vw, 280px);
     }
     
     .instagram-marquee-track {
@@ -1990,14 +1993,6 @@ function formatDate(isoString) {
                 }
             });
             
-            // Duplicate all cards for seamless marquee loop
-            const cards = Array.from(trackEl.children);
-            cards.forEach(card => {
-                const clonedCard = card.cloneNode(true);
-                trackEl.appendChild(clonedCard);
-            });
-
-            // Initialize JavaScript Marquee with robust manual controls
             initInstagramMarquee(trackEl);
         })
         .catch((error) => {
@@ -2006,23 +2001,68 @@ function formatDate(isoString) {
         });
 
     function initInstagramMarquee(track) {
+        const viewport = track.parentElement;
         let currentX = 0;
         let speed = 0.5; // pixels per frame
         let isHovered = false;
         let animationTarget = null;
         let lastTimestamp = null;
-        
-        // Track hover state
-        track.parentElement.addEventListener('mouseenter', () => isHovered = true);
-        track.parentElement.addEventListener('mouseleave', () => isHovered = false);
-        
-        // Calculate the card width dynamically based on the first item.
-        function getCardWidth() {
-            if (track.children.length === 0) return 0;
-            const firstCard = track.children[0];
-            const gap = parseFloat(window.getComputedStyle(track).columnGap || window.getComputedStyle(track).gap) || 0;
-            return firstCard.offsetWidth + gap;
+        const baseCards = Array.from(track.children);
+
+        if (!baseCards.length) {
+            return;
         }
+
+        // Track hover state
+        viewport.addEventListener('mouseenter', () => isHovered = true);
+        viewport.addEventListener('mouseleave', () => isHovered = false);
+
+        function getGap() {
+            const styles = window.getComputedStyle(track);
+            return parseFloat(styles.columnGap || styles.gap) || 0;
+        }
+
+        function getCardWidth() {
+            if (!baseCards.length) return 0;
+            return baseCards[0].offsetWidth + getGap();
+        }
+
+        function getLoopWidth() {
+            const gap = getGap();
+            return baseCards.reduce((total, card, index) => {
+                return total + card.offsetWidth + (index < baseCards.length - 1 ? gap : 0);
+            }, 0);
+        }
+
+        function ensureLoopCoverage() {
+            track.querySelectorAll('[data-instagram-clone="true"]').forEach((node) => node.remove());
+
+            const loopWidth = getLoopWidth();
+            if (!loopWidth) {
+                return 0;
+            }
+
+            const minimumWidth = Math.max(viewport.offsetWidth * 2.5, loopWidth * 2);
+            while (track.scrollWidth < minimumWidth) {
+                baseCards.forEach((card) => {
+                    const clone = card.cloneNode(true);
+                    clone.setAttribute('data-instagram-clone', 'true');
+                    track.appendChild(clone);
+                });
+            }
+
+            currentX = ((currentX % loopWidth) + loopWidth) % loopWidth;
+            if (animationTarget !== null) {
+                animationTarget = ((animationTarget % loopWidth) + loopWidth) % loopWidth;
+            }
+
+            return loopWidth;
+        }
+
+        let loopWidth = ensureLoopCoverage();
+        window.addEventListener('resize', () => {
+            loopWidth = ensureLoopCoverage();
+        });
 
         const btnNext = document.getElementById('instagram-next');
         const btnPrev = document.getElementById('instagram-prev');
@@ -2047,8 +2087,6 @@ function formatDate(isoString) {
             const delta = timestamp - lastTimestamp;
             lastTimestamp = timestamp;
 
-            const halfWidth = track.scrollWidth / 2;
-
             if (animationTarget !== null) {
                 // Smooth slide to target
                 let diff = animationTarget - currentX;
@@ -2064,13 +2102,13 @@ function formatDate(isoString) {
             }
 
             // Seamlessly loop the track
-            if (halfWidth > 0) {
-                if (currentX >= halfWidth) {
-                    currentX -= halfWidth;
-                    if (animationTarget !== null) animationTarget -= halfWidth;
+            if (loopWidth > 0) {
+                if (currentX >= loopWidth) {
+                    currentX -= loopWidth;
+                    if (animationTarget !== null) animationTarget -= loopWidth;
                 } else if (currentX < 0) {
-                    currentX += halfWidth;
-                    if (animationTarget !== null) animationTarget += halfWidth;
+                    currentX += loopWidth;
+                    if (animationTarget !== null) animationTarget += loopWidth;
                 }
             }
 

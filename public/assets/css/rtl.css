@@ -156,3 +156,11 @@ button {
 .banner-box .row,.banner-2 .row {
     flex-direction: row-reverse !important;
 }
+
+.instagram-marquee-track {
+    display: flex;
+    width: stretch;
+    gap: 16px;
+    will-change: transform;
+    flex-direction: row-reverse;
+    min-width: 5000px;}

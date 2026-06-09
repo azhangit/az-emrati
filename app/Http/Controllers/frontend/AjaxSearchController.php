@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\frontend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -89,10 +89,9 @@ class AjaxSearchController extends Controller
                 ]);
             }
 
-            $page    = max(1, (int) $request->query('page', 1));
+            $page = max(1, (int) $request->query('page', 1));
             $perPage = max(1, (int) $request->query('per_page', 12));
 
-            // Model detection (old/new namespaces)
             $productClass = class_exists(\App\Models\Product::class) ? \App\Models\Product::class
                 : (class_exists(\App\Product::class) ? \App\Product::class : null);
 
@@ -113,9 +112,15 @@ class AjaxSearchController extends Controller
                 $rows = $paginator->getCollection();
             } else {
                 $qb = DB::table('products')
-                    ->select('products.id', 'products.name', 'products.slug',
-                        'products.thumbnail', 'products.thumbnail_img',
-                        'products.unit_price', 'products.created_at')
+                    ->select(
+                        'products.id',
+                        'products.name',
+                        'products.slug',
+                        'products.thumbnail',
+                        'products.thumbnail_img',
+                        'products.unit_price',
+                        'products.created_at'
+                    )
                     ->where('products.name', 'like', "%{$q}%");
 
                 $this->applyPublishFilters($qb);
@@ -126,33 +131,29 @@ class AjaxSearchController extends Controller
                 $rows = collect($paginator->items());
             }
 
-            // Map to lightweight items for the modal
             $items = $rows->map(function ($p) {
-                $id   = (int)($p->id ?? 0);
-                $name = (string)($p->name ?? '');
-                $slug = (string)($p->slug ?? '');
+                $id = (int) ($p->id ?? 0);
+                $name = (string) ($p->name ?? '');
+                $slug = (string) ($p->slug ?? '');
 
-                // thumb
                 $thumb = $this->buildThumb($p);
 
-                // price (HTML/text safe)
                 $priceHtml = '';
                 try {
                     if (function_exists('home_discounted_base_price')) {
                         $priceHtml = home_discounted_base_price($p);
                     } elseif (!empty($p->unit_price)) {
-                        $priceText = number_format((float)$p->unit_price, 2);
+                        $priceText = number_format((float) $p->unit_price, 2);
                         $priceHtml = function_exists('currency_symbol')
                             ? currency_symbol() . ' ' . $priceText
                             : $priceText;
                     }
                 } catch (\Throwable $e) {
                     if (!empty($p->unit_price)) {
-                        $priceHtml = number_format((float)$p->unit_price, 2);
+                        $priceHtml = number_format((float) $p->unit_price, 2);
                     }
                 }
 
-                // product URL
                 try {
                     $url = !empty($slug) ? route('product', $slug) : url('product/' . $id);
                 } catch (\Throwable $e) {
@@ -160,30 +161,30 @@ class AjaxSearchController extends Controller
                 }
 
                 return [
-                    'id'    => $id,
-                    'name'  => $name,
-                    'slug'  => $slug,
+                    'id' => $id,
+                    'name' => $name,
+                    'slug' => $slug,
                     'thumb' => $thumb,
                     'price' => $priceHtml,
-                    'url'   => $url,
+                    'url' => $url,
                 ];
             })->values();
 
             return response()->json([
-                'ok'     => true,
-                'data'   => [
-                    'items'    => $items,
-                    'total'    => (int) $paginator->total(),
-                    'page'     => (int) $paginator->currentPage(),
+                'ok' => true,
+                'data' => [
+                    'items' => $items,
+                    'total' => (int) $paginator->total(),
+                    'page' => (int) $paginator->currentPage(),
                     'nextPage' => $paginator->hasMorePages() ? $paginator->currentPage() + 1 : null,
                 ],
             ]);
         } catch (\Throwable $e) {
             \Log::error('Ajax search failed', ['e' => $e]);
             return response()->json([
-                'ok'    => false,
+                'ok' => false,
                 'error' => 'SERVER_ERROR',
-                'msg'   => app()->hasDebugModeEnabled() ? $e->getMessage() : 'Something went wrong',
+                'msg' => app()->hasDebugModeEnabled() ? $e->getMessage() : 'Something went wrong',
             ], 500);
         }
     }

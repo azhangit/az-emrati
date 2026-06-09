@@ -52,7 +52,7 @@ use App\Http\Controllers\NewCheckoutController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubStableController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\Frontend\InstagramFeedController;
+use App\Http\Controllers\frontend\InstagramFeedController;
      
 
 /*
@@ -73,7 +73,7 @@ use App\Jobs\SendSubscriptionEmailJob;
 
 // routes/web.php
 use App\Http\Controllers\OrderController;
-Route::get('/ajax/search-products', [\App\Http\Controllers\Frontend\AjaxSearchController::class, 'products'])
+Route::get('/ajax/search-products', [\App\Http\Controllers\frontend\AjaxSearchController::class, 'products'])
      ->name('ajax.search.products');
      
 Route::get('/instagram/feed', InstagramFeedController::class)

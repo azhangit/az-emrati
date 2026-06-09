@@ -1409,12 +1409,14 @@ color: white;
     overflow: hidden;
     position: relative;
     padding: 10px 0;
+    direction: ltr;
 }
 
 .instagram-marquee-track {
     display: flex;
     width: max-content;
     gap: 16px;
+    direction: ltr;
     /* CSS animation is now handled via requestAnimationFrame for smooth manual control */
     will-change: transform;
 }
@@ -1427,6 +1429,7 @@ color: white;
     width: 420px;
     flex-shrink: 0;
     cursor: pointer;
+    direction: ltr;
 }
 
 .instagram-card img {
@@ -2013,11 +2016,11 @@ function formatDate(isoString) {
         track.parentElement.addEventListener('mouseenter', () => isHovered = true);
         track.parentElement.addEventListener('mouseleave', () => isHovered = false);
         
-        // Calculate the card width dynamically based on the first item
+        // Calculate the card width dynamically based on the first item.
         function getCardWidth() {
             if (track.children.length === 0) return 0;
             const firstCard = track.children[0];
-            const gap = 16; // from CSS gap: 16px
+            const gap = parseFloat(window.getComputedStyle(track).columnGap || window.getComputedStyle(track).gap) || 0;
             return firstCard.offsetWidth + gap;
         }
 

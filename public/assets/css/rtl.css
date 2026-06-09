@@ -164,3 +164,8 @@ button {
     will-change: transform;
     flex-direction: row-reverse;
     min-width: 5000px;}
+
+    #instagram-next i , #instagram-prev i{
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    }

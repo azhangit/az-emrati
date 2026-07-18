@@ -31,8 +31,10 @@ public function getProductSizes(Request $request, $product_id) {
                 $grindKey = str_replace(' ', '', $grind);
                 $variant = $sizeKey . '-' . $grindKey; // "1KG-AeropressGrind"
 
+                // Some products have variants stored in reverse order ("AeropressGrind-1KG"),
+                // so check both orders before falling back to unit_price.
                 $stock = \App\Models\ProductStock::where('product_id', $product->id)
-                    ->where('variant', $variant)
+                    ->whereIn('variant', [$variant, $grindKey . '-' . $sizeKey])
                     ->first();
 
                 $raw_price = $stock ? $stock->price : $product->unit_price;
@@ -48,10 +50,22 @@ public function getProductSizes(Request $request, $product_id) {
     return response()->json($sizes);
 }
 
-    private function makeVariant($weight, $grind) {
+    private function makeVariant($weight, $grind, $product_id = null) {
         $weightKey = strtoupper(str_replace(' ', '', $weight));
         $grindKey = str_replace(' ', '', $grind);
-        return $weightKey . '-' . $grindKey;
+        $variant = $weightKey . '-' . $grindKey;
+
+        // Prefer whichever order actually exists in product_stocks
+        // (some products store "Grind-Weight" instead of "Weight-Grind").
+        if ($product_id) {
+            $stock = \App\Models\ProductStock::where('product_id', $product_id)
+                ->whereIn('variant', [$variant, $grindKey . '-' . $weightKey])
+                ->first();
+            if ($stock) {
+                return $stock->variant;
+            }
+        }
+        return $variant;
     }
 public function subscribe(Request $request)
 {
@@ -85,7 +99,7 @@ public function subscribe(Request $request)
         'quantity' => 'required',
     ]);
 
-    $variant = $this->makeVariant($request->weight, $request->grind_size);
+    $variant = $this->makeVariant($request->weight, $request->grind_size, $request->product_id);
 
     // Yahan subscription ko variable me save karo:
     $subscription = \App\Models\ProductSubscription::create([

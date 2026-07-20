@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Site Under Maintenance (storefront lock)
+    |--------------------------------------------------------------------------
+    |
+    | When true, all web URLs redirect to the maintenance homepage (/).
+    | Set SITE_UNDER_MAINTENANCE=false in .env to restore the full site.
+    |
+    */
+
+    'site_under_maintenance' => env('SITE_UNDER_MAINTENANCE', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

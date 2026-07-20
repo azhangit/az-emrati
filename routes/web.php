@@ -78,9 +78,6 @@ Route::get('/ajax/search-products', [\App\Http\Controllers\frontend\AjaxSearchCo
      
 Route::get('/instagram/feed', InstagramFeedController::class)
     ->name('instagram.feed');
-
-
-
   Route::get('/ajax/search-products', function (\Illuminate\Http\Request $r) {
     try {
         $q = trim((string)$r->query('q',''));

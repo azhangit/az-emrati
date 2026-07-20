@@ -7,50 +7,23 @@ use Illuminate\Http\Request;
 
 class SiteUnderMaintenance
 {
-    /**
-     * Paths that stay reachable while the storefront is locked.
-     */
-    protected $except = [
-        'assets/*',
-        'public/assets/*',
-        'uploads/*',
-        'storage/*',
-        'favicon.ico',
-    ];
-
     public function handle(Request $request, Closure $next)
     {
         if (!config('app.site_under_maintenance', false)) {
             return $next($request);
         }
 
-        if ($this->inExceptArray($request)) {
-            return $next($request);
-        }
-
-        if ($request->is('/')) {
-            return response()->view('coming-soon');
-        }
+        $redirectUrl = config('app.site_maintenance_redirect_url');
 
         if ($request->is('api/*')) {
             return response()->json([
                 'result' => false,
                 'status' => 'maintenance',
                 'message' => 'Site is under maintenance',
+                'redirect_url' => $redirectUrl,
             ], 503);
         }
 
-        return redirect('/');
-    }
-
-    protected function inExceptArray(Request $request): bool
-    {
-        foreach ($this->except as $except) {
-            if ($request->is($except)) {
-                return true;
-            }
-        }
-
-        return false;
+        return redirect()->away($redirectUrl, 302);
     }
 }

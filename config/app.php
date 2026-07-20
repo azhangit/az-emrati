@@ -27,6 +27,8 @@ return [
 
     'site_under_maintenance' => env('SITE_UNDER_MAINTENANCE', false),
 
+    'site_maintenance_redirect_url' => env('SITE_MAINTENANCE_REDIRECT_URL', 'https://www.emiraticoffee.com/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

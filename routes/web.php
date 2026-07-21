@@ -257,6 +257,32 @@ Route::get('/test-subscription-email', function () {
     return "Email job dispatched for schedule id: $scheduleId";
 });
 
+Route::get('/test-email', function () {
+    $to = 'connecttoabdulrehman01@gmail.com';
+
+    try {
+        \Illuminate\Support\Facades\Mail::raw(
+            "This is a test email from " . config('app.name') . ".\n\nSent at: " . now()->toDateTimeString(),
+            function ($message) use ($to) {
+                $message->to($to)
+                    ->subject('Test Email - ' . config('app.name'));
+            }
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => "Test email sent to {$to}",
+            'mailer' => config('mail.default'),
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to send test email',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+})->name('test.email');
+
 
 
 Route::get('/admin/subscription', [SubStableController::class, 'index'])->name('admin.subscription.index');

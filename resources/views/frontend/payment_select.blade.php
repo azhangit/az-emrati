@@ -418,23 +418,6 @@
                                                 </label>
                                             </div>
                                         @endif
-                                        <!-- myfatoorah -->
-                                        @if (get_setting('myfatoorah') == 1)
-                                            <div class="col-6 col-xl-3 col-md-4">
-                                                <label class="aiz-megabox d-block mb-3">
-                                                    <input value="myfatoorah" class="online_payment" type="radio"
-                                                        name="payment_option" checked>
-                                                    <span class="d-block aiz-megabox-elem rounded-0 p-3">
-                                                        <img src="{{ static_asset('assets/img/cards/myfatoorah.png') }}"
-                                                            class="img-fit mb-2">
-                                                        <span class="d-block text-center">
-                                                            <span
-                                                                class="d-block fw-600 fs-15">{{ translate('MyFatoorah') }}</span>
-                                                        </span>
-                                                    </span>
-                                                </label>
-                                            </div>
-                                        @endif
                                         <!-- khalti -->
                                         @if (get_setting('khalti_payment') == 1)
                                             <div class="col-6 col-xl-3 col-md-4">

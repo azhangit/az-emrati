@@ -247,21 +247,6 @@ class PaymentTypesController
 
                     $payment_types[] = $payment_type;
                 }
-                if (get_setting('myfatoorah') == 1) {
-                    $payment_type = array();
-                    $payment_type['payment_type'] = 'myfatoorah';
-                    $payment_type['payment_type_key'] = 'myfatoorah';
-                    $payment_type['image'] = static_asset('assets/img/cards/myfatoorah.png');
-                    $payment_type['name'] = "myfatoorah";
-                    $payment_type['title'] = translate("Checkout with myfatoorah");
-                    $payment_type['offline_payment_id'] = 0;
-                    $payment_type['details'] = "";
-                    if ($mode == 'wallet') {
-                        $payment_type['title'] = translate("Recharge with myfatoorah");
-                    }
-
-                    $payment_types[] = $payment_type;
-                }
                 if (get_setting('phonepe_payment') == 1) {
                     $payment_type = array();
                     $payment_type['payment_type'] = 'phonepe';

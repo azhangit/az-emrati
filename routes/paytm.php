@@ -4,7 +4,6 @@
 
 use App\Http\Controllers\Payment\PaytmController;
 use App\Http\Controllers\Payment\ToyyibpayController;
-use App\Http\Controllers\Payment\MyfatoorahController;
 use App\Http\Controllers\Payment\KhaltiController;
 
 
@@ -29,11 +28,6 @@ if (class_exists(ToyyibpayController::class)) {
         Route::get('toyyibpay-status', 'paymentstatus')->name( 'toyyibpay-status');
         Route::post('/toyyibpay-callback', 'callback')->name( 'toyyibpay-callback');
     });
-}
-
-//Myfatoorah START
-if (class_exists(MyfatoorahController::class)) {
-    Route::get('/myfatoorah/callback', [MyfatoorahController::class,'callback'])->name('myfatoorah.callback');
 }
 
 //Khalti START

@@ -84,9 +84,6 @@
                                         @if (get_setting('paytm_payment'))
                                             <option value="paytm">{{ translate('Paytm') }}</option>
                                         @endif
-                                        @if (get_setting('myfatoorah') == 1)
-                                            <option value="myfatoorah">{{ translate('MyFatoorah') }}</option>
-                                        @endif
                                         @if (get_setting('khalti_payment') == 1)
                                             <option value="khalti">{{ translate('Khalti') }}</option>
                                         @endif

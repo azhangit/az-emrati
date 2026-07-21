@@ -173,9 +173,6 @@
                                         @if (get_setting('payku') == 1)
                                             <option value="payku">{{ translate('Payku') }}</option>
                                         @endif
-                                        @if (addon_is_activated('paytm') && get_setting('myfatoorah') == 1)
-                                            <option value="myfatoorah">{{ translate('MyFatoorah') }}</option>
-                                        @endif
                                         @if (addon_is_activated('paytm') && get_setting('khalti_payment') == 1)
                                             <option value="khalti">{{ translate('Khalti') }}</option>
                                         @endif
@@ -195,9 +192,6 @@
 
                                         {{-- Asian payment gateways  --}}
                                         @if (addon_is_activated('paytm'))
-                                            @if (get_setting('myfatoorah') == 1)
-                                                <option value="myfatoorah">{{ translate('MyFatoorah') }}</option>
-                                            @endif
                                             @if (get_setting('khalti_payment') == 1)
                                                 <option value="khalti">{{ translate('Khalti') }}</option>
                                             @endif

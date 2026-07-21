@@ -327,8 +327,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
 
     Route::get('payfast/initiate', 'App\Http\Controllers\Api\V2\PayfastController@pay');
 
-    Route::get('/myfatoorah/initiate', 'App\Http\Controllers\Api\V2\MyfatoorahController@pay');
-
     Route::get('phonepe/payment/pay', 'App\Http\Controllers\Api\V2\PhonepeController@pay');
 
     Route::post('offline/payment/submit', 'App\Http\Controllers\Api\V2\OfflinePaymentController@submit')->name('api.offline.payment.submit');
@@ -386,9 +384,6 @@ Route::group(['prefix' => 'v2', 'middleware' => ['app_language']], function () {
             Route::any('/payfast/cancel', 'payfast_cancel')->name('api.payfast.cancel');
         });
         //Payfast routes <ends>
-
-        Route::get('/myfatoorah/callback', 'App\Http\Controllers\Api\V2\MyfatoorahController@callback')->name('api.myfatoorah.callback');
-
 
         Route::any('/phonepe/redirecturl', 'App\Http\Controllers\Api\V2\PhonepeController@phonepe_redirecturl')->name('api.phonepe.redirecturl');
         Route::any('/phonepe/callbackUrl', 'App\Http\Controllers\Api\V2\PhonepeController@phonepe_callbackUrl')->name('api.phonepe.callbackUrl');

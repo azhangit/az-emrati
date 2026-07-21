@@ -197,12 +197,11 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapPaytmRoutes()
   {
-    // Paytm route file also registers Toyyibpay / Myfatoorah / Khalti.
+    // Paytm route file also registers Toyyibpay / Khalti.
     // Load it only when at least one of those payment controllers exists.
     if (
       !class_exists(\App\Http\Controllers\Payment\PaytmController::class)
       && !class_exists(\App\Http\Controllers\Payment\ToyyibpayController::class)
-      && !class_exists(\App\Http\Controllers\Payment\MyfatoorahController::class)
       && !class_exists(\App\Http\Controllers\Payment\KhaltiController::class)
     ) {
       return;

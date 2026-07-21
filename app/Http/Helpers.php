@@ -50,8 +50,6 @@ use App\Models\ManualPaymentMethod;
 use App\Models\SellerPackagePayment;
 use App\Utility\NotificationUtility;
 use App\Http\Resources\V2\CarrierCollection;
-use App\Http\Controllers\AffiliateController;
-use App\Http\Controllers\ClubPointController;
 use App\Http\Controllers\CommissionController;
 use AizPackages\ColorCodeConverter\Services\ColorCodeConverter;
 use App\Models\FlashDealProduct;
@@ -1557,13 +1555,13 @@ if (!function_exists('calculateCommissionAffilationClubPoint')) {
     {
         (new CommissionController)->calculateCommission($order);
 
-        if (addon_is_activated('affiliate_system')) {
-            (new AffiliateController)->processAffiliatePoints($order);
+        if (addon_is_activated('affiliate_system') && class_exists(\App\Http\Controllers\AffiliateController::class)) {
+            (new \App\Http\Controllers\AffiliateController)->processAffiliatePoints($order);
         }
 
-        if (addon_is_activated('club_point')) {
+        if (addon_is_activated('club_point') && class_exists(\App\Http\Controllers\ClubPointController::class)) {
             if ($order->user != null) {
-                (new ClubPointController)->processClubPoints($order);
+                (new \App\Http\Controllers\ClubPointController)->processClubPoints($order);
             }
         }
 
@@ -1581,7 +1579,32 @@ if (!function_exists('addon_is_activated')) {
         });
 
         $activation = $addons->where('unique_identifier', $identifier)->where('activated', 1)->first();
-        return $activation == null ? false : true;
+        if ($activation == null) {
+            return false;
+        }
+
+        // Treat optional addons as inactive when their controllers were never deployed.
+        // Prevents RouteNotFoundException from views that call route() inside addon checks.
+        $requiredControllers = [
+            'affiliate_system' => \App\Http\Controllers\AffiliateController::class,
+            'auction' => \App\Http\Controllers\AuctionProductController::class,
+            'club_point' => \App\Http\Controllers\ClubPointController::class,
+            'refund_request' => \App\Http\Controllers\RefundRequestController::class,
+            'delivery_boy' => \App\Http\Controllers\DeliveryBoyController::class,
+            'seller_subscription' => \App\Http\Controllers\SellerPackageController::class,
+            'otp_system' => \App\Http\Controllers\OTPVerificationController::class,
+            'offline_payment' => \App\Http\Controllers\ManualPaymentMethodController::class,
+            'wholesale' => \App\Http\Controllers\WholesaleProductController::class,
+            'pos_system' => \App\Http\Controllers\PosController::class,
+            'paytm' => \App\Http\Controllers\Payment\PaytmController::class,
+            'african_pg' => \App\Http\Controllers\AfricanPaymentGatewayController::class,
+        ];
+
+        if (isset($requiredControllers[$identifier]) && !class_exists($requiredControllers[$identifier])) {
+            return false;
+        }
+
+        return true;
     }
 }
 

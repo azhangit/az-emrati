@@ -328,7 +328,7 @@ class DeliveryBoyController extends Controller
 
         if($order->delivery_status == 'delivered') {
             foreach ($order->orderDetails as $key => $orderDetail) {
-                if (addon_is_activated('affiliate_system')) {
+                if (addon_is_activated('affiliate_system') && class_exists(\App\Http\Controllers\AffiliateController::class)) {
                     if ($orderDetail->product_referral_code) {
                         $no_of_delivered = 0;
                         $no_of_canceled = 0;
@@ -342,7 +342,7 @@ class DeliveryBoyController extends Controller
 
                         $referred_by_user = User::where('referral_code', $orderDetail->product_referral_code)->first();
 
-                        $affiliateController = new AffiliateController;
+                        $affiliateController = new \App\Http\Controllers\AffiliateController;
                         $affiliateController->processAffiliateStats($referred_by_user->id, 0, 0, $no_of_delivered, $no_of_canceled);
                     }
                 }

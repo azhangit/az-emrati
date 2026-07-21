@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\AffiliateController;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Cart;
@@ -1026,11 +1025,11 @@ $product->save();
                     $seller->save();
                 }
 
-                if (addon_is_activated('affiliate_system')) {
+                if (addon_is_activated('affiliate_system') && class_exists(\App\Http\Controllers\AffiliateController::class)) {
                     if ($order_detail->product_referral_code) {
                         $referred_by_user = User::where('referral_code', $order_detail->product_referral_code)->first();
 
-                        $affiliateController = new AffiliateController;
+                        $affiliateController = new \App\Http\Controllers\AffiliateController;
                         $affiliateController->processAffiliateStats($referred_by_user->id, 0, $order_detail->quantity, 0, 0);
                     }
                 }
@@ -1204,7 +1203,7 @@ $product->save();
                     }
                 }
 
-                if (addon_is_activated('affiliate_system')) {
+                if (addon_is_activated('affiliate_system') && class_exists(\App\Http\Controllers\AffiliateController::class)) {
                     if (($request->status == 'delivered' || $request->status == 'cancelled') &&
                         $orderDetail->product_referral_code
                     ) {
@@ -1221,7 +1220,7 @@ $product->save();
 
                         $referred_by_user = User::where('referral_code', $orderDetail->product_referral_code)->first();
 
-                        $affiliateController = new AffiliateController;
+                        $affiliateController = new \App\Http\Controllers\AffiliateController;
                         $affiliateController->processAffiliateStats($referred_by_user->id, 0, 0, $no_of_delivered, $no_of_canceled);
                     }
                 }

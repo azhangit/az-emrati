@@ -88,6 +88,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapWholesaleRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\WholesaleProductController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/wholesale.php'));
@@ -102,6 +106,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapDeliveryBoyRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\DeliveryBoyController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/delivery_boy.php'));
@@ -116,6 +124,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapAuctionRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\AuctionProductController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/auction.php'));
@@ -130,6 +142,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapSellerPackageRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\SellerPackageController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/seller_package.php'));
@@ -144,6 +160,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapAffiliateRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\AffiliateController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/affiliate.php'));
@@ -158,6 +178,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapOfflinePaymentRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\ManualPaymentMethodController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/offline_payment.php'));
@@ -173,6 +197,17 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapPaytmRoutes()
   {
+    // Paytm route file also registers Toyyibpay / Myfatoorah / Khalti.
+    // Load it only when at least one of those payment controllers exists.
+    if (
+      !class_exists(\App\Http\Controllers\Payment\PaytmController::class)
+      && !class_exists(\App\Http\Controllers\Payment\ToyyibpayController::class)
+      && !class_exists(\App\Http\Controllers\Payment\MyfatoorahController::class)
+      && !class_exists(\App\Http\Controllers\Payment\KhaltiController::class)
+    ) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/paytm.php'));
@@ -187,6 +222,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapAfricanPaymentGatewayRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\AfricanPaymentGatewayController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/african_pg.php'));
@@ -201,6 +240,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapRefundRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\RefundRequestController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/refund_request.php'));
@@ -215,6 +258,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapClubPointsRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\ClubPointController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/club_points.php'));
@@ -229,6 +276,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapOtpRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\OTPVerificationController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/otp.php'));
@@ -243,6 +294,10 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapPosRoutes()
   {
+    if (!class_exists(\App\Http\Controllers\PosController::class)) {
+      return;
+    }
+
     Route::middleware('web')
        ->namespace($this->namespace)
        ->group(base_path('routes/pos.php'));

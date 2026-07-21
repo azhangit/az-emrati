@@ -31,6 +31,7 @@
 @include('frontend.'.get_setting('homepage_select').'.partials.login_modal')
 
 <!-- Bid Modal -->
+@if (Route::has('auction_product_bids.store'))
 <div class="modal fade" id="bid_for_product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -60,3 +61,4 @@
         </div>
     </div>
 </div>
+@endif

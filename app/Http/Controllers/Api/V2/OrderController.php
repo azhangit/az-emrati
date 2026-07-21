@@ -16,7 +16,6 @@ use App\Models\CombinedOrder;
 use App\Models\BusinessSetting;
 use Illuminate\Support\Facades\Log;
 use \App\Utility\NotificationUtility;
-use App\Http\Controllers\AffiliateController;
 use Illuminate\Log\Logger;
 
 class OrderController extends Controller
@@ -183,11 +182,11 @@ class OrderController extends Controller
 
 
 
-                if (addon_is_activated('affiliate_system')) {
+                if (addon_is_activated('affiliate_system') && class_exists(\App\Http\Controllers\AffiliateController::class)) {
                     if ($order_detail->product_referral_code) {
                         $referred_by_user = User::where('referral_code', $order_detail->product_referral_code)->first();
 
-                        $affiliateController = new AffiliateController;
+                        $affiliateController = new \App\Http\Controllers\AffiliateController;
                         $affiliateController->processAffiliateStats($referred_by_user->id, 0, $order_detail->quantity, 0, 0);
                     }
                 }

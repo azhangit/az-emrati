@@ -676,12 +676,13 @@ Route::controller(PayhereController::class)->group(function () {
 
 
 // phonepe
-Route::controller(PhonepeController::class)->group(function () {
-    Route::any('/phonepe/pay', 'pay')->name('phonepe.pay');
-    Route::any('/phonepe/redirecturl', 'phonepe_redirecturl')->name('phonepe.redirecturl');
-    Route::any('/phonepe/callbackUrl', 'phonepe_callbackUrl')->name('phonepe.callbackUrl');
-});
-
+if (class_exists(PhonepeController::class)) {
+    Route::controller(PhonepeController::class)->group(function () {
+        Route::any('/phonepe/pay', 'pay')->name('phonepe.pay');
+        Route::any('/phonepe/redirecturl', 'phonepe_redirecturl')->name('phonepe.redirecturl');
+        Route::any('/phonepe/callbackUrl', 'phonepe_callbackUrl')->name('phonepe.callbackUrl');
+    });
+}
 
 //N-genius
 Route::controller(NgeniusController::class)->group(function () {

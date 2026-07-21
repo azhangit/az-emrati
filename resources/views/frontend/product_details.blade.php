@@ -205,7 +205,7 @@
     </div>
 
     <!-- Bid Modal -->
-    @if($detailedProduct->auction_product == 1)
+    @if($detailedProduct->auction_product == 1 && Route::has('auction_product_bids.store'))
         @php 
             $highest_bid = $detailedProduct->bids->max('amount');
             $min_bid_amount = $highest_bid != null ? $highest_bid+1 : $detailedProduct->starting_bid; 

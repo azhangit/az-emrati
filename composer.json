@@ -74,6 +74,7 @@
     "extra": {
         "laravel": {
             "dont-discover": [
+                "myfatoorah/laravel-package"
             ]
         }
     },

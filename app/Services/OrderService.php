@@ -35,7 +35,7 @@ class OrderService{
                 product_restock($orderDetail);
             }
 
-            if (addon_is_activated('affiliate_system') && auth()->user()->user_type == 'admin') {
+            if (addon_is_activated('affiliate_system') && auth()->user()->user_type == 'admin' && class_exists(\App\Http\Controllers\AffiliateController::class)) {
                 if (($request->status == 'delivered' || $request->status == 'cancelled') &&
                     $orderDetail->product_referral_code
                 ) {
@@ -52,7 +52,7 @@ class OrderService{
 
                     $referred_by_user = User::where('referral_code', $orderDetail->product_referral_code)->first();
 
-                    $affiliateController = new AffiliateController;
+                    $affiliateController = new \App\Http\Controllers\AffiliateController;
                     $affiliateController->processAffiliateStats($referred_by_user->id, 0, 0, $no_of_delivered, $no_of_canceled);
                 }
             }

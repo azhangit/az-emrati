@@ -129,8 +129,10 @@ class HomeController extends Controller
                 Cookie::queue('referral_code', $request->referral_code, $cookie_minute);
                 $referred_by_user = User::where('referral_code', $request->referral_code)->first();
 
-                $affiliateController = new AffiliateController;
-                $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                if (class_exists(\App\Http\Controllers\AffiliateController::class)) {
+                    $affiliateController = new \App\Http\Controllers\AffiliateController;
+                    $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                }
             } catch (\Exception $e) {
             }
         }
@@ -329,8 +331,10 @@ class HomeController extends Controller
 
                 $referred_by_user = User::where('referral_code', $request->product_referral_code)->first();
 
-                $affiliateController = new AffiliateController;
-                $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                if (class_exists(\App\Http\Controllers\AffiliateController::class)) {
+                    $affiliateController = new \App\Http\Controllers\AffiliateController;
+                    $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                }
             }
             
             return view('frontend.product_details', compact('detailedProduct', 'product_queries', 'total_query', 'reviews', 'review_status'));
@@ -389,8 +393,10 @@ class HomeController extends Controller
 
                 $referred_by_user = User::where('referral_code', $request->product_referral_code)->first();
 
-                $affiliateController = new AffiliateController;
-                $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                if (class_exists(\App\Http\Controllers\AffiliateController::class)) {
+                    $affiliateController = new \App\Http\Controllers\AffiliateController;
+                    $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                }
             }
             
            $html = view('frontend.product_details_popup', compact('detailedProduct', 'product_queries', 'total_query', 'reviews', 'review_status'))->render();

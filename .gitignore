@@ -19,7 +19,6 @@ yarn-error.log
 .idea/
 
 updates/
-*.lock
 resources/lang/en.json
 .env
 updates.zip
